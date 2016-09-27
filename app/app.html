@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Tell</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="../node_modules/font-awesome/css/font-awesome.min.css" />
+
+  	<script type="application/javascript">
+  		const NeDB = require('./cryptocat/etc/nedb');
+  	</script>
+  	<script type="application/javascript" src="cryptocat/etc/xml2js.js"></script>
+  	<script type="application/javascript" src="cryptocat/etc/stanzaio.js"></script>
+
+  	<script type="application/javascript" src="cryptocat/version.js"></script>
+  	<script type="application/javascript" src="cryptocat/hostname.js"></script>
+  	<script type="application/javascript" src="cryptocat/diag.js"></script>
+  	<script type="application/javascript" src="cryptocat/directories.js"></script>
+  	<script type="application/javascript" src="cryptocat/patterns.js"></script>
+  	<script type="application/javascript" src="cryptocat/time.js"></script>
+  	<script type="application/javascript" src="cryptocat/xmpp.js"></script>
+  	<script type="application/javascript" src="cryptocat/storage.js"></script>
+  	<script type="application/javascript" src="cryptocat/omemo.js"></script>
+  	<script type="application/javascript" src="cryptocat/crypto/dr.js"></script>
+  	<script type="application/javascript" src="cryptocat/crypto/pscl.js"></script>
+  	<script type="application/javascript" src="cryptocat/pinning.js"></script>
+  	<script type="application/javascript" src="cryptocat/update.js"></script>
+
+    <script>
+      if (!process.env.HOT) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '../dist/style.css';
+        document.write(link.outerHTML);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      {
+        const script = document.createElement('script');
+        const port = process.env.PORT || 3000;
+        script.src = (process.env.HOT) ? `http://localhost:${port}/dist/bundle.js` : '../dist/bundle.js';
+        document.write(script.outerHTML);
+      }
+    </script>
+  </body>
+</html>
