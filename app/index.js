@@ -7,13 +7,14 @@ import routes from './routes';
 import configureStore from './store/configureStore';
 import { persistStore } from 'redux-persist';
 
-// localStorage.clear();
 
 const store = configureStore();
-window.store = store;
 const history = syncHistoryWithStore(hashHistory, store);
 
 function setup() {
+  // localStorage.clear();
+  
+  Cryptocat.Storage.store = store;
   Cryptocat.Diag.message.deviceSetup = function (callback) {
     callback(0);
   };

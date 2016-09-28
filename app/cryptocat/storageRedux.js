@@ -16,7 +16,7 @@ var UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 	};
 
 	Cryptocat.Storage.updateUser = function(username, loadedSettings, callback) {
-		window.store.dispatch(updateSettings(loadedSettings));
+		Cryptocat.Storage.store.dispatch(updateSettings(loadedSettings));
 		callback(err);
 	};
 
@@ -24,7 +24,7 @@ var UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 		var newObj = Object.assign({}, EmptyMe.settings);
 		var setting = '';
 
-		var doc = window.store.getState().cryptocat;
+		var doc = Cryptocat.Storage.store.getState().cryptocat;
 		if (!doc) {
 			callback(err, null);
 			return false;
