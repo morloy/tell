@@ -6,6 +6,7 @@ var UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 
 (function() {
 	var err = null;
+	var EmptyMe = Cryptocat.EmptyMe;
 
 	var updateSettings = (loadedSettings) => {
 	  return {

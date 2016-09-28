@@ -14,11 +14,17 @@ window.store = store;
 const history = syncHistoryWithStore(hashHistory, store);
 
 function setup() {
-  var settings = store.getState().cryptocat;
-  if (settings === false) {
+  Cryptocat.Diag.message.deviceSetup = function (callback) {
+    callback(0);
+  };
+  Cryptocat.Win.create = {};
+  Cryptocat.Win.create.addDevice = function () {
     Cryptocat.OMEMO.onAddDevice('master', '');
-  }
-  console.log(settings.identityKey.priv);
+  };
+
+  Cryptocat.OMEMO.setup(function () {
+    console.log(Cryptocat.Me.settings.identityKey.priv);
+  });
 };
 
 persistStore(store, {}, setup);
