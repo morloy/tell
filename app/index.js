@@ -5,14 +5,23 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
+import { persistStore } from 'redux-persist';
+
+// localStorage.clear();
 
 const store = configureStore();
-const history = syncHistoryWithStore(hashHistory, store);
 window.store = store;
+const history = syncHistoryWithStore(hashHistory, store);
 
-if (Cryptocat.Me.settings.refresh == 0) {
-  Cryptocat.OMEMO.onAddDevice('master', '');
-}
+function setup() {
+  var settings = store.getState().cryptocat;
+  if (settings === false) {
+    Cryptocat.OMEMO.onAddDevice('master', '');
+  }
+  console.log(settings.identityKey.priv);
+};
+
+persistStore(store, {}, setup);
 
 render(
   <Provider store={store}>

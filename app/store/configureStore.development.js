@@ -4,6 +4,7 @@ import createLogger from 'redux-logger';
 import { hashHistory } from 'react-router';
 import { routerMiddleware, push } from 'react-router-redux';
 import rootReducer from '../reducers';
+import { autoRehydrate } from 'redux-persist';
 
 import * as counterActions from '../actions/counter';
 
@@ -21,6 +22,7 @@ const router = routerMiddleware(hashHistory);
 
 const enhancer = compose(
   applyMiddleware(thunk, router, logger),
+  autoRehydrate(),
   window.devToolsExtension ?
     window.devToolsExtension({ actionCreators }) :
     noop => noop
