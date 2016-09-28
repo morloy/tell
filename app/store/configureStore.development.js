@@ -6,10 +6,8 @@ import { routerMiddleware, push } from 'react-router-redux';
 import rootReducer from '../reducers';
 import { autoRehydrate } from 'redux-persist';
 
-import * as counterActions from '../actions/counter';
 
 const actionCreators = {
-  ...counterActions,
   push,
 };
 
