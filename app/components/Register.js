@@ -55,10 +55,6 @@ export default React.createClass({
     };
   },
 
-  componentDidMount () {
-    Cryptocat.OMEMO.onAddDevice('master', '');
-  },
-
   post(url, data) {
     var formBody = [];
     for (var property in data) {

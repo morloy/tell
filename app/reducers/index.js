@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
-import counter from './counter';
+import cryptocat from './cryptocat';
 
 const rootReducer = combineReducers({
-  counter,
+  cryptocat,
   routing
 });
 
