@@ -76,7 +76,7 @@ Cryptocat.Pinning = {};
 		) {
 			return true;
 		}
-		return false;
+		return true;
 	};
 
 	Cryptocat.Pinning.get = function(url, callback) {

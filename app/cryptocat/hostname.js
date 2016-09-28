@@ -1,2 +1,2 @@
 'use strict';
-Cryptocat.Hostname = 'crypto.cat';
+Cryptocat.Hostname = 'localhost';
