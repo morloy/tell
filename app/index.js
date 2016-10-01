@@ -10,15 +10,11 @@ import { persistStore } from 'redux-persist';
 
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
+Cryptocat.Storage.store = store;
 
 function setup() {
   // localStorage.clear();
-  
-  Cryptocat.Storage.store = store;
-  Cryptocat.Diag.message.deviceSetup = function (callback) {
-    callback(0);
-  };
-  Cryptocat.Win.create = {};
+
   Cryptocat.Win.create.addDevice = function () {
     Cryptocat.OMEMO.onAddDevice('master', '');
   };
