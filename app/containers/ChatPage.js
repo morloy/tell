@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Chat from '../components/Chat';
+import { connect } from 'react-redux';
 
-export default class ChatPage extends Component {
-  render() {
-    return (
-      <Chat />
-    );
-  }
+
+function mapStateToProps(state) {
+  return {
+    chat: state.chat
+  };
 }
+
+export default connect(mapStateToProps)(Chat);

@@ -4,19 +4,26 @@ import { Link } from 'react-router';
 
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
 
+const Message = (m) => (
+  <div
+    style={{
+      textAlign: m.fromMe ? 'left' : 'right'
+    }}
+  >
+    {m.text}
+  </div>
+)
+
+const MessageList = ({ messages }) => (
+  <div>
+    {messages.map(message =>
+      <Message key={message.id} {...message} />
+    )}
+  </div>
+)
 
 
-const Chat = React.createClass({
-  componentDidMount () {
-    if (Cryptocat.Me.connected === true)
-      return;
-
-    Cryptocat.XMPP.connect('timo', 'test', function () {
-                             console.log('connected');
-                          }
-    );
-  },
-
+const MessageInput = React.createClass({
   getInitialState() {
     return {
       text: '',
@@ -27,34 +34,53 @@ const Chat = React.createClass({
   },
   handleSubmit(e) {
     e.preventDefault();
-    console.log(this.state.text);
 
+    var username = 'timoho';
     var stamp = Date.now();
-		var deviceName = Cryptocat.Me.settings.deviceName;
-    Cryptocat.OMEMO.sendMessage('timoho', {
-      message: this.state.text,
-			internalId: `${deviceName}_${stamp}`
+    var id = `${Cryptocat.Me.username}_${stamp}`;
+    var text = this.state.text;
+
+    Cryptocat.OMEMO.sendMessage(username, {
+      message: text,
+  		internalId: id
+    });
+
+    Cryptocat.Storage.addMessage({
+      username,
+      id,
+      fromMe: true,
+      text,
+      stamp
     });
     this.setState({ text: '' });
-
   },
+  render() {
+    return (
+      <Form onSubmit={this.handleSubmit} >
+          <FormGroup>
+            <FormControl
+              type="text"
+              value={this.state.text}
+              onChange={this.handleChange}
+              placeholder="Type your message here ..."
+            />
+            <Button type="submit">Submit</Button>
+        </FormGroup>
+      </Form>
+    );
+  }
+})
+
+const Chat = React.createClass({
   render() {
     return (
       <div>
         <div>
           <h2>Chat</h2>
-
-              <Form onSubmit={this.handleSubmit} >
-                  <FormGroup>
-                    <FormControl
-                      type="text"
-                      value={this.state.text}
-                      onChange={this.handleChange}
-                      placeholder="Type your message here ..."
-                    />
-                    <Button type="submit">Submit</Button>
-                </FormGroup>
-              </Form>
+            { this.props.chat.hasOwnProperty('timoho')
+              ? <MessageList messages={this.props.chat.timoho} />
+              : ''}
+            <MessageInput />
           <Link to="/">home</Link>
         </div>
       </div>

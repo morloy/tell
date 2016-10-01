@@ -13,15 +13,9 @@ const history = syncHistoryWithStore(hashHistory, store);
 Cryptocat.Storage.store = store;
 
 function setup() {
-  // localStorage.clear();
-
-  Cryptocat.Win.create.addDevice = function () {
-    Cryptocat.OMEMO.onAddDevice('master', 0);
-  };
-
-  // Cryptocat.OMEMO.setup(function () {
-  //   console.log(Cryptocat.Me.settings.identityKey.priv);
-  // });
+  Cryptocat.XMPP.connect('timo', 'test', function () {
+    console.log('connected');
+  });
 };
 
 persistStore(store, {}, setup);

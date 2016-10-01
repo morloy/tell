@@ -3,16 +3,31 @@
 Cryptocat.Storage = {};
 
 var UPDATE_SETTINGS = 'UPDATE_SETTINGS';
+var ADD_MESSAGE = 'ADD_MESSAGE';
+
+
 
 (function() {
 	var err = null;
 	var EmptyMe = Cryptocat.EmptyMe;
 
+	// Actions
 	var updateSettings = (loadedSettings) => {
 	  return {
 	    type: UPDATE_SETTINGS,
 	    loadedSettings
-	  }
+	  };
+	};
+
+	var addMessage = (message) => {
+	  return {
+	    type: ADD_MESSAGE,
+	    message
+	  };
+	};
+
+	Cryptocat.Storage.addMessage = function(message) {
+		Cryptocat.Storage.store.dispatch(addMessage(message));
 	};
 
 	Cryptocat.Storage.updateUser = function(username, loadedSettings, callback) {

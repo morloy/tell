@@ -24,6 +24,10 @@ Cryptocat.Win = {
 	create: {}
 };
 
+Cryptocat.Win.create.addDevice = function () {
+  Cryptocat.OMEMO.onAddDevice('master', 0);
+};
+
 
 
 // Roster
@@ -121,5 +125,14 @@ Cryptocat.Win.main.roster = {};
 
 // XMPP
 Cryptocat.XMPP.deliverMessage = function(username, info) {
-  console.log(info.plaintext);
+  var stamp = new Date(info.stamp).getTime();
+  var id = `${username}_${stamp}`;
+  console.log(info);
+  Cryptocat.Storage.addMessage({
+    username,
+    id,
+    fromMe: false,
+    text: info.plaintext,
+    stamp
+  });
 };
