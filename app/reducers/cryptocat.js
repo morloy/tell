@@ -1,4 +1,4 @@
-var EmptyMe = Cryptocat.EmptyMe;
+var initialState = Cryptocat.EmptyMe.settings;
 
 var settingUpdateDisallowed = [
   'identityKey',
@@ -8,19 +8,16 @@ var settingUpdateDisallowed = [
   'deviceIcon'
 ];
 
-export default function cryptocat(state = false, action) {
+export default function cryptocat(state = initialState, action) {
   switch (action.type) {
     case UPDATE_SETTINGS:
       var settings = Object.assign({}, action.loadedSettings);
       var newObj = {};
-      if (!state) {
-        newObj = Object.assign({}, EmptyMe.settings);
-      }
 
       for (var setting in settings) {
         if (
           hasProperty(settings, setting) &&
-          hasProperty(EmptyMe.settings, setting)
+          hasProperty(initialState, setting)
         ) {
           if (state && (settingUpdateDisallowed.indexOf(setting) >= 0)) {
             continue;

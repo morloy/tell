@@ -1,15 +1,27 @@
-export default function chat(state = {}, action) {
+import { SELECT_CHAT } from '../actions/chat'
+
+const initialState = {
+  activeChat: undefined,
+  messages: {}
+}
+
+export default function chat(state = initialState, action) {
   switch (action.type) {
     case ADD_MESSAGE:
       var newState = Object.assign({}, state);
       var username = action.message.username;
 
-      if (!newState.hasOwnProperty(username)) {
-        newState[username] = [];
+      if (!newState.messages.hasOwnProperty(username)) {
+        newState.messages[username] = [];
       }
-      newState[username].push(action.message);
+      newState.messages[username].push(action.message);
 
       return newState;
+
+    case SELECT_CHAT:
+      return Object.assign({}, state, {
+        activeChat: action.username
+      })
 
     default:
       return state;

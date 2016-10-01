@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
+import Contacts from '../containers/Contacts';
 
 
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
@@ -35,7 +36,7 @@ const MessageInput = React.createClass({
   handleSubmit(e) {
     e.preventDefault();
 
-    var username = 'timoho';
+    var username = this.props.username;
     var stamp = Date.now();
     var id = `${Cryptocat.Me.username}_${stamp}`;
     var text = this.state.text;
@@ -71,16 +72,27 @@ const MessageInput = React.createClass({
   }
 })
 
+const ChatBox = ({ activeChat, messages }) => {
+  var renderMessages = messages.hasOwnProperty(activeChat)
+                        ? <MessageList messages={messages[activeChat]} />
+                        : '';
+  return (
+    <div>
+      {renderMessages}
+      <MessageInput username={activeChat} />
+    </div>
+  )
+}
+
 const Chat = React.createClass({
   render() {
     return (
       <div>
         <div>
           <h2>Chat</h2>
-            { this.props.chat.hasOwnProperty('timoho')
-              ? <MessageList messages={this.props.chat.timoho} />
-              : ''}
-            <MessageInput />
+          <Contacts />
+          { this.props.chat.activeChat === undefined
+              ? '' : <ChatBox {...this.props.chat} /> }
           <Link to="/">home</Link>
         </div>
       </div>

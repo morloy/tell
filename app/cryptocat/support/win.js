@@ -53,17 +53,14 @@ Cryptocat.Win.main.roster = {};
       } else {
         Cryptocat.XMPP.getDeviceList(item.jid.local);
       }
-      var buddy = {
-        key: item.jid.local,
-        username: item.jid.local,
-        subscription: item.subscription,
-        status: status
-      };
       newBuddies[item.jid.local] = {
-        props: buddy
+        props: {
+          key: item.jid.local,
+          username: item.jid.local,
+          subscription: item.subscription,
+          status: status
+        }
       };
-      Cryptocat.XMPP.getAvatar(item.jid.local);
-      Cryptocat.XMPP.queryLastSeen(item.jid.local);
     });
     Object.assign(_buddies, newBuddies);
   };
@@ -91,12 +88,6 @@ Cryptocat.Win.main.roster = {};
       }
 		};
     Object.assign(_buddies, newBuddies);
-		setTimeout(function() {
-			if (Cryptocat.Me.connected) {
-				Cryptocat.XMPP.queryLastSeen(username);
-				Cryptocat.XMPP.getAvatar(username);
-			}
-		}, 2000);
   };
 
   Cryptocat.Win.updateDeviceManager = function(username) {
@@ -127,7 +118,6 @@ Cryptocat.Win.main.roster = {};
 Cryptocat.XMPP.deliverMessage = function(username, info) {
   var stamp = new Date(info.stamp).getTime();
   var id = `${username}_${stamp}`;
-  console.log(info);
   Cryptocat.Storage.addMessage({
     username,
     id,
