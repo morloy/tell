@@ -11,17 +11,8 @@ const Chat = React.createClass({
     if (Cryptocat.Me.connected === true)
       return;
 
-    Cryptocat.Me.username = 'timo';
-    Cryptocat.XMPP.connect(Cryptocat.Me.username, 'test', function () {
+    Cryptocat.XMPP.connect('timo', 'test', function () {
                              console.log('connected');
-                            //  Cryptocat.Win.main = {};
-                            //  Cryptocat.Win.main.roster = {};
-                            //  Cryptocat.Win.main.roster.state = {};
-                            //  Cryptocat.Win.main.roster.state.buddies = {bob: true};
-                            //  Cryptocat.Win.main.roster.updateBuddyStatus = (a,b,c) => {}
-                            //  Cryptocat.XMPP.sendBuddyRequest('timoho');
-                            //  Cryptocat.OMEMO.sendMessage('bob', 'Hallo');
-                            // Cryptocat.XMPP.disconnect(false);
                           }
     );
   },

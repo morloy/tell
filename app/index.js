@@ -16,12 +16,12 @@ function setup() {
   // localStorage.clear();
 
   Cryptocat.Win.create.addDevice = function () {
-    Cryptocat.OMEMO.onAddDevice('master', '');
+    Cryptocat.OMEMO.onAddDevice('master', 0);
   };
 
-  Cryptocat.OMEMO.setup(function () {
-    console.log(Cryptocat.Me.settings.identityKey.priv);
-  });
+  // Cryptocat.OMEMO.setup(function () {
+  //   console.log(Cryptocat.Me.settings.identityKey.priv);
+  // });
 };
 
 persistStore(store, {}, setup);
