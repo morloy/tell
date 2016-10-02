@@ -13,7 +13,7 @@ function request_token(event)
   local request, response = event.request, event.response;
 	local user = http.formdecode(request.body);
 
-  if user.email == nil or user.password == nil or user.pubkey == nil then
+  if user.email == nil or user.password == nil or user.fingerprint == nil then
     return 'incomplete registration'
   end
 
@@ -21,20 +21,20 @@ function request_token(event)
   local url = 'https://'..request.headers.host..request.path..'/verify/'..token
 
   pending_registrations[token] = user
-  users[user.pubkey] = 1
+  users[user.fingerprint] = true
 
   module:log("info", 'E-Mail: '..user.email)
-  module:log("info", 'PubKey: '..user.pubkey)
+  module:log("info", 'Fingerprint: '..user.fingerprint)
   module:log("info", 'Password: '..user.password)
   module:log("info", 'Verification URL: '..url)
 
   return 'token sent'
 end
 
-function check_user(event, pubkey)
+function check_user(event, fingerprint)
   local request, response = event.request, event.response;
 
-  if users[pubkey] == nil then
+  if users[fingerprint] == nil then
     response.status_code = 201;
     response:send('done');
     return true;
@@ -51,16 +51,13 @@ function verify_token_and_register(event, token)
   end
 
   local user = pending_registrations[token]
-	local ok, err = usermanager.create_user(user.pubkey, user.password, module.host);
+	local ok, err = usermanager.create_user(user.fingerprint, user.password, module.host);
   if not ok then
     return 'registration failed';
   end
 
-  extra_data = { ["email"] = user.email };
-	datamanager.store(user.pubkey, module.host, "account_details", extra_data);
-
   pending_registrations[token] = nil
-  users[user.pubkey] = nil
+  users[user.fingerprint] = nil
 
   return 'user registered';
 end

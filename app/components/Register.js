@@ -1,12 +1,43 @@
 import React, { Component } from 'react';
-import { HOSTNAME } from '../utils/Config';
 
 import { hashHistory, Link } from 'react-router';
-import bs58 from 'bs58';
-
+import basex from 'base-x';
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
 
-const REGISTRATION_URL = `https://${HOSTNAME}/registration`;
+const REGISTRATION_URL = `https://${Cryptocat.Hostname}:5281/registration`;
+
+var bs36 = basex('0123456789abcdefghijklmnopqrstuvwxyz');
+
+const getFingerprint = (key) => (
+  bs36.encode(
+    ProScript.encoding.hexStringTo16ByteArray(
+      ProScript.crypto.SHA256(
+        ProScript.encoding.byteArrayToHexString(key)
+      ).substr(0,32)
+)));
+
+const validateEmail = (email) => {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+};
+
+const post = (url, data) => {
+  var formBody = [];
+  for (var property in data) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(data[property]);
+    formBody.push(encodedKey + "=" + encodedValue);
+  }
+  formBody = formBody.join("&");
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: formBody
+  })
+};
 
 
 const RegistrationForm = React.createClass({
@@ -15,20 +46,27 @@ const RegistrationForm = React.createClass({
       email: '',
     };
   },
+  getValidationState() {
+    if (validateEmail(this.state.email))
+      return 'success';
+    else
+      return 'error';
+  },
   handleChange(e) {
     this.setState({ email: e.target.value });
   },
   handleSubmit(e) {
     e.preventDefault();
-    this.props.register(this.state.email);
-  },
 
+    if (this.getValidationState() === 'success')
+      this.props.register(this.state.email);
+  },
   render() {
     return (
       <div>
-        <Form onSubmit={this.handleSubmit} >
+         <Form onSubmit={this.handleSubmit}>
           <h2>Register</h2>
-            <FormGroup>
+            <FormGroup validationState={this.getValidationState()}>
               <ControlLabel>Please enter your e-mail address</ControlLabel>
               <FormControl
                 type="text"
@@ -36,7 +74,7 @@ const RegistrationForm = React.createClass({
                 onChange={this.handleChange}
                 placeholder="mail@example.org"
               />
-              <Button type="submit">Submit</Button>
+            <FormControl.Feedback />
           </FormGroup>
         </Form>
       </div>
@@ -49,40 +87,24 @@ export default React.createClass({
   getInitialState() {
     return {
       email: '',
-      pubkey: '',
-      password: bs58.encode(ProScript.crypto.random16Bytes('o0')),
+      fingerprint: getFingerprint(Cryptocat.Me.settings.identityKey.pub),
+      password: bs36.encode(ProScript.crypto.random16Bytes('o0')),
       submitted: false,
     };
   },
-
-  post(url, data) {
-    var formBody = [];
-    for (var property in data) {
-      var encodedKey = encodeURIComponent(property);
-      var encodedValue = encodeURIComponent(data[property]);
-      formBody.push(encodedKey + "=" + encodedValue);
-    }
-    formBody = formBody.join("&");
-
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: formBody
-    })
+  componentWillMount () {
+    Cryptocat.OMEMO.onAddDevice('master', 0);
   },
-
   register(email) {
     var data = {
+      'fingerprint': this.state.fingerprint,
       'email': email,
-      'pubkey': bs58.encode(Cryptocat.Me.settings.identityKey.pub),
       'password': this.state.password,
     }
     console.log(data);
-    this.setState({ pubkey: data.pubkey });
+    this.setState({ email });
 
-    this.post(REGISTRATION_URL, data).then(function(response) {
+    post(REGISTRATION_URL, data).then(function(response) {
       this.setState({ submitted: true });
       this.checkRegistration();
     }.bind(this)).catch(function(err) {
@@ -91,12 +113,18 @@ export default React.createClass({
   },
 
   checkRegistration () {
-    fetch(`${REGISTRATION_URL}/check/${this.state.pubkey}`).then(function (response) {
-      if (response.status == 201) {
-        console.log('Account created');
-        hashHistory.push('/');
-      } else {
+    fetch(`${REGISTRATION_URL}/check/${this.state.fingerprint}`).then(function (response) {
+      if (response.status != 201) {
         setTimeout(this.checkRegistration, 3000);
+      } else {
+        console.log('Account created');
+
+        this.props.initializeProfile({
+          username: this.state.fingerprint,
+          password: this.state.password,
+          email: this.state.email
+        });
+        Cryptocat.Storage.sync();
       }
     }.bind(this));
   },
@@ -109,7 +137,6 @@ export default React.createClass({
         ? <h2>Waiting for verification ...</h2>
         : <RegistrationForm register={this.register} />
       }
-      <Link to="/">home</Link>
       </div>
     );
   }

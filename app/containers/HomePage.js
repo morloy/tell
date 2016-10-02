@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Home from '../components/Home';
+import { connect } from 'react-redux';
 
-export default class HomePage extends Component {
-  render() {
-    return (
-      <Home />
-    );
-  }
+function mapStateToProps(state) {
+  return {
+    settings: state.settings
+  };
 }
+
+export default connect(mapStateToProps)(Home);

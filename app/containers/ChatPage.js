@@ -7,7 +7,8 @@ import * as ChatActions from '../actions/chat';
 
 function mapStateToProps(state) {
   return {
-    chat: state.chat
+    chat: state.chat,
+    settings: state.settings
   };
 }
 

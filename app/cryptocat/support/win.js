@@ -33,7 +33,7 @@ Cryptocat.Win = {
 };
 
 Cryptocat.Win.create.addDevice = function () {
-  Cryptocat.OMEMO.onAddDevice('master', 0);
+  return true;
 };
 
 Cryptocat.Win.updateDeviceManager = function(username) {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styles from './Home.css';
+import ChatPage from '../containers/ChatPage';
+import RegisterPage from '../containers/RegisterPage';
 
 import { Button } from 'react-bootstrap';
 
@@ -9,8 +11,7 @@ export default class Home extends Component {
     return (
       <div>
         <div>
-          <h2>Home</h2>
-          <Link to="/register">register</Link> | <Link to="/chat">chat</Link>
+          { this.props.settings.profile ? <ChatPage /> : <RegisterPage /> }
         </div>
       </div>
     );

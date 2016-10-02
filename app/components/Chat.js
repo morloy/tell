@@ -85,6 +85,13 @@ const ChatBox = ({ activeChat, messages }) => {
 }
 
 const Chat = React.createClass({
+  componentWillMount () {
+    var {username, password} = this.props.settings.profile;
+    Cryptocat.XMPP.connect(username, password, function () {
+      // Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
+      // Cryptocat.XMPP.sendBundle();
+    });
+  },
   render() {
     return (
       <div>
@@ -93,7 +100,6 @@ const Chat = React.createClass({
           <Contacts />
           { this.props.chat.activeChat === undefined
               ? '' : <ChatBox {...this.props.chat} /> }
-          <Link to="/">home</Link>
         </div>
       </div>
     );

@@ -13,18 +13,12 @@ const history = syncHistoryWithStore(hashHistory, store);
 Cryptocat.Storage.store = store;
 
 function setup() {
-  Cryptocat.XMPP.connect('timo', 'test', function () {
-    console.log('connected');
-    Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
-    Cryptocat.XMPP.sendBundle();
-  });
+  render(
+    <Provider store={store}>
+      <Router history={history} routes={routes} />
+    </Provider>,
+    document.getElementById('root')
+  );
 };
 
 persistStore(store, {}, setup);
-
-render(
-  <Provider store={store}>
-    <Router history={history} routes={routes} />
-  </Provider>,
-  document.getElementById('root')
-);
