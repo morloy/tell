@@ -2,8 +2,8 @@ import React, { PropTypes } from 'react'
 
 const Contact = ({name, active, onClick}) => (
   <li
-    onClick={onClick}
-    style={{ fontWeight: active ? 'bold' : 'normal' }}
+    onClick={ active ? '' : onClick}
+    style={{ fontWeight: active ? 'bold' : '' }}
   >{name}</li>
 )
 

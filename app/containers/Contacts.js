@@ -6,8 +6,11 @@ import ContactList from '../components/ContactLIst';
 
 
 function mapStateToProps(state) {
+  var contacts = Object.keys(state.cryptocat.userBundles).filter(function (name) {
+    return (name !== Cryptocat.Me.username);
+  });
   return {
-    contacts: Object.keys(state.cryptocat.userBundles),
+    contacts,
     activeChat: state.chat.activeChat
   }
 }

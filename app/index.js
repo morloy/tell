@@ -15,6 +15,8 @@ Cryptocat.Storage.store = store;
 function setup() {
   Cryptocat.XMPP.connect('timo', 'test', function () {
     console.log('connected');
+    Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
+    Cryptocat.XMPP.sendBundle();
   });
 };
 
