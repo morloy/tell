@@ -35,6 +35,10 @@ var ADD_MESSAGE = 'ADD_MESSAGE';
 		callback(err);
 	};
 
+	Cryptocat.Storage.sync = function () {
+		Cryptocat.Storage.store.dispatch(updateSettings(Cryptocat.Me.settings));
+	};
+
 	Cryptocat.Storage.getUser = function(username, callback) {
 		var newObj = Object.assign({}, EmptyMe.settings);
 		var setting = '';

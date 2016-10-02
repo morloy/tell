@@ -6,11 +6,19 @@ Cryptocat.Diag = {
   message: {}
 };
 
-Cryptocat.Diag.message.deviceSetup = function (callback) {
+Cryptocat.Diag.message.deviceSetup = function(callback) {
   callback(0);
 };
-Cryptocat.Diag.message.updatedMyDevices = function (username, callback) {
+Cryptocat.Diag.message.updatedMyDevices = function(username, callback) {
   callback(1);
+};
+
+Cryptocat.Diag.message.addBuddyRequest = function(username, callback) {
+  callback(0);
+};
+
+Cryptocat.Diag.message.buddyUnsubscribed = function (username) {
+  return 0;
 };
 
 
@@ -28,15 +36,17 @@ Cryptocat.Win.create.addDevice = function () {
   Cryptocat.OMEMO.onAddDevice('master', 0);
 };
 
+Cryptocat.Win.updateDeviceManager = function(username) {
+  Cryptocat.Storage.sync();
+  return false;
+};
+
 
 
 // Roster
-Cryptocat.Win.main.roster = {};
 (function() {
 
-  Cryptocat.Win.main.roster.state = {
-    buddies: {}
-  };
+  Cryptocat.Win.main.roster = { state: { buddies: {}}};
 
   var _buddies = Cryptocat.Win.main.roster.state.buddies;
 
@@ -90,9 +100,16 @@ Cryptocat.Win.main.roster = {};
     Object.assign(_buddies, newBuddies);
   };
 
-  Cryptocat.Win.updateDeviceManager = function(username) {
-    return false;
+  Cryptocat.Win.main.roster.removeBuddy = function(username) {
+    if (!hasProperty(_buddies, username)) {
+      return false;
+    }
+    delete _buddies[username];
+    delete Cryptocat.Me.settings.userBundles[username];
+    Cryptocat.Storage.sync();
   };
+
+
 })();
 
 
