@@ -4,7 +4,7 @@ import { hashHistory, Link } from 'react-router';
 import basex from 'base-x';
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
 
-const REGISTRATION_URL = `https://${Cryptocat.Hostname}:5281/registration`;
+const ACCOUNTS_URL = `https://${Cryptocat.Hostname}:5281/accounts`;
 
 var bs36 = basex('0123456789abcdefghijklmnopqrstuvwxyz');
 
@@ -57,9 +57,15 @@ const RegistrationForm = React.createClass({
   },
   handleSubmit(e) {
     e.preventDefault();
+    if (this.getValidationState() !== 'success')
+      return;
 
-    if (this.getValidationState() === 'success')
-      this.props.register(this.state.email);
+    fetch(`${ACCOUNTS_URL}/lookup/${this.state.email}`).then(function (response) {
+      if (response.status == 404)
+        this.props.register(this.state.email);
+      else
+        console.log('Email already taken!');
+    }.bind(this));
   },
   render() {
     return (
@@ -104,7 +110,7 @@ export default React.createClass({
     console.log(data);
     this.setState({ email });
 
-    post(REGISTRATION_URL, data).then(function(response) {
+    post(`${ACCOUNTS_URL}/register`, data).then(function(response) {
       this.setState({ submitted: true });
       this.checkRegistration();
     }.bind(this)).catch(function(err) {
@@ -113,8 +119,8 @@ export default React.createClass({
   },
 
   checkRegistration () {
-    fetch(`${REGISTRATION_URL}/check/${this.state.fingerprint}`).then(function (response) {
-      if (response.status != 201) {
+    fetch(`${ACCOUNTS_URL}/lookup/${this.state.email}`).then(function (response) {
+      if (response.status == 404) {
         setTimeout(this.checkRegistration, 3000);
       } else {
         console.log('Account created');
