@@ -1,8 +1,6 @@
-import { INITIALIZE_PROFILE } from '../actions/settings'
+import INITIALIZE_PROFILE from '../actions/settings'
 
-const initialState = {}
-
-export default function chat(state = initialState, action) {
+export default function chat(state = {}, action) {
   switch (action.type) {
     case INITIALIZE_PROFILE:
       return Object.assign({}, {

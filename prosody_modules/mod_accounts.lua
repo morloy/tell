@@ -74,7 +74,7 @@ function lookup_user(event, s)
   if s:len() >= 8 and lookup[s] ~= nil then
     return json.encode(lookup[s]);
   else
-    response.status_code = 404;
+    response.status_code = 204;
     response:send();
   end
 end

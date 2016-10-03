@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as ChatActions from '../actions/chat';
-import ContactList from '../components/ContactLIst';
+import { selectChat } from '../actions/chat';
+import { addContact } from '../actions/contacts';
+import ContactList from '../components/ContactList';
 
 
 function mapStateToProps(state) {
-  var contacts = Object.keys(state.cryptocat.userBundles).filter(function (name) {
-    return (name !== Cryptocat.Me.username);
-  });
+  var blockedEmails = state.contacts.map((c) => c.email);
+  blockedEmails.push(state.settings.profile.email);
+
   return {
-    contacts,
-    activeChat: state.chat.activeChat
+    contacts: state.contacts,
+    activeChat: state.chat.activeChat,
+    blockedEmails,
   }
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ChatActions, dispatch);
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addContact: (contact) => {
+      dispatch(addContact(contact));
+      Cryptocat.XMPP.sendBuddyRequest(contact.id);
+    },
+    onSelectContact: (id) => {
+      dispatch(selectChat(id));
+    }
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContactList);

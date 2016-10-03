@@ -1,7 +1,7 @@
 import { SELECT_CHAT } from '../actions/chat'
 
 const initialState = {
-  activeChat: undefined,
+  activeChat: '',
   messages: {}
 }
 

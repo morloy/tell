@@ -61,7 +61,7 @@ const RegistrationForm = React.createClass({
       return;
 
     fetch(`${ACCOUNTS_URL}/lookup/${this.state.email}`).then(function (response) {
-      if (response.status == 404)
+      if (response.status == 204)
         this.props.register(this.state.email);
       else
         console.log('Email already taken!');
@@ -93,7 +93,7 @@ export default React.createClass({
   getInitialState() {
     return {
       email: '',
-      fingerprint: getFingerprint(Cryptocat.Me.settings.identityKey.pub),
+      fingerprint: '',
       password: bs36.encode(ProScript.crypto.random16Bytes('o0')),
       submitted: false,
     };
@@ -102,13 +102,14 @@ export default React.createClass({
     Cryptocat.OMEMO.onAddDevice('master', 0);
   },
   register(email) {
+    var fingerprint = getFingerprint(Cryptocat.Me.settings.identityKey.pub);
     var data = {
-      'fingerprint': this.state.fingerprint,
-      'email': email,
-      'password': this.state.password,
+      fingerprint,
+      email,
+      password: this.state.password,
     }
     console.log(data);
-    this.setState({ email });
+    this.setState({ email, fingerprint });
 
     post(`${ACCOUNTS_URL}/register`, data).then(function(response) {
       this.setState({ submitted: true });
@@ -119,20 +120,20 @@ export default React.createClass({
   },
 
   checkRegistration () {
-    fetch(`${ACCOUNTS_URL}/lookup/${this.state.email}`).then(function (response) {
-      if (response.status == 404) {
-        setTimeout(this.checkRegistration, 3000);
-      } else {
+    fetch(`${ACCOUNTS_URL}/lookup/${this.state.email}`).then((response) => {
+      if (response.status == 200) {
         console.log('Account created');
 
+        Cryptocat.Storage.sync();
         this.props.initializeProfile({
           username: this.state.fingerprint,
           password: this.state.password,
           email: this.state.email
         });
-        Cryptocat.Storage.sync();
+      } else {
+        setTimeout(this.checkRegistration, 3000);
       }
-    }.bind(this));
+    });
   },
 
   render() {
