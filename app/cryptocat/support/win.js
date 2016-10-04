@@ -1,5 +1,9 @@
 'use strict';
 
+window.onbeforeunload = (e) => {
+  Cryptocat.Storage.sync();
+}
+
 
 // Diag
 Cryptocat.Diag = {
