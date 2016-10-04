@@ -132,14 +132,68 @@ Cryptocat.Win.updateDeviceManager = function(username) {
 
 
 // XMPP
-Cryptocat.XMPP.deliverMessage = function(username, info) {
-  var stamp = new Date(info.stamp).getTime();
-  var id = `${username}_${stamp}`;
-  Cryptocat.Storage.addMessage({
-    username,
-    id,
-    fromMe: false,
-    text: info.plaintext,
-    stamp
+(function() {
+  var _filesPath = `${Remote.app.getPath('downloads')}/Tell`;
+  FS.access(_filesPath, FS.F_OK, function(err) {
+    if (err) {
+      FS.mkdir(_filesPath);
+    }
   });
-};
+
+  var checkIfFile = function(message) {
+    if (Cryptocat.Patterns.file.test(message)) {
+      var info = Cryptocat.File.parseInfo(message);
+      if (info.valid) {
+        return {
+          file:	info,
+          isFile: true
+        };
+      }
+    }
+    return {
+      file:	{},
+      isFile: false
+    };
+  };
+
+  var receiveFile = function (file, callback) {
+    Cryptocat.File.receive(file, (url, p) => {
+			console.log(`Progress: ${p} %`);
+		}, (url, plaintext, valid) => {
+      var filename = `${_filesPath}/${file.name}`;
+      FS.writeFile(filename, plaintext, (err) => {
+        if (err) throw err;
+        callback(filename);
+      });
+		});
+  };
+
+
+  Cryptocat.XMPP.deliverMessage = function(username, info) {
+    var stamp = new Date(info.stamp).getTime();
+    var id = `${username}_${stamp}`;
+    var file = checkIfFile(info.plaintext);
+
+
+    if (file.isFile) {
+      receiveFile(file.file, (filename) => {
+        Cryptocat.Storage.addMessage({
+          username,
+          id,
+          fromMe: false,
+          text: '',
+          file: filename,
+          stamp
+        });
+      });
+    } else {
+      Cryptocat.Storage.addMessage({
+        username,
+        id,
+        fromMe: false,
+        text: info.plaintext,
+        stamp
+      });
+    }
+  };
+})();

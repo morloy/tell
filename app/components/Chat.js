@@ -2,11 +2,27 @@ import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Contacts from '../containers/Contacts';
 
-
 import {
   Form, FormGroup, ControlLabel,
   FormControl, HelpBlock, Button
 } from 'react-bootstrap';
+
+
+const openFile = (file) => {
+  var file = 'file:///Users/timoho/Library/Application Support/Electron/files/Faada Freddy - Truth.txt';
+  console.log('open');
+  Remote.shell.openExternal(file);
+}
+
+const File = ({path}) => {
+  var name = Path.basename(path);
+  var url = `file://${path}`;
+  return (
+    <a href='javascript:void(0)' onClick={(e) => Remote.shell.openExternal(url)}>
+      {name}
+    </a>
+  )
+}
 
 const Message = (m) => (
   <div
@@ -15,6 +31,7 @@ const Message = (m) => (
     }}
   >
     {m.text}
+    {m.file ? <File path={m.file} /> : ''}
   </div>
 )
 
