@@ -3,7 +3,10 @@ import { Link } from 'react-router';
 import Contacts from '../containers/Contacts';
 
 
-import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
+import {
+  Form, FormGroup, ControlLabel,
+  FormControl, HelpBlock, Button
+} from 'react-bootstrap';
 
 const Message = (m) => (
   <div
@@ -55,6 +58,42 @@ const MessageInput = React.createClass({
     });
     this.setState({ text: '' });
   },
+
+  sendFile (file) {
+    var username = this.props.username;
+    var stamp = Date.now();
+    var id = `${Cryptocat.Me.username}_${stamp}`;
+
+    FS.readFile(file.path, (err, data) => {
+					if (err) { return false; }
+
+          Cryptocat.File.send(file.name, data, function(info) {
+    				if (!info.valid) {
+    					return false;
+    				}
+    				var sendInfo = 'CryptocatFile:' + JSON.stringify(info);
+            console.log({
+    					plaintext: sendInfo,
+    					valid: true,
+    					stamp: stamp
+    				});
+    			}, function(url, p) {
+            console.log(`Progress: ${p} %`);
+    			}, function(info, file) {
+    				var sendInfo = 'CryptocatFile:' + JSON.stringify(info);
+    				if (info.valid) {
+              Cryptocat.OMEMO.sendMessage(username, {
+    						message: sendInfo,
+    						internalId: id
+    					});
+    				} else {
+    					console.log('File not sent');
+    					return false;
+    				}
+    			});
+		});
+  },
+
   render() {
     return (
       <Form onSubmit={this.handleSubmit} >
@@ -67,6 +106,11 @@ const MessageInput = React.createClass({
             />
             <Button type="submit">Submit</Button>
         </FormGroup>
+        <FormControl
+          type="file"
+          label="Send File ..."
+          onChange={(e) => this.sendFile(e.target.files[0])}
+        />
       </Form>
     );
   }
