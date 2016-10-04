@@ -80,8 +80,9 @@ const MessageInput = React.createClass({
     var username = this.props.username;
     var stamp = Date.now();
     var id = `${Cryptocat.Me.username}_${stamp}`;
+    var path = file.path;
 
-    FS.readFile(file.path, (err, data) => {
+    FS.readFile(path, (err, data) => {
 					if (err) { return false; }
 
           Cryptocat.File.send(file.name, data, function(info) {
@@ -103,6 +104,15 @@ const MessageInput = React.createClass({
     						message: sendInfo,
     						internalId: id
     					});
+
+              Cryptocat.Storage.addMessage({
+                username,
+                id,
+                fromMe: true,
+                text: '',
+                file: path,
+                stamp
+              });
     				} else {
     					console.log('File not sent');
     					return false;
