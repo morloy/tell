@@ -1,11 +1,11 @@
 import React, { PropTypes } from 'react';
 import AddContactForm from './AddContactForm'
 
-const Contact = ({name, active, onClick}) => (
+const Contact = ({contact, active, onClick}) => (
   <li
     onClick={ active ? '' : onClick}
     style={{ fontWeight: active ? 'bold' : '' }}
-  >{name}</li>
+  >{contact.email} ({contact.id})</li>
 )
 
 const ContactList = (props) => (
@@ -14,7 +14,7 @@ const ContactList = (props) => (
       {props.contacts.map(contact =>
         <Contact
           key={contact.id}
-          name={contact.email}
+          contact={contact}
           active={contact.id === props.activeChat ? true : false}
           onClick={() => props.onSelectContact(contact.id)} />
       )}

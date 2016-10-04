@@ -13,6 +13,13 @@ if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
 }
 
+if (process.env.PROFILE) {
+  var appData = app.getPath('appData');
+  var userData = `${appData}/Tell/${process.env.PROFILE}`;
+  console.log(userData);
+  app.setPath('userData', userData);
+}
+
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit();

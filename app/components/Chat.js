@@ -148,15 +148,23 @@ const ChatBox = ({ activeChat, messages }) => {
 const Chat = React.createClass({
   componentWillMount () {
     var {username, password} = this.props.settings.profile;
+
     Cryptocat.XMPP.connect(username, password, function () {
-      Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
-      Cryptocat.XMPP.sendBundle();
+      client.subscribeToNode(
+				`${Cryptocat.Me.username}@${Cryptocat.Hostname}`,
+				'urn:xmpp:omemo:0:devicelist'
+			).then((res) => {
+        Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
+        Cryptocat.XMPP.sendBundle();
+      });
     });
   },
   render() {
+    var {username, email} = this.props.settings.profile;
     return (
       <div>
         <div>
+          <p>{email} ({username})</p>
           <h2>Chat</h2>
           <Contacts />
           { this.props.chat.activeChat === ''

@@ -61,7 +61,9 @@ function verify_token_and_register(event, token)
   pending_registrations[token] = nil;
   pending_ids[fingerprint] = nil;
 
-  lookup[email] = { id = fingerprint };
+  account = { id = fingerprint };
+  lookup[email] = account;
+  lookup[fingerprint] = account;
   accounts:set("lookup", lookup);
 
   return 'ok';
