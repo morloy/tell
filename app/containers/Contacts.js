@@ -7,22 +7,31 @@ import ContactList from '../components/ContactList';
 
 
 function mapStateToProps(state) {
-  var blockedEmails = state.contacts.map((c) => c.email);
-  blockedEmails.push(state.settings.profile.email);
+  var contacts = Object.keys(state.contacts).map((key) => ({
+    id: key,
+    ...state.contacts[key]
+  }));
+
+  var blockList = [];
+  blockList.push(state.settings.profile.email);
+  blockList.push(state.settings.profile.username);
+  contacts.forEach((c) => {
+    blockList.push(c.email);
+    blockList.push(c.id);
+  });
 
   return {
-    contacts: state.contacts,
+    contacts,
     activeChat: state.chat.activeChat,
-    blockedEmails,
+    blockList,
   }
 }
 
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addContact: (contact) => {
-      dispatch(addContact(contact));
-      Cryptocat.XMPP.sendBuddyRequest(contact.id);
+    addContact: (id, profile) => {
+      dispatch(addContact(id, profile));
     },
     onSelectContact: (id) => {
       dispatch(selectChat(id));

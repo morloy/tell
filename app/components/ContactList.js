@@ -1,12 +1,18 @@
 import React, { PropTypes } from 'react';
 import AddContactForm from './AddContactForm'
 
-const Contact = ({contact, active, onClick}) => (
-  <li
-    onClick={ active ? '' : onClick}
-    style={{ fontWeight: active ? 'bold' : '' }}
-  >{contact.email} ({contact.id})</li>
-)
+const Contact = ({contact, active, onClick}) => {
+  var {id, email} = contact;
+  return (
+    <li
+      onClick={ active ? '' : onClick}
+      style={{ fontWeight: active ? 'bold' : '' }}
+    >
+      {email} ({id})
+    </li>
+
+  )
+};
 
 const ContactList = (props) => (
   <div>
@@ -20,7 +26,7 @@ const ContactList = (props) => (
       )}
     </ul>
     <AddContactForm
-      blockedEmails={props.blockedEmails}
+      blockList={props.blockList}
       onSubmit={props.addContact}
     />
   </div>

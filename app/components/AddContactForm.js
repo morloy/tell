@@ -19,7 +19,7 @@ const AddContactForm = React.createClass({
     var email = e.target.value;
     this.setState({ email });
 
-    if (email.length < 8 || this.props.blockedEmails.indexOf(email) >= 0)
+    if (email.length < 8 || this.props.blockList.indexOf(email) >= 0)
       return;
 
     fetch(`${ACCOUNTS_URL}/lookup/${email}`).then((response) => {
@@ -37,8 +37,7 @@ const AddContactForm = React.createClass({
     e.preventDefault();
 
     if (this.state.id !== undefined) {
-      this.props.onSubmit({
-        id: this.state.id,
+      this.props.onSubmit(this.state.id, {
         email: this.state.email
       });
       this.setState(this.getInitialState());

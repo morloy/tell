@@ -1,8 +1,12 @@
-export const ADD_CONTACT = 'ADD_CONTACT';
+export const addContact = (id, profile) => {
+  return (dispatch, getState) => {
+    const { contacts } = getState();
 
-export const addContact = (contact) => {
-  return {
-    type: ADD_CONTACT,
-    contact
-  }
+    if (!contacts.hasOwnProperty(id)) {
+      Cryptocat.XMPP.sendBuddyRequest(id);
+      Cryptocat.XMPP.getDeviceList(id);
+    }
+
+    Cryptocat.Storage.updateContact(id, profile);
+  };
 }

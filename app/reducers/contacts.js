@@ -1,12 +1,9 @@
-import { ADD_CONTACT } from '../actions/contacts'
-
-export default function chat(state = [], action) {
+export default function chat(state = {}, action) {
   switch (action.type) {
-    case ADD_CONTACT:
-      return [
-        ...state,
-        action.contact
-      ]
+    case UPDATE_CONTACT:
+      var newObj = {};
+      newObj[action.id] = action.profile;
+      return Object.assign({}, state, newObj);
 
     default:
       return state;

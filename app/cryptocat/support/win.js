@@ -124,7 +124,7 @@ Cryptocat.Win.updateDeviceManager = function(username) {
       return {
         webContents: {
           send: function(channel, internalId) {
-            console.log(name);
+            console.log({channel, name});
           }
         }
       };
@@ -178,8 +178,10 @@ Cryptocat.Win.updateDeviceManager = function(username) {
     var id = `${username}_${stamp}`;
     var file = checkIfFile(info.plaintext);
 
-
-    if (file.isFile) {
+    if (info.plaintext.substr(0,12) === 'UserProfile:') {
+      var profile = JSON.parse(info.plaintext.substr(12));
+      Cryptocat.Storage.updateContact(username, profile);
+    } else if (file.isFile) {
       receiveFile(file.file, (filename) => {
         Cryptocat.Storage.addMessage({
           username,

@@ -56,23 +56,7 @@ const MessageInput = React.createClass({
   handleSubmit(e) {
     e.preventDefault();
 
-    var username = this.props.username;
-    var stamp = Date.now();
-    var id = `${Cryptocat.Me.username}_${stamp}`;
-    var text = this.state.text;
-
-    Cryptocat.OMEMO.sendMessage(username, {
-      message: text,
-  		internalId: id
-    });
-
-    Cryptocat.Storage.addMessage({
-      username,
-      id,
-      fromMe: true,
-      text,
-      stamp
-    });
+    this.props.onSubmit(this.props.username, this.state.text);
     this.setState({ text: '' });
   },
 
@@ -143,14 +127,15 @@ const MessageInput = React.createClass({
   }
 })
 
-const ChatBox = ({ activeChat, messages }) => {
+const ChatBox = ({ chat, sendMessage }) => {
+  const { activeChat, messages } = chat;
   var renderMessages = messages.hasOwnProperty(activeChat)
                         ? <MessageList messages={messages[activeChat]} />
                         : '';
   return (
     <div>
       {renderMessages}
-      <MessageInput username={activeChat} />
+      <MessageInput username={activeChat} onSubmit={sendMessage} />
     </div>
   )
 }
@@ -178,7 +163,7 @@ const Chat = React.createClass({
           <h2>Chat</h2>
           <Contacts />
           { this.props.chat.activeChat === ''
-              ? '' : <ChatBox {...this.props.chat} /> }
+              ? '' : <ChatBox {...this.props} /> }
         </div>
       </div>
     );

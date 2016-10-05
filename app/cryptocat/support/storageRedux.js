@@ -4,7 +4,7 @@ Cryptocat.Storage = {};
 
 var UPDATE_SETTINGS = 'UPDATE_SETTINGS';
 var ADD_MESSAGE = 'ADD_MESSAGE';
-
+var UPDATE_CONTACT = 'UPDATE_CONTACT';
 
 
 (function() {
@@ -24,6 +24,18 @@ var ADD_MESSAGE = 'ADD_MESSAGE';
 	    type: ADD_MESSAGE,
 	    message
 	  };
+	};
+
+	var updateContact = (id, profile) => {
+	  return {
+	    type: UPDATE_CONTACT,
+	    id,
+	    profile
+	  };
+	}
+
+	Cryptocat.Storage.updateContact = function (id, profile) {
+		Cryptocat.Storage.store.dispatch(updateContact(id, profile));
 	};
 
 	Cryptocat.Storage.addMessage = function(message) {
