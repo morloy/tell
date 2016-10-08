@@ -7,13 +7,6 @@ import {
   FormControl, HelpBlock, Button
 } from 'react-bootstrap';
 
-
-const openFile = (file) => {
-  var file = 'file:///Users/timoho/Library/Application Support/Electron/files/Faada Freddy - Truth.txt';
-  console.log('open');
-  Remote.shell.openExternal(file);
-}
-
 const File = ({path}) => {
   var name = Path.basename(path);
   var url = `file://${path}`;
@@ -144,14 +137,19 @@ const Chat = React.createClass({
   componentWillMount () {
     var {username, password} = this.props.settings.profile;
 
-    Cryptocat.XMPP.connect(username, password, function () {
-      client.subscribeToNode(
-				`${Cryptocat.Me.username}@${Cryptocat.Hostname}`,
-				'urn:xmpp:omemo:0:devicelist'
-			).then((res) => {
-        Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
-        Cryptocat.XMPP.sendBundle();
-      });
+    Cryptocat.XMPP.connect(username, password, function (s) {
+      if (s) {
+        client.subscribeToNode(
+  				`${Cryptocat.Me.username}@${Cryptocat.Hostname}`,
+  				'urn:xmpp:omemo:0:devicelist'
+  			).then((res) => {
+          Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
+          Cryptocat.XMPP.sendBundle();
+        });
+        console.log("Connected.");
+      } else {
+        console.log("Connection broken.");
+      }
     });
   },
   render() {

@@ -4,8 +4,7 @@ import {
   FormControl, HelpBlock, Button
 } from 'react-bootstrap';
 
-
-const ACCOUNTS_URL = `https://${Cryptocat.Hostname}:5281/accounts`;
+import { ACCOUNTS_URL, lookupHash } from '../utils/utils';
 
 const AddContactForm = React.createClass({
   getInitialState: function() {
@@ -22,7 +21,7 @@ const AddContactForm = React.createClass({
     if (email.length < 8 || this.props.blockList.indexOf(email) >= 0)
       return;
 
-    fetch(`${ACCOUNTS_URL}/lookup/${email}`).then((response) => {
+    fetch(`${ACCOUNTS_URL}/lookup/${lookupHash(email)}`).then((response) => {
       if (response.status == 200) {
         response.json().then((user) => {
           this.setState({id: user.id});

@@ -1,6 +1,7 @@
 'use strict';
 
 window.onbeforeunload = (e) => {
+  Cryptocat.XMPP.disconnect(false);
   Cryptocat.Storage.sync();
 }
 

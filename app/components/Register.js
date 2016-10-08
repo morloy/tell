@@ -4,7 +4,7 @@ import { hashHistory, Link } from 'react-router';
 import basex from 'base-x';
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
 
-const ACCOUNTS_URL = `https://${Cryptocat.Hostname}:5281/accounts`;
+import { ACCOUNTS_URL, lookupHash } from '../utils/utils';
 
 var bs36 = basex('0123456789abcdefghijklmnopqrstuvwxyz');
 
@@ -60,7 +60,7 @@ const RegistrationForm = React.createClass({
     if (this.getValidationState() !== 'success')
       return;
 
-    fetch(`${ACCOUNTS_URL}/lookup/${this.state.email}`).then(function (response) {
+    fetch(`${ACCOUNTS_URL}/lookup/${lookupHash(this.state.email)}`).then(function (response) {
       if (response.status == 204)
         this.props.register(this.state.email);
       else
@@ -120,7 +120,7 @@ export default React.createClass({
   },
 
   checkRegistration () {
-    fetch(`${ACCOUNTS_URL}/lookup/${this.state.email}`).then((response) => {
+    fetch(`${ACCOUNTS_URL}/lookup/${lookupHash(this.state.email)}`).then((response) => {
       if (response.status == 200) {
         console.log('Account created');
 
