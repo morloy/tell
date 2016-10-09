@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { colors } from '../utils/colors';
+
 import { hashHistory, Link } from 'react-router';
 import basex from 'base-x';
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
@@ -71,9 +73,14 @@ const RegistrationForm = React.createClass({
     return (
       <div>
          <Form onSubmit={this.handleSubmit}>
-          <h2>Register</h2>
+          <h1 style={{
+              paddingBottom: '30px'
+            }}>Create Account</h1>
             <FormGroup validationState={this.getValidationState()}>
-              <ControlLabel>Please enter your e-mail address</ControlLabel>
+              <ControlLabel style={{color: colors.blue3
+              }}>
+                Please enter your e-mail address
+              </ControlLabel>
               <FormControl
                 type="text"
                 value={this.state.email}
@@ -138,7 +145,11 @@ export default React.createClass({
 
   render() {
     return (
-      <div>
+      <div style={{
+          width: '500px',
+          marginTop: '100px',
+          margin: 'auto',
+        }}>
       {
         this.state.submitted
         ? <h2>Waiting for verification ...</h2>

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import Contacts from '../containers/Contacts';
-
+import { colors } from '../utils/colors';
 import {
   Form, FormGroup, ControlLabel,
-  FormControl, HelpBlock, Button
+  FormControl, HelpBlock, Button, Glyphicon, Image
 } from 'react-bootstrap';
+
+import { Grid, Row, Col } from 'react-bootstrap';
 
 const File = ({path}) => {
   var name = Path.basename(path);
@@ -20,7 +23,11 @@ const File = ({path}) => {
 const Message = (m) => (
   <div
     style={{
-      textAlign: m.fromMe ? 'left' : 'right'
+      float: m.fromMe ? 'left' : 'right',
+      clear: 'both',
+      width: '500px',
+      whiteSpace: 'pre-wrap',
+      margin: '5px',
     }}
   >
     {m.text}
@@ -28,14 +35,28 @@ const Message = (m) => (
   </div>
 )
 
-const MessageList = ({ messages }) => (
-  <div>
-    {messages.map(message =>
-      <Message key={message.id} {...message} />
-    )}
-  </div>
-)
-
+const MessageList = React.createClass({
+  scrollToBottom() {
+    var node = ReactDOM.findDOMNode(this);
+    node.scrollTop = node.scrollHeight;
+  },
+  componentDidMount()  { this.scrollToBottom() },
+  componentDidUpdate() { this.scrollToBottom() },
+  render() {
+    return (
+      <div style={{
+          position: 'absolute',
+          top: 0, bottom: 0, left: 0, right: 0,
+          overflow: 'auto',
+          padding: '10px'
+        }}>
+        {this.props.messages.map(message =>
+          <Message key={message.id} {...message} />
+        )}
+      </div>
+    )
+  }
+});
 
 const MessageInput = React.createClass({
   getInitialState() {
@@ -43,26 +64,40 @@ const MessageInput = React.createClass({
       text: '',
     };
   },
+
   handleChange(e) {
     this.setState({ text: e.target.value });
   },
+  handleKeyDown(e) {
+    if (e.keyCode == 13 && e.shiftKey) {
+      this.handleSubmit(e);
+    }
+  },
   handleSubmit(e) {
     e.preventDefault();
+    if (this.state.text === '') return;
 
     this.props.onSubmit(this.props.username, this.state.text);
     this.setState({ text: '' });
   },
 
-  sendFile (file) {
+  selectFile() {
+    Remote.dialog.showOpenDialog({
+      properties: ['openFile', 'multiSelections']
+    }).forEach((file) => {
+      this.sendFile(file);
+    });
+  },
+  sendFile(path) {
     var username = this.props.username;
     var stamp = Date.now();
     var id = `${Cryptocat.Me.username}_${stamp}`;
-    var path = file.path;
+    var name = Path.basename(path);
 
     FS.readFile(path, (err, data) => {
 					if (err) { return false; }
 
-          Cryptocat.File.send(file.name, data, function(info) {
+          Cryptocat.File.send(name, data, function(info) {
     				if (!info.valid) {
     					return false;
     				}
@@ -100,22 +135,28 @@ const MessageInput = React.createClass({
 
   render() {
     return (
+      <div style={{backgroundColor: colors.gray, padding: '5px'}}>
       <Form onSubmit={this.handleSubmit} >
-          <FormGroup>
-            <FormControl
-              type="text"
-              value={this.state.text}
-              onChange={this.handleChange}
-              placeholder="Type your message here ..."
-            />
-            <Button type="submit">Submit</Button>
+          <FormGroup style={{display: 'table', width: '100%', margin: 0}}>
+              <div style={{display: 'table-cell'}}>
+                <FormControl
+                  componentClass="textarea"
+                  rows="7"
+                  value={this.state.text}
+                  onChange={this.handleChange}
+                  onKeyDown={this.handleKeyDown}
+                  placeholder="Type your message here. Press Shift+Enter to send."
+                  style={{width: '100%'}}
+                />
+              </div>
+              <div style={{display: 'table-cell', width: '40px'}}>
+                <Button onClick={this.selectFile}><Glyphicon glyph="paperclip" /></Button>
+                <Button type="submit"><Glyphicon glyph="chevron-right" /></Button>
+              </div>
         </FormGroup>
-        <FormControl
-          type="file"
-          label="Send File ..."
-          onChange={(e) => this.sendFile(e.target.files[0])}
-        />
+
       </Form>
+    </div>
     );
   }
 })
@@ -126,9 +167,15 @@ const ChatBox = ({ chat, sendMessage }) => {
                         ? <MessageList messages={messages[activeChat]} />
                         : '';
   return (
-    <div>
-      {renderMessages}
-      <MessageInput username={activeChat} onSubmit={sendMessage} />
+    <div style={{ display: 'table', height: '100%', width: '100%' }}>
+      <div style={{ display: 'table-row', height: '100%' }}>
+        <div style={{ position: 'relative', height: '100%' }}>
+          {renderMessages}
+        </div>
+      </div>
+      <div style={{ display: 'table-row' }}>
+        <MessageInput username={activeChat} onSubmit={sendMessage} />
+      </div>
     </div>
   )
 }
@@ -154,16 +201,36 @@ const Chat = React.createClass({
   },
   render() {
     var {username, email} = this.props.settings.profile;
+    var {activeChat} = this.props.chat;
     return (
-      <div>
-        <div>
-          <p>{email} ({username})</p>
-          <h2>Chat</h2>
-          <Contacts />
-          { this.props.chat.activeChat === ''
-              ? '' : <ChatBox {...this.props} /> }
-        </div>
-      </div>
+      <Grid style={{
+          display: 'table',
+          height: '100vh', width: '100vw',
+          padding: 0
+      }}>
+        <Row style={{display: 'table-row'}}>
+          <Col md={3} style={{backgroundColor: colors.blue1, padding: '10px'}}>
+            <Image style={{width: '130px'}} src="img/logo/logo.svg" responsive />
+          </Col>
+          <Col md={9}>
+            <h3>{ activeChat ? this.props.contacts[activeChat].email : ''}</h3>
+          </Col>
+        </Row>
+        <Row style={{display: 'table-row', height: '100%'}}>
+          <Col md={3} style={{height: '100%', padding: 0}}>
+            <Contacts />
+          </Col>
+          <Col md={9} style={{
+              backgroundColor: 'white',
+              color: 'black',
+              height: '100%',
+              padding: 0
+            }}>
+            { activeChat === ''
+                ? '' : <ChatBox {...this.props} /> }
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 });

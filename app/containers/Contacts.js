@@ -23,6 +23,7 @@ function mapStateToProps(state) {
   return {
     contacts,
     activeChat: state.chat.activeChat,
+    profile: state.settings.profile,
     blockList,
   }
 }
