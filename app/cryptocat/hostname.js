@@ -1,3 +1,3 @@
 'use strict';
-Cryptocat.Hostname = 'crypto.cat';
+Cryptocat.Hostname = 'tell-now.com';
 Cryptocat.Port = '62938';

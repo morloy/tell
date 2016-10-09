@@ -3,6 +3,7 @@ import {
   Form, FormGroup, ControlLabel,
   FormControl, HelpBlock, Button
 } from 'react-bootstrap';
+import { Feedback } from 'react-bootstrap/lib/FormControl';
 
 import { ACCOUNTS_URL, lookupHash } from '../utils/utils';
 
@@ -56,7 +57,7 @@ const AddContactForm = React.createClass({
                 onChange={this.handleChange}
                 placeholder="mail@example.org"
               />
-            <FormControl.Feedback />
+            <Feedback />
           </FormGroup>
         </Form>
       </div>

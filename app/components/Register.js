@@ -5,6 +5,7 @@ import { colors } from '../utils/colors';
 import { hashHistory, Link } from 'react-router';
 import basex from 'base-x';
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
+import { Feedback } from 'react-bootstrap/lib/FormControl';
 
 import { ACCOUNTS_URL, lookupHash } from '../utils/utils';
 
@@ -87,7 +88,7 @@ const RegistrationForm = React.createClass({
                 onChange={this.handleChange}
                 placeholder="mail@example.org"
               />
-            <FormControl.Feedback />
+            <Feedback />
           </FormGroup>
         </Form>
       </div>
@@ -147,12 +148,16 @@ export default React.createClass({
     return (
       <div style={{
           width: '500px',
-          marginTop: '100px',
+          paddingTop: '100px',
           margin: 'auto',
         }}>
       {
         this.state.submitted
-        ? <h2>Waiting for verification ...</h2>
+        ? <div>
+            <p>We have sent you an e-mail.<br />
+            Please click on the included link to finish your registration.</p>
+            <h2>Waiting for verification ...</h2>
+          </div>
         : <RegistrationForm register={this.register} />
       }
       </div>
