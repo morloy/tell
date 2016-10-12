@@ -15,9 +15,11 @@ const File = ({file}) => {
   var name = Path.basename(file);
   var url = `file://${file}`;
   return (
-    <a href='javascript:void(0)' onClick={(e) => Remote.shell.openExternal(url)}>
-      {name}
-    </a>
+    <div>
+      <a href='javascript:void(0)' onClick={(e) => Remote.shell.openExternal(url)}>
+        {name}
+      </a>
+    </div>
   )
 }
 
@@ -97,7 +99,7 @@ const MessageInput = React.createClass({
 
   selectFile() {
     Remote.dialog.showOpenDialog({
-      properties: ['openFile', 'multiSelections']
+      properties: ['openFile']
     }).forEach((file) => {
       this.sendFile(file);
     });
