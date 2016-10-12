@@ -15,7 +15,7 @@ if (process.env.NODE_ENV === 'development') {
 
 if (process.env.PROFILE) {
   var appData = app.getPath('appData');
-  var userData = `${appData}/Tell/${process.env.PROFILE}`;
+  var userData = `${appData}/TellDev/${process.env.PROFILE}`;
   console.log(userData);
   app.setPath('userData', userData);
 }
