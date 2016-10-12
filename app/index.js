@@ -14,6 +14,10 @@ const history = syncHistoryWithStore(hashHistory, store);
 Cryptocat.Storage.store = store;
 
 function setup() {
+  if (Object.keys(store.getState().cryptocat).length === 0) {
+    Cryptocat.OMEMO.onAddDevice('master', 0);
+  }
+  
   render(
     <Provider store={store}>
       <Router history={history} routes={routes} />

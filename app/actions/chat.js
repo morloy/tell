@@ -9,20 +9,6 @@ export const selectChat = (username) => {
 
 export const sendMessage = (username, message) => {
   return (dispatch, getState) => {
-    const { messages } = getState().chat;
-
-    if (!messages.hasOwnProperty(username)) {
-      const email = getState().settings.profile.email;
-      var sendInfo = 'UserProfile:' + JSON.stringify({
-        email
-      });
-
-      Cryptocat.OMEMO.sendMessage(username, {
-        message: sendInfo,
-        internalId: 'profile'
-      });
-    }
-
     var stamp = Date.now();
     var internalId = `${Cryptocat.Me.username}_${stamp}`;
     console.log({username, message, internalId});

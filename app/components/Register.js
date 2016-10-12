@@ -106,9 +106,6 @@ export default React.createClass({
       submitted: false,
     };
   },
-  componentWillMount () {
-    Cryptocat.OMEMO.onAddDevice('master', 0);
-  },
   register(email) {
     var fingerprint = getFingerprint(Cryptocat.Me.settings.identityKey.pub);
     var data = {

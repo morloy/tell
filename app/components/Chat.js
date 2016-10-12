@@ -192,6 +192,11 @@ const Chat = React.createClass({
   			).then((res) => {
           Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
           Cryptocat.XMPP.sendBundle();
+          
+          window.onbeforeunload = (e) => {
+            Cryptocat.XMPP.disconnect(false);
+            Cryptocat.Storage.sync();
+          }
         });
         console.log("Connected.");
       } else {
