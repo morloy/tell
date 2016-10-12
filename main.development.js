@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, shell } from 'electron';
+import { app, BrowserWindow, Menu, shell, dialog } from 'electron';
 
 const Path = require('path');
 
@@ -7,6 +7,35 @@ app.commandLine.appendSwitch('ignore-certificate-errors');
 let menu;
 let template;
 let mainWindow = null;
+
+
+if (process.env.NODE_ENV === 'production') {
+  var host = 'tell-now.com';
+  var https = require('https');
+
+  https.get({
+      host,
+      path: '/beta/version.txt'
+  }, function(response) {
+      var body = '';
+      response.on('data', function(d) {
+          body += d;
+      });
+      response.on('end', function() {
+        if (app.getVersion() !== body.trim()) {
+          app.focus();
+          dialog.showMessageBox({
+            type: 'warning',
+            buttons: ['Download & Quit'],
+            message: 'New version available',
+            detail: `Please download the current version to continue using this application.`
+          });
+          shell.openExternal(`https://${host}/beta/Tell-${process.platform}.zip`);
+          app.quit();
+        };
+      });
+  });
+}
 
 
 if (process.env.NODE_ENV === 'development') {
@@ -44,6 +73,7 @@ const installExtensions = async () => {
 };
 
 app.on('ready', async () => {
+
   await installExtensions();
 
   mainWindow = new BrowserWindow({
