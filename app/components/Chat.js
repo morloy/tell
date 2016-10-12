@@ -5,14 +5,15 @@ import Contacts from '../containers/Contacts';
 import { colors } from '../utils/colors';
 import {
   Form, FormGroup, ControlLabel,
-  FormControl, HelpBlock, Button, Glyphicon, Image
+  FormControl, HelpBlock, Button, Glyphicon, Image,
+  Panel
 } from 'react-bootstrap';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
-const File = ({path}) => {
-  var name = Path.basename(path);
-  var url = `file://${path}`;
+const File = ({file}) => {
+  var name = Path.basename(file);
+  var url = `file://${file}`;
   return (
     <a href='javascript:void(0)' onClick={(e) => Remote.shell.openExternal(url)}>
       {name}
@@ -20,20 +21,32 @@ const File = ({path}) => {
   )
 }
 
-const Message = (m) => (
-  <div
-    style={{
-      float: m.fromMe ? 'left' : 'right',
-      clear: 'both',
-      width: '500px',
-      whiteSpace: 'pre-wrap',
-      margin: '5px',
-    }}
-  >
-    {m.text}
-    {m.file ? <File path={m.file} /> : ''}
-  </div>
+const Text = ({text}) => (
+  <p style={{whiteSpace: 'pre-wrap', margin: '.1em'}}>
+    {text}
+  </p>
 )
+
+const Message = (m) => {
+  var stamp = new Date(m.stamp);
+  var title = (
+    <div style={{fontSize: '1em'}}>
+      <strong>{m.username}</strong>
+      <p style={{float: 'right', color: '#777'}}>{stamp.toString()}</p>
+    </div>
+  )
+  return (
+    <Panel
+      header={title}
+      bsStyle={m.fromMe ? 'success' : 'info'}
+    >
+      {m.contents.map((c) => {
+        if (c.file) return (<File key={c.id} {...c} />);
+        if (c.text) return (<Text key={c.id} {...c} />);
+      })}
+    </Panel>
+  )
+}
 
 const MessageList = React.createClass({
   scrollToBottom() {
@@ -48,7 +61,8 @@ const MessageList = React.createClass({
           position: 'absolute',
           top: 0, bottom: 0, left: 0, right: 0,
           overflow: 'auto',
-          padding: '10px'
+          padding: '10px',
+          paddingRight: '15px'
         }}>
         {this.props.messages.map(message =>
           <Message key={message.id} {...message} />
@@ -161,11 +175,9 @@ const MessageInput = React.createClass({
   }
 })
 
-const ChatBox = ({ chat, sendMessage }) => {
-  const { activeChat, messages } = chat;
-  var renderMessages = messages.hasOwnProperty(activeChat)
-                        ? <MessageList messages={messages[activeChat]} />
-                        : '';
+const ChatBox = ({ chat, sendMessage, messages }) => {
+  const { activeChat } = chat;
+  var renderMessages = messages.length ? <MessageList messages={messages} /> : '';
   return (
     <div style={{ display: 'table', height: '100%', width: '100%' }}>
       <div style={{ display: 'table-row', height: '100%' }}>
@@ -192,7 +204,7 @@ const Chat = React.createClass({
   			).then((res) => {
           Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
           Cryptocat.XMPP.sendBundle();
-          
+
           window.onbeforeunload = (e) => {
             Cryptocat.XMPP.disconnect(false);
             Cryptocat.Storage.sync();
