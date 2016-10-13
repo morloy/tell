@@ -168,6 +168,7 @@ Cryptocat.Win.updateDeviceManager = function(username) {
   };
 
 
+
   Cryptocat.XMPP.deliverMessage = function(username, info) {
     var stamp = new Date(info.stamp).getTime();
     var id = `${username}_${stamp}`;
@@ -188,6 +189,13 @@ Cryptocat.Win.updateDeviceManager = function(username) {
         });
       });
     } else {
+      var {contacts} = Cryptocat.Storage.store.getState();
+      if (contacts.hasOwnProperty(username)) {
+        var notif = new Notification(contacts[username].email, {
+          body: info.plaintext
+        });
+      }
+
       Cryptocat.Storage.addMessage({
         username,
         id,
