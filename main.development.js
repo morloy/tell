@@ -98,6 +98,25 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
+  if (process.platform === 'darwin') {
+    app.on('activate', () => {
+      mainWindow.show();
+    });
+
+    var forceQuit = false;
+    app.on('before-quit', function() {
+      forceQuit = true;
+    });
+    
+    mainWindow.on('close', function(event) {
+      if (!forceQuit) {
+        event.preventDefault();
+        mainWindow.hide();
+        }
+    });
+  }
+
+
   if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
     mainWindow.webContents.on('context-menu', (e, props) => {
