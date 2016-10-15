@@ -44,7 +44,9 @@ if (process.env.NODE_ENV === 'development') {
 
 if (process.env.PROFILE) {
   var appData = app.getPath('appData');
-  var userData = `${appData}/TellDev/${process.env.PROFILE}`;
+  var userData = (process.env.PROFILE === 'production') ?
+                  `${appData}/Tell` :
+                  `${appData}/TellDev/${process.env.PROFILE}`;
   console.log(userData);
   app.setPath('userData', userData);
 }
@@ -107,7 +109,7 @@ app.on('ready', async () => {
     app.on('before-quit', function() {
       forceQuit = true;
     });
-    
+
     mainWindow.on('close', function(event) {
       if (!forceQuit) {
         event.preventDefault();
