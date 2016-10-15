@@ -207,12 +207,6 @@ app.on('ready', async () => {
         click() {
           mainWindow.setFullScreen(!mainWindow.isFullScreen());
         }
-      }, {
-        label: 'Toggle Developer Tools',
-        accelerator: 'Alt+Command+I',
-        click() {
-          mainWindow.toggleDevTools();
-        }
       }] : [{
         label: 'Toggle Full Screen',
         accelerator: 'Ctrl+Command+F',
@@ -257,6 +251,12 @@ app.on('ready', async () => {
         label: 'Search Issues',
         click() {
           shell.openExternal('https://github.com/atom/electron/issues');
+        }
+      }, {
+        label: 'Toggle Developer Tools',
+        accelerator: 'Alt+Command+I',
+        click() {
+          mainWindow.toggleDevTools();
         }
       }]
     }];
