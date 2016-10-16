@@ -22,6 +22,7 @@ export const addContact = (id, profile) => {
 }
 
 export const removeContact = (id) => {
+  Cryptocat.XMPP.removeBuddy(id);
   return {
     type: REMOVE_CONTACT,
     id
