@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { selectChat } from '../actions/chat';
-import { addContact } from '../actions/contacts';
+import { addContact, removeContact } from '../actions/contacts';
 import ContactList from '../components/ContactList';
 
 
@@ -33,6 +33,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addContact: (id, profile) => {
       dispatch(addContact(id, profile));
+    },
+    removeContact: (id) => {
+      dispatch(removeContact(id));
     },
     onSelectContact: (id) => {
       dispatch(selectChat(id));

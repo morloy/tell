@@ -1,3 +1,5 @@
+export const REMOVE_CONTACT = 'REMOVE_CONTACT';
+
 export const addContact = (id, profile) => {
   return (dispatch, getState) => {
     Cryptocat.Storage.updateContact(id, profile);
@@ -17,4 +19,11 @@ export const addContact = (id, profile) => {
       });
     }, 1000);
   };
+}
+
+export const removeContact = (id) => {
+  return {
+    type: REMOVE_CONTACT,
+    id
+  }
 }

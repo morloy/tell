@@ -231,6 +231,8 @@ const Chat = React.createClass({
   render() {
     var {username, email} = this.props.settings.profile;
     var {activeChat} = this.props.chat;
+    if (!this.props.contacts.hasOwnProperty(activeChat)) { activeChat = '' };
+    
     if (this.state.online === 'connected') {
       return (
         <Grid style={{

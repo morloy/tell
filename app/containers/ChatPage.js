@@ -9,7 +9,9 @@ function mapStateToProps(state) {
   var messages = [];
   var otherId = state.chat.activeChat;
 
-  if (otherId !== '' && state.chat.messages.hasOwnProperty(otherId)) {
+  if (otherId !== '' &&
+      state.chat.messages.hasOwnProperty(otherId) &&
+      state.contacts.hasOwnProperty(otherId)) {
     var otherEmail = state.contacts[otherId].email;
     var myEmail = state.settings.profile.email;
 
