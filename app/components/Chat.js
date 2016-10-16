@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap';
 
 import { Grid, Row, Col } from 'react-bootstrap';
+import Connecting from './Connecting';
 
 const File = ({file}) => {
   var name = Path.basename(file);
@@ -195,10 +196,18 @@ const ChatBox = ({ chat, sendMessage, messages }) => {
 }
 
 const Chat = React.createClass({
+  getInitialState() {
+    return {
+      online: 'not-connected'
+    };
+  },
   componentWillMount () {
+    this.connect();
+  },
+  connect(){
     var {username, password} = this.props.settings.profile;
 
-    Cryptocat.XMPP.connect(username, password, function (s) {
+    Cryptocat.XMPP.connect(username, password, (s) => {
       if (s) {
         client.subscribeToNode(
   				`${Cryptocat.Me.username}@${Cryptocat.Hostname}`,
@@ -212,45 +221,52 @@ const Chat = React.createClass({
             Cryptocat.Storage.sync();
           }
         });
-        console.log("Connected.");
+        this.setState({ online: 'connected' });
       } else {
-        console.log("Connection broken.");
+        this.setState({ online: 'not-connected' });
+        setTimeout(this.connect, 10000);
       }
     });
   },
   render() {
     var {username, email} = this.props.settings.profile;
     var {activeChat} = this.props.chat;
-    return (
-      <Grid style={{
-          display: 'table',
-          height: '100vh', width: '100vw',
-          padding: 0
-      }}>
-        <Row style={{display: 'table-row'}}>
-          <Col md={3} style={{backgroundColor: colors.blue1, padding: '10px'}}>
-            <Image style={{width: '130px'}} src="img/logo/logo.svg" responsive />
-          </Col>
-          <Col md={9}>
-            <h3>{ activeChat ? this.props.contacts[activeChat].email : ''}</h3>
-          </Col>
-        </Row>
-        <Row style={{display: 'table-row', height: '100%'}}>
-          <Col md={3} style={{height: '100%', padding: 0}}>
-            <Contacts />
-          </Col>
-          <Col md={9} style={{
-              backgroundColor: 'white',
-              color: 'black',
-              height: '100%',
-              padding: 0
-            }}>
-            { activeChat === ''
-                ? '' : <ChatBox {...this.props} /> }
-          </Col>
-        </Row>
-      </Grid>
-    );
+    if (this.state.online === 'connected') {
+      return (
+        <Grid style={{
+            display: 'table',
+            height: '100vh', width: '100vw',
+            padding: 0
+        }}>
+          <Row style={{display: 'table-row'}}>
+            <Col md={3} style={{backgroundColor: colors.blue1, padding: '10px'}}>
+              <Image style={{width: '130px'}} src="img/logo/logo.svg" responsive />
+            </Col>
+            <Col md={9}>
+              <h3>{ activeChat ? this.props.contacts[activeChat].email : ''}</h3>
+            </Col>
+          </Row>
+          <Row style={{display: 'table-row', height: '100%'}}>
+            <Col md={3} style={{height: '100%', padding: 0}}>
+              <Contacts />
+            </Col>
+            <Col md={9} style={{
+                backgroundColor: 'white',
+                color: 'black',
+                height: '100%',
+                padding: 0
+              }}>
+              { activeChat === ''
+                  ? '' : <ChatBox {...this.props} /> }
+            </Col>
+          </Row>
+        </Grid>
+      );
+    } else {
+      return (
+        <Connecting status={this.state.online} />
+      )
+    }
   }
 });
 
