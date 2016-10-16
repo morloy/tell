@@ -24,15 +24,18 @@ if (process.env.NODE_ENV === 'production') {
       response.on('end', function() {
         if (app.getVersion() !== body.trim()) {
           app.focus();
-          dialog.showMessageBox({
+          var res = dialog.showMessageBox({
             type: 'warning',
-            buttons: ['Download & Quit'],
+            buttons: ['Quit', 'Download'],
             message: 'New version available',
             detail: `Please download the current version to continue using this application.`
           });
-          shell.openExternal(`https://${host}/beta/Tell-${process.platform}.zip`);
+          if (res === 1) {
+            var url = `https://${host}/beta/Tell-${process.platform}.zip`;
+            shell.openExternal(url);
+          }
           app.quit();
-        };
+        }
       });
   });
 }
