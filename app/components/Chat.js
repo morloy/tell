@@ -209,6 +209,8 @@ const Chat = React.createClass({
 
     Cryptocat.XMPP.connect(username, password, (s) => {
       if (s) {
+        this.setState({ online: 'connected' });
+        
         client.subscribeToNode(
   				`${Cryptocat.Me.username}@${Cryptocat.Hostname}`,
   				'urn:xmpp:omemo:0:devicelist'
@@ -220,8 +222,13 @@ const Chat = React.createClass({
             Cryptocat.XMPP.disconnect(false);
             Cryptocat.Storage.sync();
           }
+
+          window.onoffline = (e) => {
+            Cryptocat.XMPP.disconnect(false);
+            this.setState({ online: 'not-connected' });
+           };
+          window.ononline  = (e) => { this.connect(); };
         });
-        this.setState({ online: 'connected' });
       } else {
         this.setState({ online: 'not-connected' });
         setTimeout(this.connect, 10000);
