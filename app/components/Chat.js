@@ -12,6 +12,7 @@ import {
 import { Grid, Row, Col } from 'react-bootstrap';
 import Connecting from './Connecting';
 
+
 const File = ({file}) => {
   var name = Path.basename(file);
   var url = `file://${file}`;
@@ -205,12 +206,12 @@ const Chat = React.createClass({
     this.connect();
   },
   connect(){
-    var {username, password} = this.props.settings.profile;
+    var {username, password} = this.props.profile;
 
     Cryptocat.XMPP.connect(username, password, (s) => {
       if (s) {
         this.setState({ online: 'connected' });
-        
+
         client.subscribeToNode(
   				`${Cryptocat.Me.username}@${Cryptocat.Hostname}`,
   				'urn:xmpp:omemo:0:devicelist'
@@ -236,10 +237,10 @@ const Chat = React.createClass({
     });
   },
   render() {
-    var {username, email} = this.props.settings.profile;
+    var {username, email} = this.props.profile;
     var {activeChat} = this.props.chat;
     if (!this.props.contacts.hasOwnProperty(activeChat)) { activeChat = '' };
-    
+
     if (this.state.online === 'connected') {
       return (
         <Grid style={{

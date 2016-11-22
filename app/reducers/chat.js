@@ -1,4 +1,4 @@
-import { SELECT_CHAT } from '../actions/chat'
+import { SELECT_CHAT, ADD_MESSAGE } from '../actions/chat'
 
 const initialState = {
   activeChat: '',

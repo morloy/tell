@@ -13,8 +13,8 @@ function mapStateToProps(state) {
   }));
 
   var blockList = [];
-  blockList.push(state.settings.profile.email);
-  blockList.push(state.settings.profile.username);
+  blockList.push(state.profile.email);
+  blockList.push(state.profile.username);
   contacts.forEach((c) => {
     blockList.push(c.email);
     blockList.push(c.id);
@@ -23,7 +23,7 @@ function mapStateToProps(state) {
   return {
     contacts,
     activeChat: state.chat.activeChat,
-    profile: state.settings.profile,
+    profile: state.profile,
     blockList,
   }
 }

@@ -3,11 +3,11 @@ import Register from '../components/Register';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as actions from '../actions/settings';
+import * as actions from '../actions/profile';
 
 function mapStateToProps(state) {
   return {
-    settings: state.settings
+    profile: state.profile
   }
 }
 

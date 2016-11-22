@@ -6,18 +6,17 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
 import { persistStore } from 'redux-persist';
+
+import { setupCryptocat } from './utils/cryptocat';
 import './app.global.css';
 
 
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
-Cryptocat.Storage.store = store;
 
 function setup() {
-  if (Object.keys(store.getState().cryptocat).length === 0) {
-    Cryptocat.OMEMO.onAddDevice('master', 0);
-  }
-  
+  setupCryptocat(store);
+
   render(
     <Provider store={store}>
       <Router history={history} routes={routes} />

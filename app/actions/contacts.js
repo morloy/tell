@@ -1,10 +1,11 @@
+export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const REMOVE_CONTACT = 'REMOVE_CONTACT';
 
 export const addContact = (id, profile) => {
   return (dispatch, getState) => {
     Cryptocat.Storage.updateContact(id, profile);
 
-    const email = getState().settings.profile.email;
+    const email = getState().profile.email;
     var sendInfo = 'UserProfile:' + JSON.stringify({
       email
     });
@@ -18,6 +19,14 @@ export const addContact = (id, profile) => {
         internalId: 'profile'
       });
     }, 1000);
+  };
+}
+
+export const updateContact = (id, profile) => {
+  return {
+    type: UPDATE_CONTACT,
+    id,
+    profile
   };
 }
 

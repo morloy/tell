@@ -13,7 +13,7 @@ function mapStateToProps(state) {
       state.chat.messages.hasOwnProperty(otherId) &&
       state.contacts.hasOwnProperty(otherId)) {
     var otherEmail = state.contacts[otherId].email;
-    var myEmail = state.settings.profile.email;
+    var myEmail = state.profile.email;
 
     var mergeTime = 5 * 60 * 1000;
 
@@ -43,7 +43,7 @@ function mapStateToProps(state) {
     messages,
     chat: state.chat,
     contacts: state.contacts,
-    settings: state.settings
+    profile: state.profile
   };
 }
 

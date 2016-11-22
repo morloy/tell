@@ -1,4 +1,4 @@
-import { REMOVE_CONTACT } from '../actions/contacts';
+import { REMOVE_CONTACT, UPDATE_CONTACT } from '../actions/contacts';
 
 import { omit } from 'lodash';
 

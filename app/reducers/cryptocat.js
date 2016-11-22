@@ -1,3 +1,6 @@
+import { UPDATE_CRYPTOCAT } from '../actions/cryptocat'
+
+
 const settingUpdateDisallowed = [
   'identityKey',
   'identityDHKey',
@@ -10,7 +13,7 @@ const validSettings = Cryptocat.EmptyMe.settings;
 
 export default function cryptocat(state = {}, action) {
   switch (action.type) {
-    case UPDATE_SETTINGS:
+    case UPDATE_CRYPTOCAT:
       var settings = Object.assign({}, action.loadedSettings);
       var newObj = {};
       const firstRun = Object.keys(state).length === 0;

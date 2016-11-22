@@ -10,7 +10,7 @@ export default class Home extends Component {
     return (
       <div>
         <div>
-          { this.props.settings.profile ? <ChatPage /> : <RegisterPage /> }
+          { this.props.profile.username ? <ChatPage /> : <RegisterPage /> }
         </div>
       </div>
     );
