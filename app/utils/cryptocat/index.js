@@ -3,7 +3,12 @@ import { setupWin } from './win';
 import { setupDiag } from './diag';
 import { setupChat } from './chat';
 
+import { HOSTNAME, PORT } from '../hostname';
+
 export const setupCryptocat = (store) => {
+  Cryptocat.Hostname = HOSTNAME;
+  Cryptocat.Port = PORT;
+
   setupStorage(store);
   setupWin();
   setupDiag();
