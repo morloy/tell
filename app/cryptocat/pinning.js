@@ -95,7 +95,7 @@ Cryptocat.Pinning = {};
 			if (
 				(checkCert(candidate, domain[0])) ||
 				(checkCert(candidate, domain[1]))
-			) {
+				) {
 				callback(res, true);
 			} else {
 				callback({}, false);
@@ -107,7 +107,7 @@ Cryptocat.Pinning = {};
 			});
 		});
 		get.on('error', (e) => {
-			callback({}, false);
+			callback({}, true);
 		});
 		get.end();
 		return false;
