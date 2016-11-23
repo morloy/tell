@@ -4,14 +4,14 @@ import App from './containers/App';
 import RegisterPage from './containers/RegisterPage';
 import ChatPage from './containers/ChatPage';
 import HomePage from './containers/HomePage';
-import CreateTopic from './components/CreateTopic';
+import NewTopicPage from './containers/NewTopicPage';
 
 
 export default (
   <Route path="/" component={App}>
-    <IndexRoute component={CreateTopic} />
+    <IndexRoute component={NewTopicPage} />
     <Route path="/register" component={RegisterPage} />
     <Route path="/chat" component={ChatPage} />
-    <Route path="/create" component={CreateTopic} />
+    <Route path="/create" component={NewTopicPage} />
   </Route>
 );

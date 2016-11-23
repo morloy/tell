@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-import Contacts from '../containers/Contacts';
+import ContactList from '../containers/ContactList';
 import { colors } from '../utils/colors';
 import {
   Form, FormGroup, ControlLabel,

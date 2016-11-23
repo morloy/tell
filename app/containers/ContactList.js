@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { selectChat } from '../actions/chat';
 import { addContact, removeContact } from '../actions/contacts';
-import ContactList from '../components/ContactList';
+import Contacts from '../components/Contacts';
 
 
 function mapStateToProps(state) {
@@ -43,4 +43,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactList);
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts);

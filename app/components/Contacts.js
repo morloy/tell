@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import AddContactForm from './AddContactForm';
-import {colors} from '../utils/colors';
+import AccountInfo from './AccountInfo';
+import colors from '../utils/colors';
 
 const {Menu, MenuItem} = Remote
 
@@ -29,15 +30,7 @@ const Contact = ({contact, active, onClick, removeContact}) => {
   )
 };
 
-const AccountInfo = ({id, email}) => (
-  <div style={{padding: '10px'}}>
-    <strong>{email}</strong><br />
-    <span style={{color: colors.gray }}>{id}</span>
-  </div>
-)
-
-
-const ContactList = (props) => (
+const Contacts = (props) => (
   <div style={{display: 'table', height: '100%', width: '100%'}}>
     <div style={{display: 'table-row', height: '100%'}}>
       <div style={{ position: 'relative', height: '100%' }}>
@@ -59,14 +52,9 @@ const ContactList = (props) => (
           blockList={props.blockList}
           onSubmit={props.addContact}
         />
-        Your Account:<br />
-        <AccountInfo
-          id={props.profile.username}
-          email={props.profile.email}
-        />
       </div>
     </div>
   </div>
 )
 
-export default ContactList;
+export default Contacts;
