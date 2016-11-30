@@ -7,7 +7,7 @@ import basex from 'base-x';
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
 import { Feedback } from 'react-bootstrap/lib/FormControl';
 
-import { ACCOUNTS_URL, lookupHash } from '../utils/utils';
+import { ACCOUNTS_URL, lookupHash } from '../utils';
 
 var bs36 = basex('0123456789abcdefghijklmnopqrstuvwxyz');
 

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as ChatActions from '../actions/chat';
 
 
-function mapStateToProps(state) {
+function mapStateToProps({topic}) {
   var messages = [];
   var otherId = state.chat.activeChat;
 

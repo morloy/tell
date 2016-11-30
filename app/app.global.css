@@ -3,5 +3,13 @@ html, body, #root {
   margin: 0px;
   padding: 0px;
   background-color: #168ccc;
-  color: #ffffff;
+  color: #fff;
+}
+
+a {
+  color: inherit;
+}
+a:hover, a:focus {
+  text-decoration: none;
+  color: inherit;
 }

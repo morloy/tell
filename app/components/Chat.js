@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-import ContactList from '../containers/ContactList';
-import { colors } from '../utils/colors';
+import MessageList from '../containers/MessageList';
+import colors from '../utils/colors';
 import {
   Form, FormGroup, ControlLabel,
   FormControl, HelpBlock, Button, Glyphicon, Image,
@@ -11,70 +11,6 @@ import {
 
 import { Grid, Row, Col } from 'react-bootstrap';
 import Connecting from './Connecting';
-
-
-const File = ({file}) => {
-  var name = Path.basename(file);
-  var url = `file://${file}`;
-  return (
-    <div>
-      <a href='javascript:void(0)' onClick={(e) => Remote.shell.openExternal(url)}>
-        {name}
-      </a>
-    </div>
-  )
-}
-
-const Text = ({text}) => (
-  <p style={{whiteSpace: 'pre-wrap', margin: '.1em'}}>
-    {text}
-  </p>
-)
-
-const Message = (m) => {
-  var stamp = new Date(m.stamp);
-  var title = (
-    <div style={{fontSize: '1em'}}>
-      <strong>{m.username}</strong>
-      <p style={{float: 'right', color: '#777'}}>{stamp.toString()}</p>
-    </div>
-  )
-  return (
-    <Panel
-      header={title}
-      bsStyle={m.fromMe ? 'success' : 'info'}
-    >
-      {m.contents.map((c) => {
-        if (c.file) return (<File key={c.id} {...c} />);
-        if (c.text) return (<Text key={c.id} {...c} />);
-      })}
-    </Panel>
-  )
-}
-
-const MessageList = React.createClass({
-  scrollToBottom() {
-    var node = ReactDOM.findDOMNode(this);
-    node.scrollTop = node.scrollHeight;
-  },
-  componentDidMount()  { this.scrollToBottom() },
-  componentDidUpdate() { this.scrollToBottom() },
-  render() {
-    return (
-      <div style={{
-          position: 'absolute',
-          top: 0, bottom: 0, left: 0, right: 0,
-          overflow: 'auto',
-          padding: '10px',
-          paddingRight: '15px'
-        }}>
-        {this.props.messages.map(message =>
-          <Message key={message.id} {...message} />
-        )}
-      </div>
-    )
-  }
-});
 
 const MessageInput = React.createClass({
   getInitialState() {
@@ -95,7 +31,7 @@ const MessageInput = React.createClass({
     e.preventDefault();
     if (this.state.text === '') return;
 
-    this.props.onSubmit(this.props.username, this.state.text);
+    this.props.onSubmit(this.state.text);
     this.setState({ text: '' });
   },
 
@@ -179,105 +115,17 @@ const MessageInput = React.createClass({
   }
 })
 
-const ChatBox = ({ chat, sendMessage, messages }) => {
-  const { activeChat } = chat;
-  var renderMessages = messages.length ? <MessageList messages={messages} /> : '';
-  return (
-    <div style={{ display: 'table', height: '100%', width: '100%' }}>
-      <div style={{ display: 'table-row', height: '100%' }}>
-        <div style={{ position: 'relative', height: '100%' }}>
-          {renderMessages}
-        </div>
-      </div>
-      <div style={{ display: 'table-row' }}>
-        <MessageInput username={activeChat} onSubmit={sendMessage} />
+const Chat = (props) => (
+  <div style={{ display: 'table', height: '100%', width: '100%' }}>
+    <div style={{ display: 'table-row', height: '100%' }}>
+      <div style={{ position: 'relative', height: '100%' }}>
+        <MessageList {...props} />
       </div>
     </div>
-  )
-}
-
-const Chat = React.createClass({
-  getInitialState() {
-    return {
-      online: 'not-connected'
-    };
-  },
-  componentWillMount () {
-    this.connect();
-  },
-  connect(){
-    var {username, password} = this.props.profile;
-
-    Cryptocat.XMPP.connect(username, password, (s) => {
-      if (s) {
-        this.setState({ online: 'connected' });
-
-        client.subscribeToNode(
-  				`${Cryptocat.Me.username}@${Cryptocat.Hostname}`,
-  				'urn:xmpp:omemo:0:devicelist'
-  			).then((res) => {
-          Cryptocat.XMPP.sendDeviceList(Cryptocat.Me.settings.deviceIds);
-          Cryptocat.XMPP.sendBundle();
-
-          window.onbeforeunload = (e) => {
-            Cryptocat.XMPP.disconnect(false);
-            Cryptocat.Storage.sync();
-          }
-
-          window.onoffline = (e) => {
-            Cryptocat.XMPP.disconnect(false);
-            this.setState({ online: 'not-connected' });
-           };
-          window.ononline  = (e) => { this.connect(); };
-        });
-      } else {
-        this.setState({ online: 'not-connected' });
-        setTimeout(this.connect, 10000);
-      }
-    });
-  },
-  render() {
-    var {username, email} = this.props.profile;
-    var {activeChat} = this.props.chat;
-    if (!this.props.contacts.hasOwnProperty(activeChat)) { activeChat = '' };
-
-    if (this.state.online === 'connected') {
-      return (
-        <Grid style={{
-            display: 'table',
-            height: '100vh', width: '100vw',
-            padding: 0
-        }}>
-          <Row style={{display: 'table-row'}}>
-            <Col md={3} style={{backgroundColor: colors.blue1, padding: '10px'}}>
-              <Image style={{width: '130px'}} src="img/logo/logo.svg" responsive />
-            </Col>
-            <Col md={9}>
-              <h3>{ activeChat ? this.props.contacts[activeChat].email : ''}</h3>
-            </Col>
-          </Row>
-          <Row style={{display: 'table-row', height: '100%'}}>
-            <Col md={3} style={{height: '100%', padding: 0}}>
-              <Contacts />
-            </Col>
-            <Col md={9} style={{
-                backgroundColor: 'white',
-                color: 'black',
-                height: '100%',
-                padding: 0
-              }}>
-              { activeChat === ''
-                  ? '' : <ChatBox {...this.props} /> }
-            </Col>
-          </Row>
-        </Grid>
-      );
-    } else {
-      return (
-        <Connecting status={this.state.online} />
-      )
-    }
-  }
-});
+    <div style={{ display: 'table-row' }}>
+      <MessageInput onSubmit={(text) => props.sendMessage(props.topicId, text)} />
+    </div>
+  </div>
+);
 
 export default Chat;

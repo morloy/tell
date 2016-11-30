@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MainPage from '../containers/MainPage';
 import ContactList from '../containers/ContactList';
+import { Link } from 'react-router';
 import _ from 'lodash';
 
 
@@ -71,9 +72,11 @@ const TopicForm = React.createClass({
           />
         </FormGroup>
 
-        <Button type="submit">
-          Create
-        </Button>
+        <Button type="submit">Create</Button>
+
+        <Link to="/">
+          <Button>Cancel</Button>
+        </Link>
       </form>
   </div>
 
@@ -81,7 +84,7 @@ const TopicForm = React.createClass({
   }
 })
 
-const NewTopic = (props) => {
+const Compose = (props) => {
   return (
     <MainPage
       SideBar={<ContactList />}
@@ -91,4 +94,4 @@ const NewTopic = (props) => {
   );
 }
 
-export default NewTopic;
+export default Compose;

@@ -5,10 +5,10 @@ export default function topics(state = {}, action) {
   switch (action.type) {
     case ADD_MESSAGE:
       var newObj = {};
-      if (state.hasOwnProperty(action.id)) {
-        newObj[action.id] = [...state[action.id], action.message];
+      if (state.hasOwnProperty(action.topicId)) {
+        newObj[action.topicId] = [...state[action.topicId], action.message];
       } else {
-        newObj[action.id] = [action.message];
+        newObj[action.topicId] = [action.message];
       }
       return Object.assign({}, state, newObj);
 

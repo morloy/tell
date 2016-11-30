@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import NewTopic from '../components/NewTopic';
+import Compose from '../components/Compose';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/topics';
@@ -14,4 +14,4 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actions, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NewTopic);
+export default connect(mapStateToProps, mapDispatchToProps)(Compose);

@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import { Feedback } from 'react-bootstrap/lib/FormControl';
 
-import { ACCOUNTS_URL, lookupHash } from '../utils/utils';
+import { ACCOUNTS_URL, lookupHash } from '../utils';
 
 const AddContactForm = React.createClass({
   getInitialState: function() {
