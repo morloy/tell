@@ -10,7 +10,6 @@ import {
 } from 'react-bootstrap';
 
 import { Grid, Row, Col } from 'react-bootstrap';
-import Connecting from './Connecting';
 
 export const MERGE_TIME = 5*60*1000;
 
@@ -71,8 +70,7 @@ const Message = ({m, contacts, profile}) => {
         </div>
     }>
       {m.contents.map((c) => {
-        if (c.file) return (<File key={m.id} {...c} />);
-        if (c.text) return (<Text key={m.id} {...c} />);
+        if (c.text) return (<Text key={c.id} {...c} />);
       })}
     </Panel>
   )
@@ -101,7 +99,7 @@ const Messages = React.createClass({
         }}>
         {groupMessages(messages).map(m => {
           return (
-            <Message m={m} {...this.props} />
+            <Message key={m.stamp} m={m} {...this.props} />
           )
         })}
       </div>

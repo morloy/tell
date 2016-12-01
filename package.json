@@ -106,6 +106,7 @@
     "react-bootstrap": "^0.30.3",
     "react-chips": "^0.2.3",
     "react-dom": "^15.3.1",
+    "react-overlays": "^0.6.10",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.0",
     "react-router-redux": "^4.0.5",

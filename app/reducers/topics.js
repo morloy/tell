@@ -1,13 +1,14 @@
-import { UPDATE_TOPIC } from '../actions/topics';
+import { CREATE_TOPIC } from '../actions/topics';
+import _ from 'lodash';
 
 
 export default function topics(state = {}, action) {
   switch (action.type) {
-    case UPDATE_TOPIC:
+    case CREATE_TOPIC:
       var newObj = {};
-      newObj[action.id] = {
+      newObj[action.topicId] = {
         subject: action.subject,
-        members: action.members
+        members: _.keys(action.contacts)
       };
       return Object.assign({}, state, newObj);
 

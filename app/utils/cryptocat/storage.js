@@ -1,20 +1,12 @@
 import { updateContact } from '../../actions/contacts';
-import { addMessage, receiveMessage } from '../../actions/chat';
 import { updateCryptocat } from '../../actions/cryptocat';
+import { receive } from '../../actions/network';
 
 export const setupStorage = (store) => {
   var err = null;
   var EmptyMe = Cryptocat.EmptyMe;
 
   Cryptocat.Storage = {};
-
-  Cryptocat.Storage.updateContact = function (id, profile) {
-  	store.dispatch(updateContact(id, profile));
-  };
-
-  Cryptocat.Storage.addMessage = function(message) {
-  	store.dispatch(addMessage(message));
-  };
 
   Cryptocat.Storage.updateUser = function(username, loadedSettings, callback) {
   	store.dispatch(updateCryptocat(loadedSettings));
@@ -26,7 +18,7 @@ export const setupStorage = (store) => {
   };
 
   Cryptocat.XMPP.deliverMessage = (username, info) => {
-    store.dispatch(receiveMessage(username, info));
+    store.dispatch(receive(username, info));
   };
 
   Cryptocat.Storage.getUser = function(username, callback) {

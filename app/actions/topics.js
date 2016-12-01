@@ -1,38 +1,31 @@
 import _ from 'lodash';
-import { addMessage } from './messages';
+import { sendMessage } from './messages';
 import { getRandomId } from '../utils';
-import { push } from 'react-router-redux'
+import { broadcast } from './network';
+import { push } from 'react-router-redux';
 
-export const UPDATE_TOPIC = 'UPDATE_TOPIC';
+export const CREATE_TOPIC = 'CREATE_TOPIC';
 
-export const updateTopic = (id, subject, members) => {
+export const createTopic = (topicId, subject, contacts) => {
   return {
-    type: UPDATE_TOPIC,
-    id,
+    type: CREATE_TOPIC,
+    topicId,
     subject,
-    members
+    contacts
   }
 }
 
 export const createNewTopic = ({to, subject, text}) => {
   return (dispatch, getState) => {
-    const contacts = _.pickBy(getState().contacts,
-                              (v,k) => to.indexOf(v.email) >= 0);
+    const me = getState().profile;
+
     const topicId = getRandomId();
-    const me = getState().profile.username;
-    const stamp = Date.now();
+    var contacts = _.pickBy(getState().contacts, (v,k) => to.indexOf(v.email) >= 0);
+    contacts[me.username] = { email: me.email };
 
-    dispatch(updateTopic(topicId, subject, _.keys(contacts)));
-    dispatch(addMessage(topicId, me, text, stamp));
-    dispatch(addMessage(topicId, me, text, Date.now()+100));
+    dispatch(broadcast(createTopic(topicId, subject, contacts)));
+
     dispatch(push(`/topics/${topicId}`));
-  };
-}
-
-export const sendMessage = (topicId, text) => {
-  return (dispatch, getState) => {
-    const me = getState().profile.username;
-    const stamp = Date.now();
-    dispatch(addMessage(topicId, me, text, stamp));
+    dispatch(sendMessage(topicId, text));
   };
 }

@@ -1,37 +1,23 @@
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 
 import { getRandomId } from '../utils';
+import { broadcast } from './network';
 
-export const addMessage = (topicId, author, text, stamp) => {
+export const addMessage = (topicId, message) => {
   return {
     type: ADD_MESSAGE,
     topicId,
-    message: {
-      id: getRandomId(),
-      author,
-      text,
-      stamp
-    }
+    message
   }
 }
 
 export const sendMessage = (topicId, text) => {
   return (dispatch, getState) => {
-    var stamp = Date.now();
-    var internalId = `${Cryptocat.Me.username}_${stamp}`;
-    console.log({username, message, internalId});
+    const stamp = Date.now();
+    const id = getRandomId();
+    const author = getState().profile.username
+    const message = {id, author, text, stamp}
 
-    Cryptocat.OMEMO.sendMessage(username, {
-      message: message,
-      internalId
-    });
-
-    dispatch(addMessage({
-      username,
-      id: internalId,
-      fromMe: true,
-      text: message,
-      stamp
-    }));
+    dispatch(broadcast(addMessage(topicId, message)));
   };
 }

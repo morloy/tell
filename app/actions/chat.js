@@ -20,13 +20,9 @@ export const addMessage = (message) => {
 export const sendMessage = (username, message) => {
   return (dispatch, getState) => {
     var stamp = Date.now();
-    var internalId = `${Cryptocat.Me.username}_${stamp}`;
     console.log({username, message, internalId});
 
-    Cryptocat.OMEMO.sendMessage(username, {
-      message: message,
-      internalId
-    });
+    Cryptocat.OMEMO.sendMessage(username, {message});
 
     dispatch(addMessage({
       username,

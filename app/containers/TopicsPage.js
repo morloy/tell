@@ -3,7 +3,7 @@ import Topics from '../components/Topics';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _ from 'lodash';
-import * as actions from '../actions/topics';
+import * as actions from '../actions/messages';
 
 function mapStateToProps({topics}) {
   return {

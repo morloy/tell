@@ -37,9 +37,7 @@ const AddContactForm = React.createClass({
     e.preventDefault();
 
     if (this.state.id !== undefined) {
-      this.props.onSubmit(this.state.id, {
-        email: this.state.email
-      });
+      this.props.createContact(this.state.id, {email: this.state.email});
       this.setState(this.getInitialState());
     }
   },

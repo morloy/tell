@@ -10,7 +10,6 @@ import {
 } from 'react-bootstrap';
 
 import { Grid, Row, Col } from 'react-bootstrap';
-import Connecting from './Connecting';
 
 const MessageInput = React.createClass({
   getInitialState() {
@@ -31,7 +30,7 @@ const MessageInput = React.createClass({
     e.preventDefault();
     if (this.state.text === '') return;
 
-    this.props.onSubmit(this.state.text);
+    this.props.sendMessage(this.state.text);
     this.setState({ text: '' });
   },
 
@@ -123,7 +122,7 @@ const Chat = (props) => (
       </div>
     </div>
     <div style={{ display: 'table-row' }}>
-      <MessageInput onSubmit={(text) => props.sendMessage(props.topicId, text)} />
+      <MessageInput sendMessage={(text) => props.sendMessage(props.topicId, text)} />
     </div>
   </div>
 );

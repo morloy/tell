@@ -5,12 +5,12 @@ import colors from '../utils/colors';
 
 const {Menu, MenuItem} = Remote
 
-const Contact = ({contact, active, onClick, removeContact}) => {
+const Contact = ({contact, active, onClick, deleteContact}) => {
   var {id, email} = contact;
 
   const menu = new Menu()
   menu.append(new MenuItem({label: 'Delete Contact', click: () => {
-    removeContact(id);
+    deleteContact(id);
   }}));
 
   var contextMenu = (e) => {
@@ -39,9 +39,7 @@ const Contacts = (props) => (
           <Contact
             key={contact.id}
             contact={contact}
-            active={contact.id === props.activeChat ? true : false}
-            onClick={() => props.onSelectContact(contact.id)}
-            removeContact={props.removeContact}
+            deleteContact={props.deleteContact}
           />
         )}
       </div>
@@ -50,7 +48,7 @@ const Contacts = (props) => (
       <div style={{padding: '10px'}}>
         <AddContactForm
           blockList={props.blockList}
-          onSubmit={props.addContact}
+          createContact={props.createContact}
         />
       </div>
     </div>

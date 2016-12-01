@@ -1,16 +1,16 @@
-import { REMOVE_CONTACT, UPDATE_CONTACT } from '../actions/contacts';
+import { DELETE_CONTACT, CREATE_CONTACT } from '../actions/contacts';
 
 import { omit } from 'lodash';
 
 export default function chat(state = {}, action) {
   switch (action.type) {
-    case UPDATE_CONTACT:
+    case CREATE_CONTACT:
       var newObj = {};
-      newObj[action.id] = action.profile;
+      newObj[action.userId] = action.profile;
       return Object.assign({}, state, newObj);
 
-    case REMOVE_CONTACT:
-      return omit(state, action.id);
+    case DELETE_CONTACT:
+      return omit(state, action.userId);
 
     default:
       return state;

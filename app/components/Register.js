@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
-import { colors } from '../utils/colors';
+import colors from '../utils/colors';
 
-import { hashHistory, Link } from 'react-router';
 import basex from 'base-x';
 import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
 import { Feedback } from 'react-bootstrap/lib/FormControl';
@@ -126,7 +125,9 @@ export default React.createClass({
 
   checkRegistration () {
     fetch(`${ACCOUNTS_URL}/lookup/${lookupHash(this.state.email)}`).then((response) => {
-      if (response.status == 200) {
+      if (response.status != 200) {
+        setTimeout(this.checkRegistration, 3000);
+      } else {
         console.log('Account created');
 
         Cryptocat.Storage.sync();
@@ -135,8 +136,6 @@ export default React.createClass({
           password: this.state.password,
           email: this.state.email
         });
-      } else {
-        setTimeout(this.checkRegistration, 3000);
       }
     });
   },
