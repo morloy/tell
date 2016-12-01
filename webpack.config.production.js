@@ -1,3 +1,4 @@
+import path from 'path';
 import webpack from 'webpack';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import merge from 'webpack-merge';
@@ -12,6 +13,7 @@ const config = merge(baseConfig, {
   ],
 
   output: {
+    path: path.join(__dirname, 'app/dist'),
     publicPath: '../dist/'
   },
 

@@ -22,13 +22,23 @@
 
     "icon-gen": "icon-gen -i build/icon.svg -o ./build -m ico,icns -n ico=icon,icns=icon",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "npm run build && build"
   },
   "build": {
     "appId": "com.tell.tell",
     "mac": {
       "target": "dmg"
-    }
+    },
+    "files": [
+      "app/cryptocat/",
+      "app/img/",
+      "app/dist/",
+      "app/app.html",
+      "node_modules/",
+      "main.js",
+      "main.js.map",
+      "package.json"
+    ]
   },
   "postinstall": "install-app-deps",
   "bin": {
