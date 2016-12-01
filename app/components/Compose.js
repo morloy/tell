@@ -3,8 +3,12 @@ import MainPage from '../containers/MainPage';
 import ContactList from '../containers/ContactList';
 import { Link } from 'react-router';
 import _ from 'lodash';
-
-
+import {
+  Form, FormGroup, ControlLabel,
+  FormControl, HelpBlock, Button, Glyphicon, Image,
+  Col, ButtonToolbar,
+  Jumbotron
+} from 'react-bootstrap';
 import Chips, { Chip } from 'react-chips';
 import Theme from 'react-chips/lib/theme'
 
@@ -14,12 +18,6 @@ const customTheme = Object.assign({}, Theme, { suggestion: {
 }});
 
 
-import {
-  Form, FormGroup, ControlLabel,
-  FormControl, HelpBlock, Button, Glyphicon, Image,
-  Col
-} from 'react-bootstrap';
-
 const TopicForm = React.createClass({
   getInitialState() {
     return {
@@ -28,15 +26,22 @@ const TopicForm = React.createClass({
       text: ''
     };
   },
+  valid() {
+    const {to, subject, text} = this.state;
+    return (subject && text
+            && to.length > 0);
+  },
   handleSubmit(e) {
     e.preventDefault();
+    if (!this.valid()) return;
+
     this.props.createNewTopic({...this.state});
   },
   render() {
     var contacts = _.values(this.props.contacts).map((v) => v.email);
     return (
-      <div>
-      <form style={{padding: '10px'}} onSubmit={this.handleSubmit} >
+      <div style={{padding: '20px'}}>
+      <form onSubmit={this.handleSubmit} >
         <FormGroup
           controlId="formBasicText"
         >
@@ -44,6 +49,7 @@ const TopicForm = React.createClass({
           <Chips
             suggestions={contacts}
             fromSuggestionsOnly={true}
+            placeholder={this.state.to.length ? '': 'Select contacts ...'}
             theme={customTheme}
             onChange={chips => this.setState({ to: chips })}
           />
@@ -65,18 +71,23 @@ const TopicForm = React.createClass({
           <ControlLabel>Message</ControlLabel>
           <FormControl
             componentClass="textarea"
-            rows="15"
+            rows="21"
             value={this.state.text}
-            placeholder="Enter message here ..."
+            placeholder="Type your message here ..."
             onChange={e => this.setState({ text: e.target.value })}
           />
         </FormGroup>
 
-        <Button type="submit">Create</Button>
-
-        <Link to="/">
-          <Button>Cancel</Button>
-        </Link>
+        <ButtonToolbar className='pull-right'>
+          <Link to="/">
+            <Button>Cancel</Button>
+          </Link>
+          <Button
+            bsStyle='primary'
+            type='submit'
+            disabled={this.valid() ? false : true}
+          >Send</Button>
+        </ButtonToolbar>
       </form>
   </div>
 
@@ -84,14 +95,32 @@ const TopicForm = React.createClass({
   }
 })
 
+const Welcome = () => (
+  <MainPage
+    SideBar={<ContactList />}
+    Content={
+      <Jumbotron style={{height: '100%', margin: 0}}>
+        <h1 style={{padding: '20px 0px'}}>Welcome!</h1>
+        <p>
+          Your contact list looks a bit empty.<br />
+          To add new contacts, simply enter their e-mail address in the form on the left.
+        </p>
+      </Jumbotron>
+    }
+  />
+)
+
 const Compose = (props) => {
-  return (
-    <MainPage
-      SideBar={<ContactList />}
-      Title={<h3>Create new Topic</h3>}
-      Content={<TopicForm {...props}  />}
-    />
-  );
+  if (Object.keys(props.contacts).length > 0) {
+    return (
+        <MainPage
+          SideBar={<ContactList />}
+          Title={<h3>Create new Topic</h3>}
+          Content={<TopicForm {...props} />}
+        />
+    )
+  } else
+    return <Welcome />
 }
 
 export default Compose;

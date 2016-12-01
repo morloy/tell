@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 import { HOSTNAME } from '../utils/hostname';
+import { connect } from 'react-redux';
+
+function mapStateToProps({profile}) {
+  return {
+    profile
+  };
+}
 
 const ConnectionManager = React.createClass({
   getInitialState() {
     return {
-      online: false
+      online: undefined
     };
   },
   connect() {
-    var {username, password} = this.props;
+    var {username, password} = this.props.profile;
+
+    if (! (username && password)) {
+      return;
+    }
 
     Cryptocat.XMPP.connect(username, password, (s) => {
       if (s) {
@@ -44,7 +55,10 @@ const ConnectionManager = React.createClass({
   },
   render() {
     return (
-      <Modal show={this.state.online === false} animation={false} >
+      <Modal
+        show={this.state.online === false}
+        animation={false}
+      >
         <Modal.Body>
           <h2>Connecting ... </h2>
         </Modal.Body>
@@ -53,4 +67,4 @@ const ConnectionManager = React.createClass({
   }
 });
 
-export default ConnectionManager;
+export default connect(mapStateToProps)(ConnectionManager);

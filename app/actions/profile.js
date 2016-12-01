@@ -8,6 +8,7 @@ export const initializeProfile = (profile) => {
       type: INITIALIZE_PROFILE,
       profile
     });
-    dispatch(push('/')); 
+    dispatch(push('/compose'));
+    location.reload();
   }
 }

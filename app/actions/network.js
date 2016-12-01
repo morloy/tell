@@ -1,5 +1,6 @@
 import { ADD_MESSAGE } from './messages';
 import { CREATE_TOPIC } from './topics';
+import { createContact } from './contacts';
 import _ from 'lodash';
 
 export const send = (userId, message) => {
@@ -22,13 +23,6 @@ export const broadcast = (action) => {
   }
 }
 
-const filesPath = `${Remote.app.getPath('downloads')}/Tell`;
-FS.access(filesPath, FS.F_OK, function(err) {
-  if (err) {
-    FS.mkdir(filesPath);
-  }
-});
-
 const checkIfFile = (message) => {
   if (Cryptocat.Patterns.file.test(message)) {
     var info = Cryptocat.File.parseInfo(message);
@@ -49,7 +43,7 @@ const receiveFile = (file, callback) => {
   Cryptocat.File.receive(file, (url, p) => {
 		console.log(`Progress: ${p} %`);
 	}, (url, plaintext, valid) => {
-    var filename = `${_filesPath}/${file.name}`;
+    var filename = `${filesPath}/${file.name}`;
     FS.writeFile(filename, plaintext, (err) => {
       if (err) throw err;
       callback(filename);
@@ -85,10 +79,10 @@ const handleAddMessage = (userId, action) => {
       return;
     }
 
-    const file = checkIfFile(action.text);
+    const file = checkIfFile(m.text);
     if (file.isFile) {
       receiveFile(file.file, (filename) => {
-        m.text = `File:${filename}`
+        console.log(`Received file: ${filename}`);
         dispatch(action);
       });
     } else {

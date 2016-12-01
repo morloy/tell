@@ -6,7 +6,6 @@ import { syncHistoryWithStore, push } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
 import { persistStore } from 'redux-persist';
-import ConnectionManager from './components/ConnectionManager';
 
 import { setupCryptocat } from './utils/cryptocat';
 import './app.global.css';
@@ -18,13 +17,16 @@ const history = syncHistoryWithStore(hashHistory, store);
 persistStore(store, {}, () => {
   setupCryptocat(store);
 
-  if (store.getState().profile.username === undefined) {
+  const {profile, topics} = store.getState();
+
+  if (profile.username === undefined) {
     store.dispatch(push('/register'));
+  } else if (Object.keys(topics).length === 0) {
+    store.dispatch(push('/compose'));
   }
 
   render(
     <div>
-      <ConnectionManager {...store.getState().profile} />
       <Provider store={store}>
         <Router history={history} routes={routes} />
       </Provider>

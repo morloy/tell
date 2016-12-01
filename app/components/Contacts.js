@@ -34,7 +34,7 @@ const Contacts = (props) => (
   <div style={{display: 'table', height: '100%', width: '100%'}}>
     <div style={{display: 'table-row', height: '100%'}}>
       <div style={{ position: 'relative', height: '100%' }}>
-        <h4>Contacts</h4>
+        <h4 style={{paddingLeft: '10px'}}>Contacts</h4>
         {props.contacts.map(contact =>
           <Contact
             key={contact.id}

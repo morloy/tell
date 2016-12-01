@@ -35,57 +35,15 @@ const MessageInput = React.createClass({
   },
 
   selectFile() {
-    Remote.dialog.showOpenDialog({
+    const files = Remote.dialog.showOpenDialog({
       properties: ['openFile']
-    }).forEach((file) => {
-      this.sendFile(file);
-    });
+    })
+    if (files) {
+      files.forEach((file) => {
+        this.props.sendFile(file);
+      });
+    }
   },
-  sendFile(path) {
-    var username = this.props.username;
-    var stamp = Date.now();
-    var id = `${Cryptocat.Me.username}_${stamp}`;
-    var name = Path.basename(path);
-
-    FS.readFile(path, (err, data) => {
-					if (err) { return false; }
-
-          Cryptocat.File.send(name, data, function(info) {
-    				if (!info.valid) {
-    					return false;
-    				}
-    				var sendInfo = 'CryptocatFile:' + JSON.stringify(info);
-            console.log({
-    					plaintext: sendInfo,
-    					valid: true,
-    					stamp: stamp
-    				});
-    			}, function(url, p) {
-            console.log(`Progress: ${p} %`);
-    			}, function(info, file) {
-    				var sendInfo = 'CryptocatFile:' + JSON.stringify(info);
-    				if (info.valid) {
-              Cryptocat.OMEMO.sendMessage(username, {
-    						message: sendInfo,
-    						internalId: id
-    					});
-
-              Cryptocat.Storage.addMessage({
-                username,
-                id,
-                fromMe: true,
-                text: '',
-                file: path,
-                stamp
-              });
-    				} else {
-    					console.log('File not sent');
-    					return false;
-    				}
-    			});
-		});
-  },
-
   render() {
     return (
       <div style={{backgroundColor: colors.gray, padding: '5px'}}>
@@ -122,7 +80,10 @@ const Chat = (props) => (
       </div>
     </div>
     <div style={{ display: 'table-row' }}>
-      <MessageInput sendMessage={(text) => props.sendMessage(props.topicId, text)} />
+      <MessageInput
+        sendMessage={(text) => props.sendMessage(props.topicId, text)}
+        sendFile={(file) => props.sendFile(props.topicId, file)}
+      />
     </div>
   </div>
 );

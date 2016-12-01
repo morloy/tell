@@ -18,6 +18,10 @@ body.modal-open .container {
   filter: blur(4px);
 }
 
+.glyphicon-warning-sign {
+  display: none;
+}
+
 .modal {
   text-align: center;
 }

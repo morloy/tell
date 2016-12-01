@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ConnectionManager from './ConnectionManager';
 
 export default class App extends Component {
   static propTypes = {
@@ -8,6 +9,7 @@ export default class App extends Component {
   render() {
     return (
       <div>
+        <ConnectionManager />
         {this.props.children}
       </div>
     );
