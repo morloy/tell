@@ -45,3 +45,10 @@ body.modal-open .container {
   border: none;
   -webkit-box-shadow: none;
 }
+
+.panel-heading {
+  padding: 5px 20px;
+}
+.panel-body {
+  padding: 5px 30px;
+}

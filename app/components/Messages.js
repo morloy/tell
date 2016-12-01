@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
 import ContactList from '../containers/ContactList';
+import { checkIfFile } from '../actions/network';
+import { getTopicDir } from '../utils/files';
 import colors from '../utils/colors';
 import {
   Form, FormGroup, ControlLabel,
   FormControl, HelpBlock, Button, Glyphicon, Image,
-  Panel
+  Panel, Label, Badge
 } from 'react-bootstrap';
 
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -32,30 +34,38 @@ const groupMessages = (messages) => {
     }
   });
 
-  console.log(grouped);
-
   return grouped;
 }
-
-const File = ({file}) => {
-  var name = Path.basename(file);
-  var url = `file://${file}`;
-  return (
-    <div>
-      <a href='javascript:void(0)' onClick={(e) => Remote.shell.openExternal(url)}>
-        {name}
-      </a>
-    </div>
-  )
-}
-
 const Text = ({text}) => (
   <p style={{whiteSpace: 'pre-wrap', margin: '.1em'}}>
     {text}
   </p>
 )
 
-const Message = ({m, contacts, profile}) => {
+const open = (url) => {
+  Remote.shell.openExternal(url);
+}
+
+const File = ({name, topicId}) => {
+  const topicDir = getTopicDir(topicId);
+  return (
+    <div style={{borderLeft: `2px solid ${colors.blue1}`}}>
+    <div style={{float: 'right', color: colors.blue1}}>
+      <a href='javascript:void(0)' onClick={(e) => open(`file://${topicDir}`)}>
+        <Glyphicon glyph='folder-open' />
+      </a>
+    </div>
+    <div>
+      <a href='javascript:void(0)' onClick={(e) => open(`file://${topicDir}/${name}`)}>
+        <Glyphicon glyph='file' style={{fontSize: '1.2em', padding: '2px 10px'}} />
+        {name}
+      </a>
+    </div>
+  </div>
+  )
+}
+
+const Message = ({m, contacts, profile, topicId}) => {
   const stamp = (new Date(m.stamp)).toString();
   const fromMe = (m.author === profile.username);
   const username = (fromMe) ? profile.email : contacts[m.author].email;
@@ -70,7 +80,11 @@ const Message = ({m, contacts, profile}) => {
         </div>
     }>
       {m.contents.map((c) => {
-        if (c.text) return (<Text key={c.id} {...c} />);
+      const file = checkIfFile(c.text);
+      if (file.isFile)
+        return <File key={c.id} name={file.file.name} topicId={topicId} />
+      else
+        return <Text key={c.id} {...c} />;
       })}
     </Panel>
   )

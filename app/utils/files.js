@@ -1,17 +1,21 @@
-export const TOPICS_DIR = `${Remote.app.getPath('userData')}/topics`;
+export const TOPICS_DIR = `${Remote.app.getPath('userData')}/Topics`;
 
 const checkDir = (path) => {
-  FS.access(path, FS.F_OK, function(err) {
-    if (err) {
-      FS.mkdir(filesPath);
-    }
-  });
+  try { FS.accessSync(path); }
+  catch(e) { FS.mkdirSync(path); }
 }
 
-export const getTopicPath = (topicId) => {
-  const path = `${TOPICS_DIR}/${topicId}`;
+export const getTopicDir = (topicId) => {
+  const topicDir = `${TOPICS_DIR}/${topicId}`;
   checkDir(TOPICS_DIR);
-  checkDir(path);
+  checkDir(topicDir);
 
-  return path;
+  return topicDir;
+}
+
+export const addFileToTopic = (topicId, file) => {
+  const topicDir = getTopicDir(topicId);
+  const name = Path.basename(file);
+
+  FS.createReadStream(file).pipe(FS.createWriteStream(`${topicDir}/${name}`));
 }

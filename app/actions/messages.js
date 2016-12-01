@@ -1,7 +1,7 @@
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 
 import { getRandomId } from '../utils';
-import { getTopicPath } from '../utils/files';
+import { addFileToTopic } from '../utils/files';
 import { broadcast } from './network';
 
 export const addMessage = (topicId, message) => {
@@ -42,8 +42,8 @@ export const sendFile = (topicId, path) => {
       }, function(info, file) {
         var sendInfo = 'CryptocatFile:' + JSON.stringify(info);
         if (info.valid) {
-          FS.symlink(path, getTopicPath(topicId));
           dispatch(sendMessage(topicId, sendInfo));
+          addFileToTopic(topicId, path);
         } else {
           console.log('File not sent');
           return false;
