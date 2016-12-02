@@ -21,7 +21,7 @@ const Contact = ({contact, active, onClick, deleteContact}) => {
   return (
     <div
       style={{ backgroundColor: active ? colors.blue2 : '' }}
-      onClick={ active ? '' : onClick}
+      onClick={() => window.To.addChip(contact.email)}
       onContextMenu={contextMenu}
     >
     <AccountInfo {...contact} />
