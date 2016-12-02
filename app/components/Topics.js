@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Glyphicon } from 'react-bootstrap';
+import { Glyphicon, Jumbotron } from 'react-bootstrap';
 import React from 'react';
 import MainPage from '../containers/MainPage';
 import Chat from './Chat';
@@ -74,6 +74,16 @@ const Topics = ({ topics, unread, contacts, params, sendMessage, sendFile }) => 
   return (
     <MainPage
       SideBar={Sidebar}
+      Content={
+        <Jumbotron style={{ height: '100%', margin: 0 }}>
+          <h1 style={{ padding: '20px 0px' }}>Welcome to Tell!</h1>
+          <p>
+            To get started, write some messages to your colleagues.<br />
+            Just click on the pen on the left and add your friends by adding their e-mail address.
+            It's easy!
+          </p>
+        </Jumbotron>
+      }
     />
   );
 };

@@ -72,7 +72,7 @@ const TopicForm = React.createClass({
             <ControlLabel>Message</ControlLabel>
             <FormControl
               componentClass="textarea"
-              rows="21"
+              rows="15"
               value={this.state.text}
               placeholder="Type your message here ..."
               onChange={e => this.setState({ text: e.target.value })}
@@ -96,32 +96,12 @@ const TopicForm = React.createClass({
   }
 });
 
-const Welcome = () => (
+const Compose = (props) => (
   <MainPage
     SideBar={<ContactList />}
-    Content={
-      <Jumbotron style={{ height: '100%', margin: 0 }}>
-        <h1 style={{ padding: '20px 0px' }}>Welcome!</h1>
-        <p>
-          Your contact list looks a bit empty.<br />
-          To add new contacts, simply enter their e-mail address in the form on the left.
-        </p>
-      </Jumbotron>
-    }
+    Title={<h3>Create new Topic</h3>}
+    Content={<TopicForm {...props} />}
   />
 );
-
-const Compose = (props) => {
-  if (Object.keys(props.contacts).length > 0) {
-    return (
-      <MainPage
-        SideBar={<ContactList />}
-        Title={<h3>Create new Topic</h3>}
-        Content={<TopicForm {...props} />}
-      />
-    );
-  }
-  return <Welcome />;
-};
 
 export default Compose;

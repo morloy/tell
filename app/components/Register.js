@@ -46,28 +46,26 @@ const RegistrationForm = React.createClass({
   getInitialState() {
     return {
       email: '',
+      state: 'error'
     };
   },
-  getValidationState() {
-    if (validateEmail(this.state.email))
-      return 'success';
-    else
-      return 'error';
-  },
   handleChange(e) {
-    this.setState({ email: e.target.value });
+    const email = e.target.value;
+    this.setState({ email, state: 'error' });
+
+    if (!validateEmail(email)) { return; }
+
+    fetch(`${ACCOUNTS_URL}/lookup/${lookupHash(email)}`).then((response) => {
+      if (response.status === 204) {
+        this.setState({ state: 'success' });
+      }
+    });
   },
   handleSubmit(e) {
     e.preventDefault();
-    if (this.getValidationState() !== 'success')
-      return;
-
-    fetch(`${ACCOUNTS_URL}/lookup/${lookupHash(this.state.email)}`).then(function (response) {
-      if (response.status == 204)
-        this.props.register(this.state.email);
-      else
-        console.log('Email already taken!');
-    }.bind(this));
+    if (this.state.state === 'success') {
+      this.props.register(this.state.email);
+    }
   },
   render() {
     return (
@@ -76,7 +74,7 @@ const RegistrationForm = React.createClass({
           <h1 style={{
               paddingBottom: '30px'
             }}>Create Account</h1>
-            <FormGroup validationState={this.getValidationState()}>
+            <FormGroup validationState={this.state.state }>
               <ControlLabel style={{color: colors.blue3
               }}>
                 Please enter your e-mail address
@@ -113,10 +111,9 @@ export default React.createClass({
       password: this.state.password,
     }
     console.log(data);
-    this.setState({ email, fingerprint });
+    this.setState({ email, fingerprint, submitted: true });
 
     post(`${ACCOUNTS_URL}/register`, data).then(function(response) {
-      this.setState({ submitted: true });
       this.checkRegistration();
     }.bind(this)).catch(function(err) {
     	console.log(err)

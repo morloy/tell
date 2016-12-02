@@ -21,8 +21,6 @@ persistStore(store, {}, () => {
 
   if (profile.username === undefined) {
     store.dispatch(push('/register'));
-  } else if (Object.keys(topics).length === 0) {
-    store.dispatch(push('/compose'));
   }
 
   render(
