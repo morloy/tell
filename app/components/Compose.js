@@ -22,7 +22,8 @@ const TopicForm = React.createClass({
     return {
       to: [],
       subject: '',
-      text: ''
+      text: '',
+      sending: false
     };
   },
   valid() {
@@ -33,7 +34,8 @@ const TopicForm = React.createClass({
     e.preventDefault();
     if (!this.valid()) return;
 
-    this.props.createNewTopic({ ...this.state });
+    this.setState({ sending: true });
+    setTimeout(() => this.props.createNewTopic({...this.state}), 100);
   },
   render() {
     const contacts = _.values(this.props.contacts).map((v) => v.email);
@@ -84,8 +86,8 @@ const TopicForm = React.createClass({
             <Button
               bsStyle="primary"
               type="submit"
-              disabled={this.valid() === false}
-            >Send</Button>
+              disabled={!this.valid() || this.state.sending}
+            >{this.state.sending ? 'Sending ...' : 'Send'}</Button>
           </ButtonToolbar>
         </form>
       </div>

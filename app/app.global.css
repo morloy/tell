@@ -52,3 +52,7 @@ body.modal-open .container {
 .panel-body {
   padding: 5px 30px;
 }
+
+.container .jumbotron {
+  border-radius: 0px;
+}
