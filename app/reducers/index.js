@@ -6,12 +6,14 @@ import profile from './profile';
 import contacts from './contacts';
 import topics from './topics';
 import messages from './messages';
+import unread from './unread';
 
 const rootReducer = combineReducers({
   cryptocat,
   chat,
   topics,
   messages,
+  unread,
   profile,
   contacts,
   routing

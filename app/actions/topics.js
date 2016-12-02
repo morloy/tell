@@ -1,8 +1,9 @@
 import _ from 'lodash';
+import { push } from 'react-router-redux';
 import { sendMessage } from './messages';
 import { getRandomId } from '../utils';
 import { broadcast } from './network';
-import { push } from 'react-router-redux';
+import { pushUnread, markRead } from './unread';
 
 export const CREATE_TOPIC = 'CREATE_TOPIC';
 
@@ -23,9 +24,10 @@ export const createNewTopic = ({to, subject, text}) => {
     var contacts = _.pickBy(getState().contacts, (v,k) => to.indexOf(v.email) >= 0);
     contacts[me.username] = { email: me.email };
 
-    dispatch(broadcast(createTopic(topicId, subject, contacts)));
-
     dispatch(push(`/topics/${topicId}`));
+    dispatch(pushUnread(topicId));
+    dispatch(markRead(topicId));
+    dispatch(broadcast(createTopic(topicId, subject, contacts)));
     dispatch(sendMessage(topicId, text));
   };
 }

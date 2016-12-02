@@ -1,4 +1,4 @@
-import { INITIALIZE_PROFILE } from '../actions/profile'
+import { INITIALIZE_PROFILE } from '../actions/profile';
 
 export default function chat(state = {}, action) {
   switch (action.type) {

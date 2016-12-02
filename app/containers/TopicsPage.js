@@ -1,18 +1,17 @@
-import React, { Component } from 'react';
-import Topics from '../components/Topics';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import _ from 'lodash';
-import * as actions from '../actions/messages';
+import Topics from '../components/Topics';
+import * as messageActions from '../actions/messages';
 
-function mapStateToProps({topics}) {
+function mapStateToProps({ topics, unread }) {
   return {
-    topics
+    topics,
+    unread
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
+  return bindActionCreators(messageActions, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Topics);

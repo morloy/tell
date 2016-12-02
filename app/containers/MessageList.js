@@ -1,13 +1,19 @@
-import React, { Component } from 'react';
-import Messages from '../components/Messages';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as actions from '../actions/unread';
+import Messages from '../components/Messages';
 
-function mapStateToProps({messages, contacts, profile}) {
+function mapStateToProps({ messages, contacts, profile, unread }) {
   return {
     messages,
+    unread,
     contacts,
     profile
   };
 }
 
-export default connect(mapStateToProps)(Messages);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Messages);

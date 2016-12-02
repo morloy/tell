@@ -1,27 +1,30 @@
-import React, { Component } from 'react';
+import { Link } from 'react-router';
+import { Glyphicon } from 'react-bootstrap';
+import React from 'react';
 import MainPage from '../containers/MainPage';
 import Chat from './Chat';
 import colors from '../utils/colors';
-import { Link } from 'react-router';
-import { Button, Glyphicon } from 'react-bootstrap';
 
-const Topic = ({id, subject, active}) => (
-  <Link to={`/topics/${id}`} style={{
+const Topic = ({ topicId, subject, active, read }) => (
+  <Link
+    to={`/topics/${topicId}`} style={{
       padding: '5px 20px',
       display: 'block',
-      backgroundColor: active ? colors.blue2 : ''
-  }}>
+      backgroundColor: active ? colors.blue2 : '',
+      fontWeight: read ? 'normal' : 'bold'
+    }}
+  >
     {subject}
   </Link>
-)
+);
 
-const TopicList = ({topics, activeId}) => (
+const TopicList = ({ topics, unread, activeId }) => (
   <div>
-    <h4 style={{paddingLeft: '10px'}}>Topics</h4>
+    <h4 style={{ paddingLeft: '10px' }}>Topics</h4>
 
-    {_.map(topics, (t,id) => (
-      <Topic key={id} id={id} {...t} active={activeId === id} />
-    ))}
+    {unread.map(v =>
+      <Topic key={v.topicId} {...v} {...topics[v.topicId]} active={activeId === v.topicId} />
+    )}
 
     <Link to="/compose" style={{
         position: 'absolute', bottom: '25px', right: '25px',
@@ -36,9 +39,9 @@ const TopicList = ({topics, activeId}) => (
   </div>
 )
 
-const Topics = ({topics, params, sendMessage, sendFile}) => {
+const Topics = ({ topics, unread, params, sendMessage, sendFile }) => {
   const activeId = params.topicId;
-  const Sidebar = <TopicList topics={topics} activeId={activeId} />;
+  const Sidebar = <TopicList topics={topics} unread={unread} activeId={activeId} />;
 
   if (topics[activeId]) {return (
       <MainPage

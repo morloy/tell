@@ -1,16 +1,14 @@
-export const ADD_MESSAGE = 'ADD_MESSAGE';
-
 import { getRandomId } from '../utils';
 import { addFileToTopic } from '../utils/files';
 import { broadcast } from './network';
 
-export const addMessage = (topicId, message) => {
-  return {
-    type: ADD_MESSAGE,
-    topicId,
-    message
-  }
-}
+export const ADD_MESSAGE = 'ADD_MESSAGE';
+
+export const addMessage = (topicId, message) => ({
+  type: ADD_MESSAGE,
+  topicId,
+  message
+});
 
 export const sendMessage = (topicId, text) => {
   return (dispatch, getState) => {

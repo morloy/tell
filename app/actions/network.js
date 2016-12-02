@@ -1,14 +1,13 @@
+import _ from 'lodash';
 import { ADD_MESSAGE } from './messages';
 import { CREATE_TOPIC } from './topics';
+import { pushUnread } from './unread';
 import { createContact } from './contacts';
 import { getTopicDir } from '../utils/files';
-import _ from 'lodash';
 
-export const send = (userId, message) => {
-  return (dispatch, getState) => {
-    Cryptocat.OMEMO.sendMessage(userId, {message});
-  }
-}
+export const send = (userId, message) => (dispatch, getState) => {
+  Cryptocat.OMEMO.sendMessage(userId, { message });
+};
 
 export const broadcast = (action) => {
   return (dispatch, getState) => {
@@ -18,15 +17,14 @@ export const broadcast = (action) => {
     const message = JSON.stringify(action);
     console.log(message);
     getState().topics[action.topicId].members.forEach(userId => {
-      if (userId !== me)
-        dispatch(send(userId, message));
-    })
-  }
-}
+      if (userId !== me) { dispatch(send(userId, message)); }
+    });
+  };
+};
 
 export const checkIfFile = (message) => {
   if (Cryptocat.Patterns.file.test(message)) {
-    var info = Cryptocat.File.parseInfo(message);
+    const info = Cryptocat.File.parseInfo(message);
     if (info.valid) {
       return {
         file:	info,
@@ -43,14 +41,14 @@ export const checkIfFile = (message) => {
 const receiveFile = (topicId, file, callback) => {
   Cryptocat.File.receive(file, (url, p) => {
 		console.log(`Progress: ${p} %`);
-	}, (url, plaintext, valid) => {
+  }, (url, plaintext, valid) => {
     const topicDir = getTopicDir(topicId);
-    var filename = `${topicDir}/${file.name}`;
+    const filename = `${topicDir}/${file.name}`;
     FS.writeFile(filename, plaintext, (err) => {
       if (err) throw err;
       callback(filename);
     });
-	});
+  });
 };
 
 const handleCreateTopic = (userId, action) => {
@@ -80,7 +78,6 @@ const handleAddMessage = (userId, action) => {
       console.log('User not member of topic!');
       return;
     }
-
     const file = checkIfFile(m.text);
     if (file.isFile) {
       receiveFile(action.topicId, file.file, (filename) => {
@@ -96,21 +93,20 @@ const handleAddMessage = (userId, action) => {
       }
       dispatch(action);
     }
+    dispatch(pushUnread(action.topicId));
   };
-}
+};
 
 const actionHandler = {
   CREATE_TOPIC: handleCreateTopic,
   ADD_MESSAGE: handleAddMessage
 };
 
-export const receive = (userId, info) => {
-  return (dispatch, getState) => {
-    console.log(info.plaintext);
-    const action = JSON.parse(info.plaintext);
-    const handler = actionHandler[action.type];
-    if (handler) {
-      dispatch(handler(userId, action));
-    }
+export const receive = (userId, info) => (dispatch) => {
+  console.log(info.plaintext);
+  const action = JSON.parse(info.plaintext);
+  const handler = actionHandler[action.type];
+  if (handler) {
+    dispatch(handler(userId, action));
   }
-}
+};

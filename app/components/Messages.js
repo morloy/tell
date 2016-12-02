@@ -95,8 +95,13 @@ const Messages = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     node.scrollTop = node.scrollHeight;
   },
-  componentDidMount()  { this.scrollToBottom() },
-  componentDidUpdate() { this.scrollToBottom() },
+  componentDidMount() {
+    this.scrollToBottom();
+  },
+  componentDidUpdate() {
+    this.scrollToBottom();
+    this.props.markRead(this.props.topicId);
+  },
   render() {
     const messages = this.props.messages[this.props.topicId];
     if (!messages) {
