@@ -79,7 +79,7 @@ const TopicForm = React.createClass({
         </FormGroup>
 
         <ButtonToolbar className='pull-right'>
-          <Link to="/">
+          <Link onClick={this.props.goBack}>
             <Button>Cancel</Button>
           </Link>
           <Button

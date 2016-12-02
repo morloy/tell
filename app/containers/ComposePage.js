@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import Compose from '../components/Compose';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { goBack } from 'react-router-redux';
+import Compose from '../components/Compose';
 import * as actions from '../actions/topics';
 
 function mapStateToProps(state) {
@@ -11,7 +11,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(actions, dispatch);
+  return bindActionCreators({ ...actions, goBack }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Compose);
