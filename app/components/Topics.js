@@ -39,25 +39,43 @@ const TopicList = ({ topics, unread, activeId }) => (
   </div>
 )
 
-const Topics = ({ topics, unread, params, sendMessage, sendFile }) => {
+const TopicHeader = ({ topic, contacts }) => {
+  let members = [];
+  topic.members.forEach(m => {
+    if (contacts[m]) { members = [contacts[m].email, ...members]; }
+  });
+
+  return (
+    <div style={{ paddingTop: '8px' }}>
+      <strong>{topic.subject}</strong><br />
+      <span style={{ color: colors.gray }}>{members.join(', ')}</span>
+    </div>
+  );
+};
+
+const Topics = ({ topics, unread, contacts, params, sendMessage, sendFile }) => {
   const activeId = params.topicId;
   const Sidebar = <TopicList topics={topics} unread={unread} activeId={activeId} />;
 
-  if (topics[activeId]) {return (
+  if (topics[activeId]) {
+    return (
       <MainPage
         SideBar={Sidebar}
-        Title={<h3>{topics[activeId].subject}</h3>}
+        Title={<TopicHeader topic={topics[activeId]} contacts={contacts} />}
         Content={<Chat
           topicId={activeId}
           sendMessage={sendMessage}
           sendFile={sendFile}
         />}
       />
-  )} else {return (
+    );
+  }
+
+  return (
     <MainPage
       SideBar={Sidebar}
     />
-  )}
-}
+  );
+};
 
 export default Topics;
