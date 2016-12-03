@@ -10,7 +10,7 @@ const Topic = ({ topicId, subject, active, read }) => (
     to={`/topics/${topicId}`} style={{
       padding: '5px 20px',
       display: 'block',
-      backgroundColor: active ? colors.blue2 : '',
+      backgroundColor: active ? colors.blue2 : colors.blue1,
       fontWeight: read ? 'normal' : 'bold'
     }}
   >
