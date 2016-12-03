@@ -1,7 +1,7 @@
 {
   "name": "Tell",
   "productName": "Tell",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Easy and Secure Messaging.",
   "main": "main.js",
   "scripts": {
@@ -23,7 +23,9 @@
     "icon-gen": "icon-gen -i build/icon.svg -o ./build -m ico,icns -n ico=icon,icns=icon",
     "pack": "build --dir",
     "dist": "npm run build && build",
-    "dist-win": "npm run build && build --win"
+    "dist-win": "build --win",
+    "dist-linux": "build --linux",
+    "build-all": "npm run build && build -mwl"
   },
   "build": {
     "appId": "com.tell.tell",
@@ -31,7 +33,10 @@
       "target": "dmg"
     },
     "win": {
-      "target": "zip"
+      "target": "squirrel"
+    },
+    "linux": {
+      "target": "deb"
     },
     "files": [
       "app/cryptocat/",

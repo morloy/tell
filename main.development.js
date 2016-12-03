@@ -9,7 +9,7 @@ let template;
 let mainWindow = null;
 
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
   var host = 'tell-now.com';
   var https = require('https');
 
@@ -22,7 +22,8 @@ if (process.env.NODE_ENV === 'production') {
           body += d;
       });
       response.on('end', function() {
-        if (app.getVersion() !== body.trim()) {
+        const version = body.trim();
+        if (app.getVersion() !== version) {
           app.focus();
           var res = dialog.showMessageBox({
             type: 'warning',
@@ -31,7 +32,13 @@ if (process.env.NODE_ENV === 'production') {
             detail: `Please download the current version to continue using this application.`
           });
           if (res === 1) {
-            var url = `https://${host}/beta/Tell-${process.platform}.zip`;
+            const platforms = {
+              darwin: { name: 'mac', ext: 'dmg' },
+              win32: { name: 'windows', ext: 'exe' },
+              linux: { name: 'linux', ext: 'deb' },
+            }
+            const { name, ext } = platforms[process.platform];
+            const url = `https://${host}/beta/Tell-${version}-${name}.${ext}`;
             shell.openExternal(url);
           }
           app.quit();
@@ -330,7 +337,7 @@ app.on('ready', async () => {
         }
       }]
     }];
-    menu = Menu.buildFromTemplate(template);
-    mainWindow.setMenu(menu);
+    // menu = Menu.buildFromTemplate(template);
+    // mainWindow.setMenu(menu);
   }
 });

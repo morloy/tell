@@ -9,6 +9,5 @@ export const initializeProfile = (profile) => {
       profile
     });
     dispatch(push('/'));
-    location.reload();
-  }
-}
+  };
+};

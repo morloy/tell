@@ -18,10 +18,12 @@ const ConnectionManager = React.createClass({
   connect() {
     var { username, password } = this.props.profile;
 
+    if (this.state.online === true) {
+      return;
+    }
     if (!(username && password)) {
       return;
     }
-    this.setState({ online: false });
 
     Cryptocat.XMPP.connect(username, password, (s) => {
       if (s) {
@@ -51,9 +53,8 @@ const ConnectionManager = React.createClass({
       }
     });
   },
-  componentWillMount () {
-    this.connect();
-  },
+  componentWillMount() { this.connect(); },
+  componentDidUpdate() { this.connect(); },
   render() {
     return (
       <Modal

@@ -10,5 +10,6 @@ ssh ${HOST} "rm ${DIR}/*"
 
 TARGET="${HOST}:${DIR}"
 scp version.txt ${TARGET}
-scp "mac/Tell-${VERSION}.dmg" ${TARGET}
-scp "Tell-${VERSION}-win.zip" ${TARGET}
+scp "mac/Tell-${VERSION}.dmg" "${TARGET}/Tell-${VERSION}-mac.dmg"
+scp "win/Tell Setup ${VERSION}.exe" "${TARGET}/Tell-${VERSION}-windows.exe"
+scp "Tell_${VERSION}_amd64.deb" "${TARGET}/Tell-${VERSION}-linux.deb"
