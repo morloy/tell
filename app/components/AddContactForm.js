@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Form, FormGroup, ControlLabel,
-  FormControl, HelpBlock, Button
+  Form, FormGroup, InputGroup,
+  FormControl, Button
 } from 'react-bootstrap';
 import { Feedback } from 'react-bootstrap/lib/FormControl';
 
@@ -49,13 +49,22 @@ const AddContactForm = React.createClass({
          <Form onSubmit={this.handleSubmit}>
           <p>Add Contact</p>
             <FormGroup validationState={this.state.id ? 'success' : 'warning'}>
+            <InputGroup>
               <FormControl
                 type="text"
                 value={this.state.email}
                 onChange={this.handleChange}
                 placeholder="mail@example.org"
               />
-            <Feedback />
+              <InputGroup.Button>
+                <Button
+                  type="submit"
+                  bsStyle="primary"
+                  disabled={!this.state.id}
+                >+</Button>
+              </InputGroup.Button>
+            </InputGroup>
+            <FormControl.Feedback style={{ marginRight: '35px' }} />
           </FormGroup>
         </Form>
       </div>

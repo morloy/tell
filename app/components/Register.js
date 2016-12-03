@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import colors from '../utils/colors';
 
 import basex from 'base-x';
-import { Form, FormGroup, ControlLabel, FormControl, HelpBlock, Button } from 'react-bootstrap';
+import { Form, FormGroup, ControlLabel, FormControl, InputGroup, Button } from 'react-bootstrap';
 import { Feedback } from 'react-bootstrap/lib/FormControl';
 
 import { ACCOUNTS_URL, lookupHash } from '../utils';
@@ -73,19 +73,28 @@ const RegistrationForm = React.createClass({
          <Form onSubmit={this.handleSubmit}>
           <h1 style={{
               paddingBottom: '30px'
-            }}>Create Account</h1>
-            <FormGroup validationState={this.state.state }>
-              <ControlLabel style={{color: colors.blue3
-              }}>
-                Please enter your e-mail address
-              </ControlLabel>
+          }}>Create Account</h1>
+          <FormGroup validationState={this.state.state}>
+            <ControlLabel style={{color: colors.blue3
+            }}>
+              Please enter your e-mail address
+            </ControlLabel>
+            <InputGroup>
               <FormControl
                 type="text"
                 value={this.state.email}
                 onChange={this.handleChange}
                 placeholder="mail@example.org"
               />
-            <Feedback />
+              <InputGroup.Button>
+                <Button
+                  bsStyle="primary"
+                  type="submit"
+                  disabled={this.state.state !== 'success'}
+                >Register</Button>
+              </InputGroup.Button>
+            </InputGroup>
+            <Feedback style={{ marginRight: '75px' }} />
           </FormGroup>
         </Form>
       </div>

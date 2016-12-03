@@ -9,7 +9,7 @@ let template;
 let mainWindow = null;
 
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'production') {
   var host = 'tell-now.com';
   var https = require('https');
 
