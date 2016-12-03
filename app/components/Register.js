@@ -113,7 +113,7 @@ export default React.createClass({
     };
   },
   register(email) {
-    var fingerprint = getFingerprint(Cryptocat.Me.settings.identityKey.pub);
+    var fingerprint = getFingerprint(this.props.cryptocat.identityKey.pub);
     var data = {
       fingerprint,
       email,

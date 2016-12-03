@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as actions from '../actions/profile';
 
-function mapStateToProps(state) {
+function mapStateToProps({ profile, cryptocat }) {
   return {
-    profile: state.profile
+    profile,
+    cryptocat
   }
 }
 

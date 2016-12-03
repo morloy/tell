@@ -81,4 +81,18 @@ export const setupWin = () => {
     delete Cryptocat.Me.settings.userBundles[username];
     Cryptocat.Storage.sync();
   };
+
+  const dangerouslyResetProfile = () => {
+    setTimeout(() => {
+      alert('The server has been reset!\nPlease register again.');
+      window.onbeforeunload = undefined;
+      window.onoffline = undefined;
+      localStorage.clear();
+      location.reload();
+    }, 2000);
+  };
+
+  Cryptocat.Win.main.login = {
+    onAuthFailed: dangerouslyResetProfile
+  };
 };

@@ -54,7 +54,9 @@ const ConnectionManager = React.createClass({
     });
   },
   componentWillMount() { this.connect(); },
-  componentDidUpdate() { this.connect(); },
+  componentDidUpdate() {
+    if (this.state.online === undefined) { this.connect(); }
+  },
   render() {
     return (
       <Modal
