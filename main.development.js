@@ -108,6 +108,13 @@ app.on('ready', async () => {
     mainWindow = null;
   });
 
+
+  mainWindow.webContents.on('will-navigate', (e, url) => {
+    e.preventDefault();
+    shell.openExternal(url);
+  });
+
+
   if (process.platform === 'darwin') {
     app.on('activate', () => {
       mainWindow.show();

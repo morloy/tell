@@ -60,3 +60,15 @@ body.modal-open .container {
 .form-control-feedback {
   z-index: 100;
 }
+
+.panel-body a {
+  color: #337ab7;
+}
+
+.emoji {
+  font-size: 1.4em;
+}
+
+p {
+  margin-bottom: 0;
+}

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router';
-import ContactList from '../containers/ContactList';
+import MDReactComponent from 'markdown-react-js';
+import emoji from 'markdown-it-emoji';
 import { checkIfFile } from '../actions/network';
 import { getTopicDir } from '../utils/files';
 import colors from '../utils/colors';
@@ -36,10 +37,21 @@ const groupMessages = (messages) => {
 
   return grouped;
 }
+
 const Text = ({text}) => (
-  <p style={{whiteSpace: 'pre-wrap', margin: '.1em'}}>
-    {text}
-  </p>
+  <MDReactComponent
+    markdownOptions={{
+      linkify: true,
+      typographer: true
+    }}
+    plugins={[emoji]}
+    tags={{ html: 'div' }}
+    convertRules={{
+      emoji: ({ content }) => (
+          <span className="emoji">{content}</span>
+      ) }}
+    text={`&nbsp;${text}`}
+  />
 )
 
 const open = (url) => {
