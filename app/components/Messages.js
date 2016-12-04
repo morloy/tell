@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router';
 import MDReactComponent from 'markdown-react-js';
 import emoji from 'markdown-it-emoji';
 import { checkIfFile } from '../actions/network';
 import { getTopicDir } from '../utils/files';
 import colors from '../utils/colors';
 import {
-  Form, FormGroup, ControlLabel,
-  FormControl, HelpBlock, Button, Glyphicon, Image,
+  Form, Glyphicon, Image,
   Panel, Label, Badge
 } from 'react-bootstrap';
 
@@ -38,21 +36,24 @@ const groupMessages = (messages) => {
   return grouped;
 }
 
-const Text = ({text}) => (
-  <MDReactComponent
-    markdownOptions={{
-      linkify: true,
-      typographer: true
-    }}
-    plugins={[emoji]}
-    tags={{ html: 'div' }}
-    convertRules={{
-      emoji: ({ content }) => (
-          <span className="emoji">{content}</span>
-      ) }}
-    text={`&nbsp;${text}`}
-  />
-)
+const Text = ({text}) => {
+  // console.log(text);
+  return (
+    <MDReactComponent
+      markdownOptions={{
+        linkify: true,
+        typographer: true
+      }}
+      plugins={[emoji]}
+      convertRules={{
+        emoji: ({ content }) => (
+            [['emoji', content]]
+        )
+     }}
+      text={text.split('\n\n').join('\n####\n')}
+    />
+  )
+};
 
 const open = (url) => {
   Remote.shell.openExternal(url);

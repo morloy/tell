@@ -65,10 +65,10 @@ body.modal-open .container {
   color: #337ab7;
 }
 
-.emoji {
-  font-size: 1.4em;
+emoji {
+  font-size: 1.5em;
 }
 
-p {
-  margin-bottom: 0;
+.panel-body p {
+  white-space: pre-wrap;
 }
