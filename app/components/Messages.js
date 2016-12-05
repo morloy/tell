@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import MDReactComponent from 'markdown-react-js';
+import MDReactComponent from 'markdown-it-react-renderer';
 import emoji from 'markdown-it-emoji';
 import { checkIfFile } from '../actions/network';
 import { getTopicDir } from '../utils/files';
@@ -42,14 +42,15 @@ const Text = ({text}) => {
     <MDReactComponent
       markdownOptions={{
         linkify: true,
-        typographer: true
+        typographer: true,
+        breaks: true
       }}
       plugins={[emoji]}
       convertRules={{
         emoji: ({ content }) => (
             [['emoji', content]]
         )
-     }}
+      }}
       text={text.split('\n\n').join('\n####\n')}
     />
   )
