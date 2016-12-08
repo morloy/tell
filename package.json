@@ -29,9 +29,6 @@
   },
   "build": {
     "appId": "com.tell.tell",
-    "mac": {
-      "target": "dir"
-    },
     "win": {
       "target": "squirrel"
     },
