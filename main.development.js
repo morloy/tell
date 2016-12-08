@@ -1,4 +1,5 @@
 import { app, BrowserWindow, Menu, shell, dialog } from 'electron';
+import AppUpdater from './AppUpdater';
 
 const Path = require('path');
 
@@ -7,46 +8,6 @@ app.commandLine.appendSwitch('ignore-certificate-errors');
 let menu;
 let template;
 let mainWindow = null;
-
-
-if (process.env.NODE_ENV === 'production') {
-  var host = 'tell-now.com';
-  var https = require('https');
-
-  https.get({
-      host,
-      path: '/beta/version.txt'
-  }, function(response) {
-      var body = '';
-      response.on('data', function(d) {
-          body += d;
-      });
-      response.on('end', function() {
-        const version = body.trim();
-        if (app.getVersion() !== version) {
-          app.focus();
-          var res = dialog.showMessageBox({
-            type: 'warning',
-            buttons: ['Quit', 'Download'],
-            message: 'New version available',
-            detail: `Please download the current version to continue using this application.`
-          });
-          if (res === 1) {
-            const platforms = {
-              darwin: { name: 'mac', ext: 'dmg' },
-              win32: { name: 'windows', ext: 'exe' },
-              linux: { name: 'linux', ext: 'deb' },
-            }
-            const { name, ext } = platforms[process.platform];
-            const url = `https://${host}/beta/Tell-${version}-${name}.${ext}`;
-            shell.openExternal(url);
-          }
-          app.quit();
-        }
-      });
-  });
-}
-
 
 if (process.env.NODE_ENV === 'development') {
   require('electron-debug')(); // eslint-disable-line global-require
@@ -97,6 +58,8 @@ app.on('ready', async () => {
 		}
   });
 
+  new AppUpdater(mainWindow);
+
   mainWindow.loadURL(`file://${__dirname}/app/app.html`);
 
   mainWindow.webContents.on('did-finish-load', () => {
@@ -132,7 +95,6 @@ app.on('ready', async () => {
         }
     });
   }
-
 
   if (process.env.NODE_ENV === 'development') {
     mainWindow.openDevTools();
@@ -344,7 +306,7 @@ app.on('ready', async () => {
         }
       }]
     }];
-    // menu = Menu.buildFromTemplate(template);
-    // mainWindow.setMenu(menu);
+    menu = Menu.buildFromTemplate(template);
+    mainWindow.setMenu(menu);
   }
 });
