@@ -1,7 +1,7 @@
 {
   "name": "Tell",
   "productName": "Tell",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Easy and Secure Messaging.",
   "main": "main.js",
   "scripts": {
@@ -24,17 +24,15 @@
     "dist": "build",
     "dist-win": "build --win",
     "dist-linux": "build --linux",
-    "build-all": "npm run build && build -mwl",
-    "release": "build -mwl"
+    "build-all": "npm run build && build -mw",
+    "publish": "publish"
+  },
+  "updater": {
+    "url": "https://tell-now.com/updates/updates.json",
+    "channel": "beta"
   },
   "build": {
     "appId": "com.tell.tell",
-    "win": {
-      "target": "squirrel"
-    },
-    "linux": {
-      "target": "deb"
-    },
     "files": [
       "app/cryptocat/",
       "app/img/",
@@ -44,7 +42,13 @@
       "main.js",
       "main.js.map",
       "package.json"
-    ]
+    ],
+    "win": {
+      "target": "squirrel"
+    },
+    "mac": {
+      "target": "dmg"
+    }
   },
   "postinstall": "install-app-deps",
   "bin": {
@@ -95,9 +99,10 @@
     "del": "^2.2.2",
     "devtron": "^1.3.0",
     "electron": "^1.3.4",
-    "electron-builder": "^10.4.1",
+    "electron-builder": "^10.7.1",
     "electron-devtools-installer": "^2.0.1",
     "electron-prebuilt": "^1.4.10",
+    "electron-simple-publisher": "^0.2.5",
     "eslint": "^3.3.1",
     "eslint-config-airbnb": "^10.0.1",
     "eslint-import-resolver-webpack": "^0.6.0",
@@ -126,13 +131,13 @@
     "base-x": "^1.0.4",
     "bootstrap": "^3.3.7",
     "css-modules-require-hook": "^4.0.2",
-    "electron-auto-updater": "^0.7.0",
     "electron-debug": "^1.0.1",
+    "electron-simple-updater": "^1.2.0",
     "font-awesome": "^4.6.3",
     "markdown-it-emoji": "^1.3.0",
     "markdown-it-react-renderer": "^0.1.1",
     "postcss": "^5.1.2",
-    "react": "^15.3.1",
+    "react": "^15.4.1",
     "react-bootstrap": "^0.30.3",
     "react-chips": "^0.2.3",
     "react-dom": "^15.3.1",
@@ -146,7 +151,7 @@
     "source-map-support": "^0.4.2"
   },
   "devEngines": {
-    "node": "4.x || 5.x || 6.x",
+    "node": "4.x || 5.x || 6.x || 7.x",
     "npm": "2.x || 3.x"
   }
 }

@@ -1,7 +1,10 @@
 import { app, BrowserWindow, Menu, shell, dialog } from 'electron';
-import AppUpdater from './AppUpdater';
+import updater from 'electron-simple-updater';
+import configureUpdater from './updater';
 
 const Path = require('path');
+
+updater.init();
 
 app.commandLine.appendSwitch('ignore-certificate-errors');
 
@@ -58,7 +61,7 @@ app.on('ready', async () => {
 		}
   });
 
-  new AppUpdater(mainWindow);
+  configureUpdater(mainWindow);
 
   mainWindow.loadURL(`file://${__dirname}/app/app.html`);
 
