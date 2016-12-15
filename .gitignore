@@ -1,3 +1,7 @@
+Certificates.p12
+publisher.json
+setup.bash
+
 # Logs
 logs
 *.log
