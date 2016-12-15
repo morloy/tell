@@ -45,9 +45,6 @@
     ],
     "win": {
       "target": "squirrel"
-    },
-    "mac": {
-      "target": "dmg"
     }
   },
   "postinstall": "install-app-deps",
