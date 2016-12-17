@@ -15,6 +15,9 @@ const ConnectionManager = React.createClass({
       online: undefined
     };
   },
+  reconnect() {
+    setTimeout(this.connect, 10000);
+  },
   connect() {
     var { username, password } = this.props.profile;
 
@@ -39,17 +42,17 @@ const ConnectionManager = React.createClass({
           window.onbeforeunload = (e) => {
             Cryptocat.XMPP.disconnect(false);
             Cryptocat.Storage.sync();
-          }
-
+          };
           window.onoffline = (e) => {
             Cryptocat.XMPP.disconnect(false);
             this.setState({ online: false });
            };
           window.ononline  = (e) => { this.connect(); };
+          Cryptocat.Win.main.login = { onAuthFailed: () => this.reconnect() };
         });
       } else {
         this.setState({ online: false });
-        setTimeout(this.connect, 10000);
+        this.reconnect();
       }
     });
   },
