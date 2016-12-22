@@ -78,13 +78,19 @@ const handleCreateTopic = (userId, action) => {
 const handleAddMessage = (userId, action) => {
   return (dispatch, getState) => {
     const m = action.message;
+    const topic = getState().topics[action.topicId];
 
     if (userId !== m.author) {
       console.log(`Wrong message author: ${userId} != ${m.author}`);
       return;
     }
 
-    if (getState().topics[action.topicId].members.indexOf(userId) === -1) {
+    if (!topic) {
+      console.log(`Topic ${action.topicId} does not exist.`);
+      return;
+    }
+
+    if (topic.members.indexOf(userId) === -1) {
       console.log('User not member of topic!');
       return;
     }
