@@ -21,13 +21,13 @@ export const createNewTopic = ({to, subject, text}) => {
     const me = getState().profile;
 
     const topicId = getRandomId();
-    var contacts = _.pickBy(getState().contacts, (v,k) => to.indexOf(v.email) >= 0);
+    let contacts = _.pickBy(getState().contacts, (v,k) => to.indexOf(v.email) >= 0);
     contacts[me.username] = { email: me.email };
 
-    dispatch(push(`/topics/${topicId}`));
     dispatch(pushUnread(topicId));
     dispatch(markRead(topicId));
     dispatch(broadcast(createTopic(topicId, subject, contacts)));
     dispatch(sendMessage(topicId, text));
+    dispatch(push(`/topics/${topicId}`));
   };
 }

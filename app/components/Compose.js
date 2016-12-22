@@ -28,7 +28,7 @@ const TopicForm = React.createClass({
   },
   valid() {
     const { to, subject, text } = this.state;
-    return (subject !== '' && text !== '' && to.length > 0);
+    return (text !== '' && to.length > 0);
   },
   handleSubmit(e) {
     e.preventDefault();
@@ -63,7 +63,7 @@ const TopicForm = React.createClass({
             <FormControl
               type="text"
               value={this.state.subject}
-              placeholder="Enter subject ..."
+              placeholder="Enter subject here, or leave blank ..."
               onChange={e => this.setState({ subject: e.target.value })}
             />
           </FormGroup>

@@ -5,7 +5,7 @@ import _ from 'lodash';
 export default function topics(state = {}, action) {
   switch (action.type) {
     case CREATE_TOPIC:
-      var newObj = {};
+      let newObj = {};
       newObj[action.topicId] = {
         subject: action.subject,
         members: _.keys(action.contacts)

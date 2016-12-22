@@ -5,25 +5,38 @@ import MainPage from '../containers/MainPage';
 import Chat from './Chat';
 import colors from '../utils/colors';
 
-const Topic = ({ topicId, subject, active, read }) => (
-  <Link
-    to={`/topics/${topicId}`} style={{
-      padding: '5px 20px',
-      display: 'block',
-      backgroundColor: active ? colors.blue2 : colors.blue1,
-      fontWeight: read ? 'normal' : 'bold'
-    }}
-  >
-    {subject}
-  </Link>
-);
+const getMembersList = (topic, contacts) => {
+  let members = [];
+  topic.members.forEach(m => {
+    if (contacts[m]) { members = [contacts[m].email, ...members]; }
+  });
+  return members.join(', ');
+};
 
-const TopicList = ({ topics, unread, activeId }) => (
+const Topic = ({ topicId, read, topics, contacts, activeId }) => {
+  const topic = topics[topicId];
+  const subject = (topic.subject) ? topic.subject : getMembersList(topic, contacts);
+  const active = (activeId === topicId);
+  return (
+    <Link
+      to={`/topics/${topicId}`} style={{
+        padding: '5px 20px',
+        display: 'block',
+        backgroundColor: active ? colors.blue2 : colors.blue1,
+        fontWeight: read ? 'normal' : 'bold'
+      }}
+    >
+      {subject}
+    </Link>
+  );
+};
+
+const TopicList = (props) => (
   <div>
     <h4 style={{ paddingLeft: '10px' }}>Topics</h4>
 
-    {unread.map(v =>
-      <Topic key={v.topicId} {...v} {...topics[v.topicId]} active={activeId === v.topicId} />
+    {props.unread.map(v =>
+      <Topic key={v.topicId} {...v} {...props} />
     )}
 
     <Link to="/compose" style={{
@@ -40,33 +53,27 @@ const TopicList = ({ topics, unread, activeId }) => (
 )
 
 const TopicHeader = ({ topic, contacts }) => {
-  let members = [];
-  topic.members.forEach(m => {
-    if (contacts[m]) { members = [contacts[m].email, ...members]; }
-  });
-
+  const subject = topic.subject ? topic.subject : getMembersList(topic, contacts);
+  const info = topic.subject ? getMembersList(topic, contacts) : '';
   return (
     <div style={{ paddingTop: '8px' }}>
-      <strong>{topic.subject}</strong><br />
-      <span style={{ color: colors.gray }}>{members.join(', ')}</span>
+      <strong>{subject}</strong><br />
+      <span style={{ color: colors.gray }}>{info}</span>
     </div>
   );
-};
+}
 
-const Topics = ({ topics, unread, contacts, params, sendMessage, sendFile }) => {
-  const activeId = params.topicId;
-  const Sidebar = <TopicList topics={topics} unread={unread} activeId={activeId} />;
+const Topics = (props) => {
+  const activeId = props.params.topicId;
+  const activeTopic = props.topics[activeId];
+  const Sidebar = <TopicList {...props} activeId={activeId} />;
 
-  if (topics[activeId]) {
+  if (activeTopic) {
     return (
       <MainPage
         SideBar={Sidebar}
-        Title={<TopicHeader topic={topics[activeId]} contacts={contacts} />}
-        Content={<Chat
-          topicId={activeId}
-          sendMessage={sendMessage}
-          sendFile={sendFile}
-        />}
+        Title={<TopicHeader {...props} topic={activeTopic} />}
+        Content={<Chat {...props} topicId={activeId} />}
       />
     );
   }
