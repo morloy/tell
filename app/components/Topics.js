@@ -55,7 +55,7 @@ const TopicList = (props) => (
     )}
 
     <Link to="/compose" style={{
-        position: 'absolute', bottom: '25px', right: '25px',
+        position: 'absolute', bottom: '40px', right: '25px',
         backgroundColor: colors.blue2,
         width: '50px', height: '50px',
         fontSize: '150%',
