@@ -430,10 +430,7 @@ var client = {};
 			handler.unsubscribed(data);
 		});
 		client.on('stanza', function(stanza) {
-			if (
-				(stanza.type === 'result') &&
-				(hasProperty(stanza, 'roster'))
-			) {
+			if (hasProperty(stanza, 'roster')) {
 				handler.roster(stanza.roster);
 			}
 		});
