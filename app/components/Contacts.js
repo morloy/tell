@@ -20,6 +20,7 @@ const Contact = ({contact, active, onClick, deleteContact}) => {
 
   return (
     <div
+      className="hover"
       style={{ backgroundColor: active ? colors.blue2 : '' }}
       onClick={() => window.To.addChip(contact.email)}
       // onContextMenu={contextMenu}

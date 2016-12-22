@@ -14,6 +14,13 @@ a:hover, a:focus {
   color: inherit;
 }
 
+a:hover {
+  filter: brightness(105%);
+}
+.hover:hover {
+  filter: brightness(105%);
+}
+
 .well a {
   color: #777;
 }
