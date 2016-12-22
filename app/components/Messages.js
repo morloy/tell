@@ -7,7 +7,7 @@ import { getTopicDir } from '../utils/files';
 import colors from '../utils/colors';
 import {
   Form, Glyphicon, Image,
-  Panel, Label, Badge
+  Panel, Label, Badge, ProgressBar
 } from 'react-bootstrap';
 
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -104,6 +104,42 @@ const Message = ({m, contacts, profile, topicId}) => {
   )
 }
 
+const Progress = ({ text, progress }) => (
+  <div>
+    {text}
+    <ProgressBar active now={progress} />
+  </div>
+);
+
+const ProgessBars = React.createClass({
+  getInitialState() {
+    return {
+      progress: {},
+    };
+  },
+  componentDidMount() {
+    window.setProgress = this.setProgress;
+  },
+  setProgress(id, text, progress) {
+    let state = Object.assign({}, this.state);
+    if (progress === -1) {
+      state.progress[id] = undefined;
+    }
+    else {
+      state.progress[id] = { text, progress };
+    }
+    this.setState(state);
+  },
+  render() {
+    return  (
+      <div>
+      {_.map(this.state.progress, (progress, k) => (
+        progress ? <Progress key={k} {...progress} /> : ''
+      ))}
+    </div>
+  )}
+});
+
 const Messages = React.createClass({
   scrollToBottom() {
     var node = ReactDOM.findDOMNode(this);
@@ -135,6 +171,7 @@ const Messages = React.createClass({
             <Message key={m.stamp} m={m} {...this.props} />
           )
         })}
+        <ProgessBars />
       </div>
     )
   }

@@ -4,6 +4,8 @@ import { CREATE_TOPIC } from './topics';
 import { pushUnread } from './unread';
 import { createContact } from './contacts';
 import { getTopicDir } from '../utils/files';
+import { getRandomId } from '../utils';
+
 
 export const send = (userId, message) => (dispatch, getState) => {
   Cryptocat.OMEMO.sendMessage(userId, { message });
@@ -39,9 +41,17 @@ export const checkIfFile = (message) => {
 };
 
 const receiveFile = (topicId, file, callback) => {
+  const progressId = getRandomId();
+  const progressText = `Receiving file: ${file.name}`;
+  const progress = (p) => {
+    window.setProgress(progressId, progressText, p);
+  };
+
+  progress(0);
   Cryptocat.File.receive(file, (url, p) => {
-		console.log(`Progress: ${p} %`);
+		progress(p);
   }, (url, plaintext, valid) => {
+    progress(-1);
     const topicDir = getTopicDir(topicId);
     const filename = `${topicDir}/${file.name}`;
     FS.writeFile(filename, plaintext, (err) => {

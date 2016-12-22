@@ -26,6 +26,12 @@ export const sendFile = (topicId, path) => {
   return (dispatch, getState) => {
     const name = Path.basename(path);
 
+    const progressId = getRandomId();
+    const progressText = `Sending file: ${name}`;
+    const progress = (p) => {
+      window.setProgress(progressId, progressText, p);
+    };
+
     FS.readFile(path, (err, data) => {
       if (err) {
          return false;
@@ -34,11 +40,12 @@ export const sendFile = (topicId, path) => {
         if (!info.valid) {
           return false;
         }
-        console.log(`Sending file: ${name}`);
+        progress(0);
       }, function(url, p) {
-        console.log(`Progress: ${p} %`);
+        progress(p);
       }, function(info, file) {
         var sendInfo = 'CryptocatFile:' + JSON.stringify(info);
+        progress(-1);
         if (info.valid) {
           dispatch(sendMessage(topicId, sendInfo));
           addFileToTopic(topicId, path);
