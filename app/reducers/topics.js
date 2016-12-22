@@ -1,4 +1,4 @@
-import { CREATE_TOPIC } from '../actions/topics';
+import { CREATE_TOPIC, DELETE_TOPIC } from '../actions/topics';
 import _ from 'lodash';
 
 
@@ -11,6 +11,9 @@ export default function topics(state = {}, action) {
         members: _.keys(action.contacts)
       };
       return Object.assign({}, state, newObj);
+
+    case DELETE_TOPIC:
+      return _.omit(state, action.topicId);
 
     default:
       return state;

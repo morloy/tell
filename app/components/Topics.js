@@ -5,6 +5,8 @@ import MainPage from '../containers/MainPage';
 import Chat from './Chat';
 import colors from '../utils/colors';
 
+const {Menu, MenuItem} = Remote;
+
 const getMembersList = (topic, contacts) => {
   let members = [];
   topic.members.forEach(m => {
@@ -13,10 +15,22 @@ const getMembersList = (topic, contacts) => {
   return members.join(', ');
 };
 
-const Topic = ({ topicId, read, topics, contacts, activeId }) => {
+const Topic = ({ topicId, read, topics, contacts, activeId, deleteTopic }) => {
   const topic = topics[topicId];
+  if (!topic) { return null }
+
   const subject = (topic.subject) ? topic.subject : getMembersList(topic, contacts);
   const active = (activeId === topicId);
+
+  const menu = new Menu()
+  menu.append(new MenuItem({label: 'Delete Topic', click: () => {
+    deleteTopic(topicId, active);
+  }}));
+  const contextMenu = (e) => {
+    e.preventDefault();
+    menu.popup(Remote.getCurrentWindow())
+  };
+
   return (
     <Link
       to={`/topics/${topicId}`} style={{
@@ -25,6 +39,7 @@ const Topic = ({ topicId, read, topics, contacts, activeId }) => {
         backgroundColor: active ? colors.blue2 : colors.blue1,
         fontWeight: read ? 'normal' : 'bold'
       }}
+      onContextMenu={contextMenu}
     >
       {subject}
     </Link>

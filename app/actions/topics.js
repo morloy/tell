@@ -6,6 +6,7 @@ import { broadcast } from './network';
 import { pushUnread, markRead } from './unread';
 
 export const CREATE_TOPIC = 'CREATE_TOPIC';
+export const DELETE_TOPIC = 'DELETE_TOPIC';
 
 export const createTopic = (topicId, subject, contacts) => {
   return {
@@ -13,8 +14,19 @@ export const createTopic = (topicId, subject, contacts) => {
     topicId,
     subject,
     contacts
-  }
-}
+  };
+};
+
+export const deleteTopic = (topicId, isActive) => {
+  return (dispatch, getState) => {
+    dispatch({
+      type: DELETE_TOPIC,
+      topicId
+    });
+
+    if (isActive) { dispatch(push('/')); }
+  };
+};
 
 export const createNewTopic = ({to, subject, text}) => {
   return (dispatch, getState) => {

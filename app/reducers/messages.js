@@ -1,4 +1,8 @@
+import _ from 'lodash';
+
 import { ADD_MESSAGE } from '../actions/messages';
+import { DELETE_TOPIC } from '../actions/topics';
+
 
 
 export default function topics(state = {}, action) {
@@ -11,6 +15,9 @@ export default function topics(state = {}, action) {
         newObj[action.topicId] = [action.message];
       }
       return Object.assign({}, state, newObj);
+
+    case DELETE_TOPIC:
+      return _.omit(state, action.topicId);
 
     default:
       return state;
