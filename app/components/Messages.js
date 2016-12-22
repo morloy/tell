@@ -7,7 +7,7 @@ import { getTopicDir } from '../utils/files';
 import colors from '../utils/colors';
 import {
   Form, Glyphicon, Image,
-  Panel, Label, Badge, ProgressBar
+  Panel, Label, Badge, ProgressBar, Well
 } from 'react-bootstrap';
 
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -140,6 +140,13 @@ const ProgessBars = React.createClass({
   )}
 });
 
+const SecurityInfo = () => (
+  <Well>
+  <Glyphicon glyph="lock" style={{ fontSize: '2em', float: 'left', paddingRight: '.5em' }} />
+  All messages in this chat are <strong>end-to-end encrypted</strong> using the <a href="https://en.wikipedia.org/wiki/Double_Ratchet_Algorithm">Double Ratchet Algorithm</a>, implemented by <a href="https://crypto.cat/security.html">Nadim Kobeissi</a>.
+  </Well>
+)
+
 const Messages = React.createClass({
   scrollToBottom() {
     var node = ReactDOM.findDOMNode(this);
@@ -166,6 +173,7 @@ const Messages = React.createClass({
           padding: '10px',
           paddingRight: '15px'
         }}>
+        <SecurityInfo />
         {groupMessages(messages).map(m => {
           return (
             <Message key={m.stamp} m={m} {...this.props} />
