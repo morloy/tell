@@ -51,7 +51,7 @@ const Text = ({text}) => {
             [['emoji', content]]
         )
       }}
-      text={text.split('\n\n').join('\n####\n')}
+      text={text}
     />
   )
 };
