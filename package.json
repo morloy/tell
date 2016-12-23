@@ -24,8 +24,8 @@
     "dist": "build",
     "dist-win": "build --win",
     "dist-linux": "build --linux",
-    "build-all": "npm run build && build -mw",
-    "publish": "publish"
+    "build-all": "source setup.bash && npm run build && build -mw",
+    "publish": "publish darwin && publish win32"
   },
   "updater": {
     "url": "https://tell-now.com/updates/updates.json",
