@@ -6,13 +6,13 @@ const Path = require('path');
 
 updater.init();
 
-app.commandLine.appendSwitch('ignore-certificate-errors');
 
 let menu;
 let template;
 let mainWindow = null;
 
 if (process.env.NODE_ENV === 'development') {
+  app.commandLine.appendSwitch('ignore-certificate-errors');
   require('electron-debug')(); // eslint-disable-line global-require
 }
 
