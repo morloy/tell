@@ -19,6 +19,8 @@ export const createTopic = (topicId, subject, contacts) => {
 
 export const deleteTopic = (topicId, isActive) => {
   return (dispatch, getState) => {
+    dispatch(sendMessage(topicId, '**The user has deleted the topic and will not receive any messages sent here.**'));
+
     dispatch({
       type: DELETE_TOPIC,
       topicId
