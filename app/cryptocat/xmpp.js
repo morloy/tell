@@ -382,7 +382,7 @@ var client = {};
 			transport: 'websocket',
 			timeout: 10000,
 			wsURL: `wss://${Cryptocat.Hostname}:${Cryptocat.Port}/socket`,
-			useStreamManagement: false
+			useStreamManagement: true
 		});
 		client.use(Cryptocat.OMEMO.plugins.deviceList);
 		client.use(Cryptocat.OMEMO.plugins.bundle);
