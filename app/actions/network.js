@@ -17,7 +17,6 @@ export const broadcast = (action) => {
 
     const me = getState().profile.username;
     const message = JSON.stringify(action);
-    console.log(message);
     getState().topics[action.topicId].members.forEach(userId => {
       if (userId !== me) { dispatch(send(userId, message)); }
     });
@@ -119,7 +118,6 @@ const actionHandler = {
 };
 
 export const receive = (userId, info) => (dispatch) => {
-  console.log(info.plaintext);
   const action = JSON.parse(info.plaintext);
   const handler = actionHandler[action.type];
   if (handler) {
