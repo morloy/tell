@@ -1,7 +1,7 @@
 {
   "name": "Tell",
   "productName": "Tell",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "Easy and Secure Messaging.",
   "main": "main.js",
   "scripts": {
