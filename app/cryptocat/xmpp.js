@@ -380,7 +380,7 @@ var client = {};
 				realm: Cryptocat.Hostname
 			},
 			transport: 'websocket',
-			timeout: 10000,
+			timeout: 15,
 			wsURL: `wss://${Cryptocat.Hostname}:${Cryptocat.Port}/socket`,
 			useStreamManagement: true
 		});
