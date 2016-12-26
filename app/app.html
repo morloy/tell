@@ -24,6 +24,17 @@
 
 
     <script>
+      if (process.env.NODE_ENV === 'production') {
+        var log = require('electron-log');
+        log.transports.file.streamConfig = { flags: 'w' };
+        const windowConsole = console;
+        log.transports.console = function(msg) {
+          windowConsole.log(`[${msg.date.toLocaleTimeString()} ${msg.level}] ${msg.text}`);
+        };
+        window.console = log;
+      }
+
+
       if (!process.env.HOT) {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
