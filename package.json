@@ -38,6 +38,7 @@
       "app/img/",
       "app/dist/",
       "app/app.html",
+      "app/icon.ico",
       "node_modules/",
       "main.js",
       "main.js.map",

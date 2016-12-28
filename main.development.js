@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, shell, dialog } from 'electron';
+import { app, BrowserWindow, Menu, shell, dialog, Tray } from 'electron';
 import updater from 'electron-simple-updater';
 import configureUpdater from './updater';
 
@@ -106,6 +106,34 @@ app.on('ready', async () => {
         mainWindow.hide();
         }
     });
+  } else {
+    mainWindow.on('minimize',function(event){
+        event.preventDefault()
+            mainWindow.hide();
+    });
+
+    var forceQuit = false;
+    mainWindow.on('close', function (event) {
+        if (!forceQuit){
+            event.preventDefault()
+            mainWindow.hide();
+        }
+        return false;
+    });
+
+    var appIcon = null;
+    appIcon = new Tray(Path.join(__dirname, 'app/icon.ico'));
+    const contextMenu = Menu.buildFromTemplate([
+      { label: 'Show App', click:  function(){
+          mainWindow.show();
+      } },
+      { label: 'Quit', click:  function(){
+          forceQuit = true;
+          app.quit();
+      } }
+    ]);
+    appIcon.setContextMenu(contextMenu);
+    appIcon.on('click', () => { mainWindow.show(); });
   }
 
   if (process.env.NODE_ENV === 'development') {
