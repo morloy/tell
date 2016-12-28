@@ -11,6 +11,15 @@ let menu;
 let template;
 let mainWindow = null;
 
+let shouldQuit = app.makeSingleInstance(function(commandLine, workingDirectory) {
+  if (mainWindow) {
+    mainWindow.show();
+  }
+});
+if (shouldQuit) {
+  app.quit();
+}
+
 if (process.env.NODE_ENV === 'development') {
   app.commandLine.appendSwitch('ignore-certificate-errors');
   require('electron-debug')(); // eslint-disable-line global-require
