@@ -378,9 +378,9 @@ var client = {};
 				realm: Cryptocat.Hostname
 			},
 			transport: 'websocket',
-			timeout: 15,
+			timeout: 10000,
 			wsURL: `wss://${Cryptocat.Hostname}:${Cryptocat.Port}/socket`,
-			useStreamManagement: true
+			useStreamManagement: false
 		});
 		client.use(Cryptocat.OMEMO.plugins.deviceList);
 		client.use(Cryptocat.OMEMO.plugins.bundle);
