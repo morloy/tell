@@ -24,7 +24,7 @@
     "dist": "build",
     "dist-win": "build --win",
     "dist-linux": "build --linux",
-    "build-all": "source setup.bash && npm run build && build -mw",
+    "dist-all": "source setup.bash && npm run build && build -mw",
     "publish": "publish darwin && publish win32"
   },
   "updater": {
