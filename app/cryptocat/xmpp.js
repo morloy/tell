@@ -470,6 +470,7 @@ var client = {};
 			type: 'chat',
 			to: `${to}@${Cryptocat.Hostname}`,
 			encrypted: { encryptedItems: items },
+			requestReceipt: true,
 			body: ''
 		});
 	};
