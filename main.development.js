@@ -1,10 +1,11 @@
 import { app, BrowserWindow, Menu, shell, dialog, Tray } from 'electron';
 import updater from 'electron-simple-updater';
+import log from 'electron-log';
 import configureUpdater from './updater';
 
 const Path = require('path');
 
-updater.init();
+updater.init({ checkUpdateOnStart: false });
 
 
 let menu;
