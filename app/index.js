@@ -5,12 +5,13 @@ import { Router, hashHistory } from 'react-router';
 import { syncHistoryWithStore, push } from 'react-router-redux';
 import routes from './routes';
 import configureStore from './store/configureStore';
+import configureLogger from './utils/logger';
 import { persistStore } from 'redux-persist';
 
 import { setupCryptocat } from './utils/cryptocat';
 import './app.global.css';
 
-
+configureLogger();
 const store = configureStore();
 const history = syncHistoryWithStore(hashHistory, store);
 
