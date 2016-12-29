@@ -8,7 +8,7 @@ const configureUpdater = (window) => {
       type: 'info',
       message: 'A new update is ready to install',
       buttons: ['Restart and Install'],
-      detail: `Version ${version} is downloaded and will be automatically installed on Quit.`
+      detail: `Version ${version} is downloaded and will be automatically installed on restart.`
     });
     console.log("quitAndInstall");
     updater.quitAndInstall();
