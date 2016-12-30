@@ -128,6 +128,9 @@ app.on('ready', async () => {
       { label: 'Show App', click:  function(){
           mainWindow.show();
       } },
+      { label: 'Debug Mode', click:  function(){
+          mainWindow.toggleDevTools();
+      } },
       { label: 'Quit', click:  function(){
           forceQuit = true;
           app.quit();
