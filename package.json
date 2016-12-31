@@ -24,8 +24,8 @@
     "dist": "build",
     "dist-win": "build --win",
     "dist-linux": "build --linux",
-    "dist-all": "source setup.bash && npm run build && build -mw",
-    "publish": "publish darwin && publish win32"
+    "dist-all": "source setup.bash && npm run build && build -mwl",
+    "publish": "publish darwin && publish win32 && publish linux"
   },
   "updater": {
     "url": "https://tell-now.com/updates/updates.json",
@@ -39,6 +39,7 @@
       "app/dist/",
       "app/app.html",
       "app/icon.ico",
+      "app/icon.png",
       "node_modules/",
       "main.js",
       "main.js.map",

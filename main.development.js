@@ -122,8 +122,10 @@ app.on('ready', async () => {
         return false;
     });
 
+    const icon = (process.platform === 'win32') ? 'icon.ico' : 'icon.png';
+
     var appIcon = null;
-    appIcon = new Tray(Path.join(__dirname, 'app/icon.ico'));
+    appIcon = new Tray(Path.join(__dirname, `app/${icon}`));
     const contextMenu = Menu.buildFromTemplate([
       { label: 'Show App', click:  function(){
           mainWindow.show();
