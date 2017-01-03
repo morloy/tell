@@ -111,11 +111,11 @@ const Topics = (props) => {
     );
   };
 
-  const hasTopics = Object.keys(props.topics).length === 0;
+  const hasTopics = Object.keys(props.topics).length !== 0;
   return (
     <MainPage
       SideBar={Sidebar}
-      Content={hasTopics ? <Welcome /> : ''}
+      Content={hasTopics ? '' : <Welcome />}
     />
   );
 };
