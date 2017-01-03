@@ -142,8 +142,16 @@ const ProgessBars = React.createClass({
 
 const SecurityInfo = () => (
   <Well>
-  <Glyphicon glyph="lock" style={{ fontSize: '2em', float: 'left', paddingRight: '.5em' }} />
-  All messages in this chat are <strong>end-to-end encrypted</strong> using the <a href="https://en.wikipedia.org/wiki/Double_Ratchet_Algorithm">Double Ratchet Algorithm</a>, implemented by <a href="https://crypto.cat/security.html">Nadim Kobeissi</a>.
+    <p>
+      <Glyphicon glyph="lock" style={{ fontSize: '2em', float: 'left', paddingRight: '.5em' }} />
+      All messages in this chat are <strong>end-to-end encrypted</strong> using the <a href="https://en.wikipedia.org/wiki/Double_Ratchet_Algorithm">Double Ratchet Algorithm</a>,
+      implemented based on <a href="https://crypto.cat/security.html">Cryptocat</a>
+    </p>
+    <div>
+      <Glyphicon glyph="text-size" style={{ fontSize: '2em', float: 'left', paddingRight: '.5em' }} />
+      You can use <a href="https://markdown-it.github.io/">Markdown</a> to format your messages, directly paste links and easily send files.
+      A wide variety of <a href="http://www.webpagefx.com/tools/emoji-cheat-sheet/">Emojis</a> is also supported! 😊
+    </div>
   </Well>
 )
 
