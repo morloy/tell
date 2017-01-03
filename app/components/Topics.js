@@ -83,7 +83,18 @@ const TopicHeader = ({ topic, contacts }) => {
       <span style={{ color: colors.gray }}>{info}</span>
     </div>
   );
-}
+};
+
+const Welcome = () => (
+  <Jumbotron style={{ height: '100%', margin: 0 }}>
+    <h1 style={{ padding: '20px 0px' }}>Welcome to Tell!</h1>
+    <p>
+      To get started, write some messages to your colleagues.<br />
+      Just click on the pen on the left and add your friends by adding their e-mail address.
+      It's easy!
+    </p>
+  </Jumbotron>
+);
 
 const Topics = (props) => {
   const activeId = props.params.topicId;
@@ -98,21 +109,13 @@ const Topics = (props) => {
         Content={<Chat {...props} topicId={activeId} />}
       />
     );
-  }
+  };
 
+  const hasTopics = Object.keys(props.topics).length === 0;
   return (
     <MainPage
       SideBar={Sidebar}
-      Content={
-        <Jumbotron style={{ height: '100%', margin: 0 }}>
-          <h1 style={{ padding: '20px 0px' }}>Welcome to Tell!</h1>
-          <p>
-            To get started, write some messages to your colleagues.<br />
-            Just click on the pen on the left and add your friends by adding their e-mail address.
-            It's easy!
-          </p>
-        </Jumbotron>
-      }
+      Content={hasTopics ? <Welcome /> : ''}
     />
   );
 };
