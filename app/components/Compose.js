@@ -96,12 +96,26 @@ const TopicForm = React.createClass({
   }
 });
 
-const Compose = (props) => (
-  <MainPage
-    SideBar={<ContactList />}
-    Title={<h3>Create new Topic</h3>}
-    Content={<TopicForm {...props} />}
-  />
+const Welcome = () => (
+  <Jumbotron style={{ height: '100%', margin: 0 }}>
+    <p>
+      Before your can write a message, you need to add some contacts.<br />
+      Simply enter an e-mail address into the form on the left and a check mark (✓) will appear,
+      when they are already using Tell! <br />
+      Once you have your first contact, the message form will appear here and you can start composing a new message.
+    </p>
+  </Jumbotron>
 );
+
+const Compose = (props) => {
+  const hasContacts = Object.keys(props.contacts).length !== 0;
+  return (
+    <MainPage
+      SideBar={<ContactList />}
+      Title={<h3>Create new Topic</h3>}
+      Content={hasContacts ? <TopicForm {...props} /> : <Welcome />}
+    />
+  );
+}
 
 export default Compose;
