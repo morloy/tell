@@ -91,28 +91,6 @@ app.on('ready', async () => {
   });
 
 
-  if (process.platform === 'darwin') {
-    app.on('activate', () => {
-      mainWindow.show();
-    });
-
-    var forceQuit = false;
-    app.on('before-quit', function() {
-      forceQuit = true;
-    });
-
-    mainWindow.on('close', function(event) {
-      if (!forceQuit) {
-        event.preventDefault();
-        mainWindow.hide();
-        }
-    });
-  } else {
-    mainWindow.on('minimize',function(event){
-        event.preventDefault()
-            mainWindow.hide();
-    });
-
     var forceQuit = false;
     mainWindow.on('close', function (event) {
         if (!forceQuit){
@@ -122,8 +100,16 @@ app.on('ready', async () => {
         return false;
     });
 
-    const icon = (process.platform === 'win32') ? 'icon.ico' : 'icon.png';
+  if (process.platform === 'darwin') {
+    app.on('activate', () => {
+      mainWindow.show();
+    });
 
+    app.on('before-quit', function() {
+      forceQuit = true;
+    });
+  } else {
+    const icon = (process.platform === 'win32') ? 'icon.ico' : 'icon.png';
     var appIcon = null;
     appIcon = new Tray(Path.join(__dirname, `app/${icon}`));
     const contextMenu = Menu.buildFromTemplate([
