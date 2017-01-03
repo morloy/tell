@@ -49,13 +49,20 @@ const Topic = ({ topicId, read, topics, contacts, activeId, deleteTopic }) => {
 const TopicList = (props) => (
   <div>
     <h4 style={{ paddingLeft: '10px' }}>Topics</h4>
-
-    {props.unread.map(v =>
-      <Topic key={v.topicId} {...v} {...props} />
-    )}
+    <div
+      style={{
+        position: 'absolute',
+        top: 30, bottom: 90, left: 0, right: 0,
+        overflow: 'auto'
+      }}
+    >
+      {props.unread.map(v =>
+        <Topic key={v.topicId} {...v} {...props} />
+      )}
+    </div>
 
     <Link to="/compose" style={{
-        position: 'absolute', bottom: '40px', right: '25px',
+        position: 'absolute', bottom: '25px', right: '25px',
         backgroundColor: colors.blue2,
         width: '50px', height: '50px',
         fontSize: '150%',

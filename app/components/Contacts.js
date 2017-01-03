@@ -36,13 +36,20 @@ const Contacts = (props) => (
     <div style={{display: 'table-row', height: '100%'}}>
       <div style={{ position: 'relative', height: '100%' }}>
         <h4 style={{paddingLeft: '10px'}}>Contacts</h4>
-        {props.contacts.map(contact =>
-          <Contact
-            key={contact.id}
-            contact={contact}
-            deleteContact={props.deleteContact}
-          />
-        )}
+        <div style={{
+            position: 'absolute',
+            top: 30, bottom: 10, left: 0, right: 0,
+            overflow: 'auto'
+          }}
+        >
+          {props.contacts.map(contact =>
+            <Contact
+              key={contact.id}
+              contact={contact}
+              deleteContact={props.deleteContact}
+            />
+          )}
+        </div>
       </div>
     </div>
     <div style={{display: 'table-row'}}>
