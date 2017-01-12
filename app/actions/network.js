@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { ADD_MESSAGE } from './messages';
 import { CREATE_TOPIC } from './topics';
-import { pushUnread } from './unread';
 import { createContact } from './contacts';
 import { getTopicDir } from '../utils/files';
 import { getRandomId } from '../utils';
@@ -108,7 +107,6 @@ const handleAddMessage = (userId, action) => {
       }
       dispatch(action);
     }
-    dispatch(pushUnread(action.topicId));
   };
 };
 

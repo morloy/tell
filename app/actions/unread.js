@@ -1,10 +1,4 @@
-export const PUSH_UNREAD = 'PUSH_UNREAD';
 export const MARK_READ = 'MARK_READ';
-
-export const pushUnread = (topicId) => ({
-  type: PUSH_UNREAD,
-  topicId
-});
 
 export const markRead = (topicId) => {
   return (dispatch, getState) => {
