@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { ADD_MESSAGE } from './messages';
 import { CREATE_TOPIC } from './topics';
 import { createContact } from './contacts';
+import { updateBadgeCount } from './unread';
 import { getTopicDir } from '../utils/files';
 import { getRandomId } from '../utils';
 
@@ -106,6 +107,7 @@ const handleAddMessage = (userId, action) => {
         });
       }
       dispatch(action);
+      updateBadgeCount(getState().unread);
     }
   };
 };
