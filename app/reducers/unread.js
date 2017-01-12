@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { MARK_READ } from '../actions/unread';
 import { ADD_MESSAGE } from '../actions/messages';
+import { DELETE_TOPIC } from '../actions/topics';
 
 export default function chat(state = [], { type, topicId, message }) {
   switch (type) {
@@ -24,6 +25,9 @@ export default function chat(state = [], { type, topicId, message }) {
         }
         return v;
       });
+
+    case DELETE_TOPIC:
+      return state.filter(v => v.topicId !== topicId);
 
     default:
       return state;
