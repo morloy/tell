@@ -49,7 +49,7 @@ const TopicForm = React.createClass({
             <Chips
               suggestions={contacts}
               fromSuggestionsOnly
-              placeholder={this.state.to.length ? '' : 'Select contacts ...'}
+              placeholder={this.state.to.length ? '' : 'Type contact name or select on the left ...'}
               theme={customTheme}
               onChange={chips => this.setState({ to: chips })}
               ref={(To) => { window.To = To; }}
@@ -63,7 +63,7 @@ const TopicForm = React.createClass({
             <FormControl
               type="text"
               value={this.state.subject}
-              placeholder="Enter subject here, or leave blank ..."
+              placeholder="Can be left blank ..."
               onChange={e => this.setState({ subject: e.target.value })}
             />
           </FormGroup>
