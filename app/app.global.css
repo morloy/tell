@@ -89,3 +89,7 @@ emoji {
 .panel-body p {
   white-space: pre-wrap;
 }
+
+.panel-body p:last-child {
+  margin-bottom: 0;
+}
