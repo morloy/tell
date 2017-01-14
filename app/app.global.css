@@ -80,6 +80,12 @@ emoji {
   font-size: 1.5em;
 }
 
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .panel-body p {
   white-space: pre-wrap;
 }

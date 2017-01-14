@@ -33,6 +33,7 @@ const Topic = ({ topicId, read, topics, contacts, activeId, deleteTopic }) => {
 
   return (
     <Link
+      className='truncate'
       to={`/topics/${topicId}`} style={{
         padding: '5px 20px',
         display: 'block',
@@ -80,7 +81,7 @@ const TopicHeader = ({ topic, contacts }) => {
   return (
     <div style={{ paddingTop: '8px' }}>
       <strong>{subject}</strong><br />
-      <span style={{ color: colors.gray }}>{info}</span>
+      <p className='truncate' style={{ color: colors.gray }}>{info}</p>
     </div>
   );
 };
