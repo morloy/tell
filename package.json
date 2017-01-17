@@ -1,7 +1,7 @@
 {
   "name": "Tell",
   "productName": "Tell",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "Easy and Secure Messaging.",
   "main": "main.js",
   "scripts": {
@@ -47,6 +47,9 @@
     ],
     "win": {
       "target": "squirrel"
+    },
+    "appImage": {
+      "includeRequiredLib": true
     }
   },
   "postinstall": "install-app-deps",
@@ -98,7 +101,8 @@
     "del": "^2.2.2",
     "devtron": "^1.3.0",
     "electron": "^1.3.4",
-    "electron-builder": "^10.7.1",
+    "electron-builder": "^11.4.4",
+    "electron-builder-squirrel-windows": "^11.4.0",
     "electron-devtools-installer": "^2.0.1",
     "electron-prebuilt": "^1.4.10",
     "electron-simple-publisher": "^0.2.5",
