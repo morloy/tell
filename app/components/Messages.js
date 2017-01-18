@@ -145,7 +145,7 @@ const SecurityInfo = () => (
     <p>
       <Glyphicon glyph="lock" style={{ fontSize: '2em', float: 'left', paddingRight: '.5em' }} />
       All messages in this chat are <strong>end-to-end encrypted</strong> using the <a href="https://en.wikipedia.org/wiki/Signal_Protocol">Signal Protocol</a>,
-      implemented based on <a href="https://crypto.cat/security.html">Cryptocat</a>.
+      implementation based on <a href="https://crypto.cat/security.html">Cryptocat</a>.
     </p>
     <div>
       <Glyphicon glyph="text-size" style={{ fontSize: '2em', float: 'left', paddingRight: '.5em' }} />
