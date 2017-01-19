@@ -12,7 +12,7 @@ const configureUpdater = (window) => {
     });
     console.log("quitAndInstall");
     updater.quitAndInstall();
-    if (process.platform === 'darwin') { app.quit(); }
+    app.quit();
     return true;
   });
 

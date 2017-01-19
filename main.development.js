@@ -91,22 +91,22 @@ app.on('ready', async () => {
   });
 
 
-    var forceQuit = false;
-    mainWindow.on('close', function (event) {
-        if (!forceQuit){
-            event.preventDefault()
-            mainWindow.hide();
-        }
-        return false;
-    });
+  var forceQuit = false;
+  mainWindow.on('close', (event) => {
+    if (!forceQuit) {
+      event.preventDefault();
+      mainWindow.hide();
+    }
+    return false;
+  });
+
+  app.on('before-quit', () => {
+    forceQuit = true;
+  });
 
   if (process.platform === 'darwin') {
     app.on('activate', () => {
       mainWindow.show();
-    });
-
-    app.on('before-quit', function() {
-      forceQuit = true;
     });
   } else {
     const icon = (process.platform === 'win32') ? 'icon.ico' : 'icon.png';
@@ -120,12 +120,12 @@ app.on('ready', async () => {
           mainWindow.toggleDevTools();
       } },
       { label: 'Quit', click:  function(){
-          forceQuit = true;
           app.quit();
       } }
     ]);
     appIcon.setContextMenu(contextMenu);
     appIcon.on('click', () => { mainWindow.show(); });
+    app.on('before-quit', () => appIcon.destroy());
   }
 
   if (process.env.NODE_ENV === 'development') {
