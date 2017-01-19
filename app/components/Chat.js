@@ -22,7 +22,7 @@ const MessageInput = React.createClass({
     this.setState({ text: e.target.value });
   },
   handleKeyDown(e) {
-    if (e.keyCode == 13 && e.shiftKey) {
+    if (e.keyCode == 13 && (e.metaKey || e.ctrlKey)) {
       this.handleSubmit(e);
     }
   },
@@ -45,24 +45,35 @@ const MessageInput = React.createClass({
     }
   },
   render() {
+    const sendKey = (process.platform === 'darwin') ? '⌘' : 'Ctrl';
     return (
-      <div style={{backgroundColor: colors.gray, padding: '5px'}}>
+      <div style={{ padding: '5px' }}>
       <Form onSubmit={this.handleSubmit} >
           <FormGroup style={{display: 'table', width: '100%', margin: 0}}>
-              <div style={{display: 'table-cell'}}>
+              <div style={{display: 'table-row'}}>
                 <FormControl
                   componentClass="textarea"
-                  rows="7"
+                  rows="8"
                   value={this.state.text}
                   onChange={this.handleChange}
                   onKeyDown={this.handleKeyDown}
-                  placeholder="Type your message here. Press Shift+Enter to send."
-                  style={{width: '100%'}}
+                  placeholder="Type your message here ..."
+                  style={{width: '100%', marginBottom: '5px'}}
                 />
               </div>
-              <div style={{display: 'table-cell', width: '40px'}}>
-                <Button onClick={this.selectFile}><Glyphicon glyph="paperclip" /></Button>
-                <Button type="submit"><Glyphicon glyph="chevron-right" /></Button>
+              <div style={{display: 'table-row'}}>
+                <Button
+                  onClick={this.selectFile}
+                  style={{ width: '100px' }}
+                >
+                  <Glyphicon glyph="paperclip" />
+                </Button>
+                <div style={{ float: 'right', color: '#666' }}>
+                  Press {sendKey}+Enter to send message
+                  <Button type="submit" style={{ width: '100px', marginLeft: '10px' }}>
+                    <Glyphicon glyph="chevron-right" />
+                  </Button>
+                </div>
               </div>
         </FormGroup>
 
