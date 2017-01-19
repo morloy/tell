@@ -48,15 +48,13 @@ const Text = ({text}) => {
       convertRules={{
         emoji: ({ content }) => {
           if (process.platform === 'darwin') {
-            return (
-              [[ 'span', {className:'emoji'}, content ]]
-          )} else {
-            return (
-              [[ 'img', {
-                src:`assets/img-apple-64/${content.codePointAt(0).toString(16)}.png`,
-                className:'emoji'
-              } ]]
-          )}
+            return [['span', { className: 'emoji' }, content]];
+          }
+
+          return [['img', {
+            src: `assets/img-apple-64/${content.codePointAt(0).toString(16)}.png`,
+            className: 'emoji'
+          }]];
         }
       }}
       text={text}
