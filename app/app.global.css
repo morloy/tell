@@ -76,7 +76,8 @@ body.modal-open .container {
   color: #337ab7;
 }
 
-emoji {
+.emoji {
+  height: 1em;
   font-size: 1.5em;
 }
 

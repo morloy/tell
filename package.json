@@ -40,6 +40,7 @@
       "app/app.html",
       "app/icon.ico",
       "app/icon.png",
+      "app/assets/img-apple-64/",
       "node_modules/",
       "main.js",
       "main.js.map",

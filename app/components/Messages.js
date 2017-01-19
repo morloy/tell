@@ -37,7 +37,6 @@ const groupMessages = (messages) => {
 }
 
 const Text = ({text}) => {
-  // console.log(text);
   return (
     <MDReactComponent
       markdownOptions={{
@@ -47,9 +46,18 @@ const Text = ({text}) => {
       }}
       plugins={[emoji]}
       convertRules={{
-        emoji: ({ content }) => (
-            [['emoji', content]]
-        )
+        emoji: ({ content }) => {
+          if (process.platform === 'darwin') {
+            return (
+              [[ 'span', {className:'emoji'}, content ]]
+          )} else {
+            return (
+              [[ 'img', {
+                src:`assets/img-apple-64/${content.codePointAt(0).toString(16)}.png`,
+                className:'emoji'
+              } ]]
+          )}
+        }
       }}
       text={text}
     />
@@ -150,7 +158,7 @@ const SecurityInfo = () => (
     <div>
       <Glyphicon glyph="text-size" style={{ fontSize: '2em', float: 'left', paddingRight: '.5em' }} />
       You can use <a href="https://markdown-it.github.io/">Markdown</a> to format your messages, directly paste links and easily send files.
-      A wide variety of <a href="http://www.webpagefx.com/tools/emoji-cheat-sheet/">Emojis</a> is also supported! 😊
+      A wide variety of <a href="http://www.webpagefx.com/tools/emoji-cheat-sheet/">Emojis</a> is also supported!
     </div>
   </Well>
 )
