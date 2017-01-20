@@ -47,7 +47,7 @@ const MessageInput = React.createClass({
   render() {
     const sendKey = (process.platform === 'darwin') ? '⌘' : 'Ctrl';
     return (
-      <div style={{ padding: '5px' }}>
+      <div style={{ padding: '5px', borderTop: '1px solid #ccc' }}>
       <Form onSubmit={this.handleSubmit} >
           <FormGroup style={{display: 'table', width: '100%', margin: 0}}>
               <div style={{display: 'table-row'}}>

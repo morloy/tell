@@ -12,29 +12,92 @@ import {
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
-export const MERGE_TIME = 5*60*1000;
+export const MERGE_TIME = 1*60*1000;
 
-const groupMessages = (messages) => {
-  var grouped = [];
-  messages.forEach((m, i, array) => {
-    if (i > 0 &&
-        m.author == array[i-1].author &&
-        m.stamp - array[i-1].stamp < MERGE_TIME) {
-          var oldMsg = grouped[grouped.length-1];
-          oldMsg.stamp = m.stamp;
-          oldMsg.contents.push(m);
-        }
-    else {
-      grouped.push({
-        author: m.author,
-        stamp: m.stamp,
-        contents: [ m ]
-      });
+
+const MessageList = (props) => {
+  const messages = props.messages[props.topicId];
+  let out = [];
+  let lastDate = new Date(0);
+  let lastAuthor = '';
+  let lastStamp = 0;
+
+  for (var i = 0, len = messages.length; i < len; i++) {
+    const m = messages[i];
+    const stamp = new Date(m.stamp);
+
+    if (stamp.getDate() !== lastDate.getDate()) {
+      out.push(<DateHeader stamp={stamp} key={`date_${stamp}`} />);
+      lastDate = stamp;
     }
-  });
 
-  return grouped;
-}
+    if (m.author !== lastAuthor) {
+      out.push(
+        <AuthorHeader author={m.author} key={`${m.author}_${stamp}`} {...props} />
+      );
+      lastAuthor = m.author;
+    }
+
+    if (m.stamp - lastStamp >= MERGE_TIME) {
+      out.push(<TimeHeader stamp={stamp} key={`time_${stamp}`} />);
+      lastStamp = m.stamp;
+    }
+
+    const file = checkIfFile(m.text);
+    if (file.isFile) {
+      out.push(<File key={m.id} name={file.file.name} topicId={props.topicId} />);
+    } else {
+      out.push(<Text text={m.text} key={m.id} />);
+    }
+  }
+
+  return (
+    <div className="messages" style={{ margin: '0 4em 0 2em' }}>
+      {out}
+    </div>
+  );
+};
+
+const DateHeader = ({ stamp }) => (
+  <p style={{ textAlign: 'center' }}>
+    <Label style={{ backgroundColor: `${colors.background}`}}>
+      {stamp.toDateString()}
+    </Label>
+  </p>
+);
+
+const AuthorHeader = ({ author, profile, contacts }) => {
+  const fromMe = (author === profile.username);
+  const email = fromMe ? profile.email : contacts[author].email;
+  return (
+    <div style={{
+      borderTop: `2px solid ${fromMe ? colors.gray : '#dada74'}`,
+      borderRadius: '.5em',
+      padding: '.3em .5em',
+      margin: '0 -4em 0 -2em'
+    }}>
+      <div style={{ float: 'right', color: '#999', fontFamily: 'Consolas' }}>
+        {author}
+      </div>
+      <div style={{ fontWeight: 'bold'}}>
+        {email}
+      </div>
+    </div>
+  );
+};
+
+const TimeHeader = ({ stamp }) => {
+  const padZero = (n) => ("0" + n).slice(-2);
+  const hh = padZero(stamp.getHours());
+  const mm = padZero(stamp.getMinutes());
+  return (
+    <p style={{ clear: 'right', float: 'right', margin: '0 -4em 0 1em' }}>
+      <Label style={{ backgroundColor: `${colors.blue2}` }}>
+        {hh}:{mm}
+      </Label>
+    </p>
+  );
+};
 
 const Text = ({text}) => {
   return (
@@ -62,14 +125,13 @@ const Text = ({text}) => {
   )
 };
 
-const open = (url) => {
-  Remote.shell.openExternal(url);
-}
-
 const File = ({name, topicId}) => {
+  const open = (url) => {
+    Remote.shell.openExternal(url);
+  }
   const topicDir = getTopicDir(topicId);
   return (
-    <div style={{borderLeft: `2px solid ${colors.blue1}`}}>
+    <p style={{borderLeft: `2px solid ${colors.blue1}`}}>
     <div style={{float: 'right', color: colors.blue1}}>
       <a href='javascript:void(0)' onClick={(e) => open(`file://${topicDir}`)}>
         <Glyphicon glyph='folder-open' />
@@ -81,34 +143,9 @@ const File = ({name, topicId}) => {
         {name}
       </a>
     </div>
-  </div>
+  </p>
   )
-}
-
-const Message = ({m, contacts, profile, topicId}) => {
-  const stamp = (new Date(m.stamp)).toString();
-  const fromMe = (m.author === profile.username);
-  const username = (fromMe) ? profile.email : contacts[m.author].email;
-
-  return (
-    <Panel
-      bsStyle={fromMe ? 'success' : 'info'}
-      header={
-        <div style={{fontSize: '1em'}}>
-          <strong>{username}</strong>
-          <p style={{float: 'right', color: '#777'}}>{stamp}</p>
-        </div>
-    }>
-      {m.contents.map((c) => {
-      const file = checkIfFile(c.text);
-      if (file.isFile)
-        return <File key={c.id} name={file.file.name} topicId={topicId} />
-      else
-        return <Text key={c.id} {...c} />;
-      })}
-    </Panel>
-  )
-}
+};
 
 const Progress = ({ text, progress }) => (
   <div>
@@ -188,11 +225,7 @@ const Messages = React.createClass({
           paddingRight: '15px'
         }}>
         <SecurityInfo />
-        {groupMessages(messages).map(m => {
-          return (
-            <Message key={m.stamp} m={m} {...this.props} />
-          )
-        })}
+        <MessageList {...this.props} />
         <ProgessBars />
       </div>
     )

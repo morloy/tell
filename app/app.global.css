@@ -57,23 +57,12 @@ body.modal-open .container {
   -webkit-box-shadow: none;
 }
 
-.panel-heading {
-  padding: 5px 20px;
-}
-.panel-body {
-  padding: 5px 30px;
-}
-
 .container .jumbotron {
   border-radius: 0px;
 }
 
 .form-control-feedback {
   z-index: 100;
-}
-
-.panel-body a {
-  color: #337ab7;
 }
 
 .emoji {
@@ -87,10 +76,10 @@ body.modal-open .container {
   text-overflow: ellipsis;
 }
 
-.panel-body p {
+.messages p {
   white-space: pre-wrap;
 }
 
-.panel-body p:last-child {
-  margin-bottom: 0;
+.messages a {
+  color: #337ab7;
 }
